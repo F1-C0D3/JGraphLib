@@ -47,6 +47,20 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<?>> extends Linked
 	public V getTarget() {
 		return this.target;
 	}
+	
+	public List<V> getVertices(){
+		List<V> vertices = new ArrayList<V>();	
+		for(Tuple<E, V> tuple : this)
+			vertices.add(tuple.getSecond());		
+		return vertices;		
+	}
+	
+	public List<E> getEdges(){
+		List<E> vertices = new ArrayList<E>();	
+		for(Tuple<E, V> tuple : this)
+			vertices.add(tuple.getFirst());		
+		return vertices;		
+	}
 
 	@Override
 	public Tuple<E, V> getFirst() {

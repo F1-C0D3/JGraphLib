@@ -47,7 +47,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 
 	protected Position2D generateRandomPosition2D(V source, DoubleRange vertexDistanceRange) {
 
-		Position2D Position2D = null;
+		Position2D position2D = null;
 		double angleRadians, x, y;
 
 		double distance = RandomNumbers.getRandom(vertexDistanceRange.min, vertexDistanceRange.max);
@@ -57,30 +57,30 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 			angleRadians = Math.toRadians(angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			Position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() + y);
+			position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() + y);
 		}
 
 		if ((angleDegrees > 90d) && (angleDegrees <= 180d)) {
 			angleRadians = Math.toRadians(180 - angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			Position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() + y);
+			position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() + y);
 		}
 
 		if ((angleDegrees > 180d) && (angleDegrees <= 270d)) {
 			angleRadians = Math.toRadians(270 - angleDegrees);
 			x = distance * Math.sin(angleRadians);
 			y = distance * Math.cos(angleRadians);
-			Position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() - y);
+			position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() - y);
 		}
 
 		if ((angleDegrees > 270d) && (angleDegrees <= 360d)) {
 			angleRadians = Math.toRadians(360 - angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			Position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() - y);
+			position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() - y);
 		}
 
-		return Position2D;
+		return position2D;
 	}
 }
