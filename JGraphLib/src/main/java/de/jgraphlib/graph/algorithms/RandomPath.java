@@ -17,7 +17,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 		this.graph = graph;
 	}
 
-	public Path<V, E, ?> compute(V source, V target) {
+	public Path<V, E, W> compute(V source, V target) {
 
 		Path<V, E, W> randomPath = new Path<V, E, W>(source, target);
 

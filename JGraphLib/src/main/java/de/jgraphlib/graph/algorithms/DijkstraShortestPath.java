@@ -19,7 +19,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 		this.graph = graph;
 	}
 
-	public Path<V, E, ?> compute(V source, V target, Function<W, Double> metric) {
+	public Path<V, E, W> compute(V source, V target, Function<W, Double> metric) {
 
 		/* Initializaton */
 		V current = source;

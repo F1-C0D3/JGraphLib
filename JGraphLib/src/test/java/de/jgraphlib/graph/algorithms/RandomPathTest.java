@@ -1,27 +1,48 @@
 package de.jgraphlib.graph.algorithms;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 
+import de.jgraphlib.graph.EdgeDistance;
+import de.jgraphlib.graph.EdgeDistanceSupplier;
+import de.jgraphlib.graph.Path;
+import de.jgraphlib.graph.Position2D;
+import de.jgraphlib.graph.UndirectedWeighted2DGraph;
+import de.jgraphlib.graph.Vertex;
+import de.jgraphlib.graph.WeightedEdge;
+import de.jgraphlib.graph.WeightedGraphSupplier;
+import de.jgraphlib.graph.generator.NetworkGraphGenerator;
+import de.jgraphlib.graph.generator.NetworkGraphProperties;
+import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.graph.generator.GraphProperties.IntRange;
+
 public class RandomPathTest {
+	
 	@Test
-	public void RandomPathTest() {
-		/*WeightedUndirectedGraph<Node, Link> graph = new WeightedUndirectedGraph<Node, Link>(
-				new ManetSupplier.ManetNodeSupplier(), new ManetSupplier.ManetLinkSupplier());
+	public void randomPathTest() {
+		
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
+				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
 
-		Node<Link> source = graph.addVertex(0, 0);
-		Node<Link> a = graph.addVertex(7, 4);
-		Node<Link> b = graph.addVertex(2, 7);
-		Node<Link> target = graph.addVertex(10, 10);
+		NetworkGraphProperties properties = new NetworkGraphProperties(
+				/*playground width*/ 			1024, 
+				/*playground height*/			768, 
+				/*number of vertices*/			new IntRange(100, 200),
+				/*distance between vertices */	new DoubleRange(50d, 100d), 
+				/*edge distance*/				100);
 
-		graph.addEdge(source, a);
-		graph.addEdge(source, b);
-		graph.addEdge(a, b);
-		graph.addEdge(a, target);
-		graph.addEdge(b, target);
+		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
+				new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, new EdgeDistanceSupplier());
+		
+		generator.generate(properties);
+				
+		RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = 
+				new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
 
-		RandomPath<Node, Link> randomPath = new RandomPath<Node, Link>(graph);
-		assertNotNull(randomPath.compute(graph.getFirstVertex(), graph.getLastVertex()));*/
+		Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath5Steps = randomPath.compute(graph.getFirstVertex(), 5);		
+		System.out.println(randomPath5Steps.toString());
+		
+		Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPathSourceTarget = randomPath.compute(graph.getFirstVertex(), graph.getLastVertex());		
+		System.out.println(randomPathSourceTarget.toString());
 	}
 }
