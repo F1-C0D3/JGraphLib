@@ -9,17 +9,17 @@ import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.util.RandomNumbers;
 import de.jgraphlib.util.Tuple;
 
-public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<?>> {
+public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	private UndirectedWeightedGraph<V, ?, E, ?> graph;
+	private UndirectedWeightedGraph<V, ?, E, W> graph;
 
-	public RandomPath(UndirectedWeightedGraph<V, ?, E, ?> graph) {
+	public RandomPath(UndirectedWeightedGraph<V, ?, E, W> graph) {
 		this.graph = graph;
 	}
 
-	public Path<V, E> compute(V source, V target) {
+	public Path<V, E, ?> compute(V source, V target) {
 
-		Path<V, E> randomPath = new Path<V, E>(source, target);
+		Path<V, E, W> randomPath = new Path<V, E, W>(source, target);
 
 		while (!randomPath.isComplete()) {
 
@@ -29,14 +29,14 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<?>> {
 				V nextHop = nextHops.get(RandomNumbers.getRandom(0, nextHops.size()));
 				randomPath.add(new Tuple<E, V>(graph.getEdge(randomPath.getLastVertex(), nextHop), nextHop));
 			} else
-				return new Path<V, E>(source, target);
+				return new Path<V, E, W>(source, target);
 		}
 		return randomPath;
 	}
 
-	public Path<V, E> compute(V source, int hops) {
+	public Path<V, E, W> compute(V source, int hops) {
 
-		Path<V, E> randomPath = new Path<V, E>(source, null);
+		Path<V, E, W> randomPath = new Path<V, E, W>(source);
 
 		for (int i = 0; i < hops; i++) {
 
@@ -46,7 +46,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<?>> {
 				V nextHop = nextHops.get(RandomNumbers.getRandom(0, nextHops.size()));
 				randomPath.add(new Tuple<E, V>(graph.getEdge(randomPath.getLastVertex(), nextHop), nextHop));
 			} else
-				return new Path<V, E>(source, null);
+				return new Path<V, E, W>(source);
 		}
 		return randomPath;
 	}

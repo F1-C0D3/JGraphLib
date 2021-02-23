@@ -43,8 +43,24 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
 		this.graph = graph;
-		this.edgeWeightSupplier = edgeWeightSupplier;
-		this.initialize();
+		this.edgeWeightSupplier = edgeWeightSupplier;			
+		treeParser = new TreeParser();
+		treeParser.addOutputListener(this::acceptTreeParserOutput);
+		buildOptions(treeParser);	
+		VisualGraph<V, E> visualGraph = new VisualGraph<V, E>(graph, new VisualGraphMarkUp());
+		frame = new VisualGraphFrame<V, E>(visualGraph);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setPreferredSize(new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 3 / 4));
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.getTerminal().addInputListener(this::acceptTerminalCommand);
+		frame.getTerminal().setText("JGraphLib\n\n");		
+	}
+	
+	public VisualGraphFrame<V, E> getVisualGraphFrame(){
+		return frame;
 	}
 
 	public void buildOptions(TreeParser parser) {
@@ -196,7 +212,6 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	public static void main(String[] args) {
 
-		// Create Graph
 		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
@@ -212,38 +227,6 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	public void acceptTreeParserOutput(String message) {
 		frame.getTerminal().appendText(message);
-	}
-
-	public void initialize() {
-
-		treeParser = new TreeParser();
-		treeParser.addOutputListener(this::acceptTreeParserOutput);
-		buildOptions(treeParser);
-
-		NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
-				new DoubleRange(50d, 100d), 100);
-
-		NetworkGraphGenerator<V, E, W> generator = new NetworkGraphGenerator<V, E, W>(graph, edgeWeightSupplier);
-		generator.generate(properties);
-
-		VisualGraph<V, E> visualGraph = new VisualGraph<V, E>(graph, new VisualGraphMarkUp());
-
-		RandomPath<V, E> randomPath = new RandomPath<V, E>(graph);
-
-		for (int i = 1; i <= 20; i++)
-			visualGraph.addVisualPath(
-					randomPath.compute(graph.getVertex(RandomNumbers.getRandom(0, graph.getVertices().size())), 5));
-
-		frame = new VisualGraphFrame<V, E>(visualGraph);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setPreferredSize(
-				new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 3 / 4));
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.getTerminal().addInputListener(this::acceptTerminalCommand);
-		frame.getTerminal().setText("ManetModel v1.0\n\n");
 	}
 
 	private void scale(Input input) {
@@ -319,19 +302,19 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	private void addShortestPath(Input input) {
 
-		DijkstraShortestPath<V, E> dijkstraShortestPath = new DijkstraShortestPath<V, E>(graph);
+		/*DijkstraShortestPath<V, E> dijkstraShortestPath = new DijkstraShortestPath<V, E>(graph);
 
 		java.util.function.Function<Tuple<E, V>, Double> metric = (Tuple<E, V> t) -> {
 			return 1d;
 		};
 
-		Path<V, E> shortestPath = dijkstraShortestPath.compute(graph.getVertex(input.INT.get(0)),
+		Path<V, E, W> shortestPath = dijkstraShortestPath.compute(graph.getVertex(input.INT.get(0)),
 				graph.getVertex(input.INT.get(1)), metric);
 
 		frame.getVisualGraphPanel().getVisualGraph().addVisualPath(shortestPath);
-		frame.getVisualGraphPanel().repaint();
+		frame.getVisualGraphPanel().repaint();*/
 	}
-
+		
 	private void removeVertex(Input input) {
 
 	}
@@ -389,4 +372,5 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	private void exit(Input input) {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
+	
 }

@@ -21,6 +21,7 @@ import javax.swing.WindowConstants;
 
 import de.jgraphlib.graph.EdgeDistance;
 import de.jgraphlib.graph.EdgeDistanceSupplier;
+import de.jgraphlib.graph.Path;
 import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
@@ -42,12 +43,13 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private VisualGraph<V, E> graph;
 	private Scope scope;
 	private double xScale, yScale;
-	private int vertexWidth = 40, padding = vertexWidth;
+	private int vertexWidth = 40, padding = 2*vertexWidth;
 	private static Stroke EDGE_STROKE = new BasicStroke(1);
 	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
 			0.0f, new float[] { 10.0f, 2.0f }, 0);
 	private static Stroke VERTEX_STROKE = new BasicStroke(2);
 	private static Stroke VERTEX_PATH_STROKE = new BasicStroke(4);
+	private static String header = "JGraphLib v1.0";
 
 	public VisualGraphPanel() {
 	}
@@ -68,10 +70,9 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	public void paintPlayground(Graphics2D g2) {
 
 		g2.setColor(Color.LIGHT_GRAY);
-		String str = "ManetModel v1.0";
 		FontMetrics fontMetrics = g2.getFontMetrics();
-		Rectangle2D stringBounds = fontMetrics.getStringBounds(str, g2);
-		g2.drawString(str, padding, padding / 2 + (int) (stringBounds.getHeight() / 2));
+		Rectangle2D stringBounds = fontMetrics.getStringBounds(header, g2);
+		g2.drawString(header, padding, padding / 2 + (int) (stringBounds.getHeight() / 2));
 
 		g2.setColor(Color.WHITE);
 		g2.fillRect(padding, padding, getWidth() - (2 * padding), getHeight() - (2 * padding));
@@ -323,6 +324,11 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		this.graph = graph;
 		this.scope = this.getScope(graph);
 	}
+	
+	public void addVisualPath(Path<V,E,?> path) {
+		this.graph.addVisualPath(path);
+		this.repaint();
+	}
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -344,12 +350,11 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
 						graph, new VisualGraphMarkUp());
 
-				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
+				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph);
 
 				for (int i = 1; i <= 10; i++)
-					visualGraph.addVisualPath(randomPath
-							.compute(graph.getVertex(RandomNumbers.getRandom(0, graph.getVertices().size())), 5));
+					visualGraph.addVisualPath(randomPath.compute(graph.getVertex(RandomNumbers.getRandom(0, graph.getVertices().size())), 5));
 
 				VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>> panel = new VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
 						visualGraph);

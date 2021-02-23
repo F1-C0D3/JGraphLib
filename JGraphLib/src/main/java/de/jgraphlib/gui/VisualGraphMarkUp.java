@@ -4,104 +4,105 @@ import java.awt.Color;
 
 public class VisualGraphMarkUp {
 
-    /* Playground (background) mark up */
-    private Color backgroundColor = Color.WHITE;
+	/* Playground (background) mark up */
+	private Color backgroundColor = Color.WHITE;
 
-    /* VisualVertex mark up */
-    private int vertexWidth = 20;
-    private int vertexBorderWidth = 2;
-    private Color vertexBackgroundColor = Color.LIGHT_GRAY;
-    private Color vertexBorderColor = Color.BLACK;
+	/* VisualVertex mark up */
+	private int vertexWidth = 20;
+	private int vertexBorderWidth = 2;
+	private Color vertexBackgroundColor = Color.LIGHT_GRAY;
+	private Color vertexBorderColor = Color.BLACK;
 
-    /* VisualEdge mark up */
-    private int edgeWidth = 2;
-    private Color edgeColor = Color.BLACK;
+	/* VisualEdge mark up */
+	private int edgeWidth = 2;
+	private Color edgeColor = Color.BLACK;
 
-    /* VisualPath mark up */
-    private int pathWidth = 4;
+	/* VisualPath mark up */
+	private int pathWidth = 4;
 
-    /*private VisualEdgeTextBuilder<E,W> edgeTextBuilder;
-    
-    public VisualGraphMarkUp(VisualEdgeTextBuilder<E,W> edgeTextBuilder) {
-	this.edgeTextBuilder = edgeTextBuilder;
-    }*/
+	/*
+	 * private VisualEdgeTextBuilder<E,W> edgeTextBuilder;
+	 * 
+	 * public VisualGraphMarkUp(VisualEdgeTextBuilder<E,W> edgeTextBuilder) {
+	 * this.edgeTextBuilder = edgeTextBuilder; }
+	 */
 
-    public void setBackgroundColor(Color backgroundColor) {
-	this.backgroundColor = backgroundColor;
-    }
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
 
-    public Color getBackgroundColor() {
-	return this.backgroundColor;
-    }
+	public Color getBackgroundColor() {
+		return this.backgroundColor;
+	}
 
-    /* Vertex mark up */
+	/* Vertex mark up */
 
-    public void setVertexWidth(int vertexWidth) {
-	this.vertexWidth = vertexWidth;
-    }
+	public void setVertexWidth(int vertexWidth) {
+		this.vertexWidth = vertexWidth;
+	}
 
-    public Integer getVertexWidth() {
-	return this.vertexWidth;
-    }
+	public Integer getVertexWidth() {
+		return this.vertexWidth;
+	}
 
-    public void setVertexBorderWidth(int vertexBorderWidth) {
-	this.vertexBorderWidth = vertexBorderWidth;
-    }
+	public void setVertexBorderWidth(int vertexBorderWidth) {
+		this.vertexBorderWidth = vertexBorderWidth;
+	}
 
-    public Integer getVertexBorderWidth() {
-	return this.vertexBorderWidth;
-    }
+	public Integer getVertexBorderWidth() {
+		return this.vertexBorderWidth;
+	}
 
-    public void setVertexBackgroundColor(Color vertexBackgroundColor) {
-	this.vertexBackgroundColor = vertexBackgroundColor;
-    }
+	public void setVertexBackgroundColor(Color vertexBackgroundColor) {
+		this.vertexBackgroundColor = vertexBackgroundColor;
+	}
 
-    public Color getVertexBackgroundColor() {
-	return this.vertexBackgroundColor;
-    }
+	public Color getVertexBackgroundColor() {
+		return this.vertexBackgroundColor;
+	}
 
-    public void setVertexBorderColor(Color vertexBorderColor) {
-	this.vertexBorderColor = vertexBorderColor;
-    }
+	public void setVertexBorderColor(Color vertexBorderColor) {
+		this.vertexBorderColor = vertexBorderColor;
+	}
 
-    public Color getVertexBorderColor() {
-	return this.vertexBorderColor;
-    }
+	public Color getVertexBorderColor() {
+		return this.vertexBorderColor;
+	}
 
-    /* Edge mark up */
-    
-    /*public VisualEdgeTextBuilder<E,W> getEdgeTextBuilder(){
-	return this.edgeTextBuilder; 
-    }
-    
-    public void setEdgeTextBuilder(VisualEdgeTextBuilder<E,W> edgeText) {
-	this.edgeTextBuilder = edgeText;
-    }*/
+	/* Edge mark up */
 
-    public void setEdgeWidth(Integer edgeWidth) {
-	this.edgeWidth = edgeWidth;
-    }
+	/*
+	 * public VisualEdgeTextBuilder<E,W> getEdgeTextBuilder(){ return
+	 * this.edgeTextBuilder; }
+	 * 
+	 * public void setEdgeTextBuilder(VisualEdgeTextBuilder<E,W> edgeText) {
+	 * this.edgeTextBuilder = edgeText; }
+	 */
 
-    public Integer getEdgeWidth() {
-	return this.edgeWidth;
-    }
+	public void setEdgeWidth(Integer edgeWidth) {
+		this.edgeWidth = edgeWidth;
+	}
 
-    public void setEdgeColor(Color edgeColor) {
-	this.edgeColor = edgeColor;
-    }
+	public Integer getEdgeWidth() {
+		return this.edgeWidth;
+	}
 
-    public Color getEdgeColor() {
-	return this.edgeColor;
-    }
+	public void setEdgeColor(Color edgeColor) {
+		this.edgeColor = edgeColor;
+	}
 
-    /* VisualPath mark up */
+	public Color getEdgeColor() {
+		return this.edgeColor;
+	}
 
-    public void setPathWidth(Integer pathWidth) {
-	this.pathWidth = pathWidth;
-    }
+	/* VisualPath mark up */
 
-    public Integer getPathWidth() {
-	return this.pathWidth;
-    }
+	public void setPathWidth(Integer pathWidth) {
+		this.pathWidth = pathWidth;
+	}
+
+	public Integer getPathWidth() {
+		return this.pathWidth;
+	}
 
 }

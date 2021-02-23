@@ -53,7 +53,6 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 			@Override
 			public void componentShown(ComponentEvent e) {
 				terminal.textArea.requestFocus();
-				;
 			}
 		});
 
@@ -134,7 +133,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
 						graph, new VisualGraphMarkUp());
 
-				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
+				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph);
 
 				for (int i = 1; i <= 10; i++)

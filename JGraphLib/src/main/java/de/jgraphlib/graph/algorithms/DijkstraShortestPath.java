@@ -11,7 +11,7 @@ import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<?>> {
+public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
 	private UndirectedWeightedGraph<V, ?, E, ?> graph;
 
@@ -19,11 +19,11 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<?>
 		this.graph = graph;
 	}
 
-	public Path<V, E> compute(V source, V target, Function<Tuple<E, V>, Double> metric) {
+	public Path<V, E, ?> compute(V source, V target, Function<W, Double> metric) {
 
 		/* Initializaton */
 		V current = source;
-		Path<V, E> sp = new Path<V, E>(source, target);
+		Path<V, E, W> sp = new Path<V, E, W>(source, target, metric);
 		List<Integer> vertices = new ArrayList<Integer>();
 		List<Tuple<V, Double>> predDist = new ArrayList<Tuple<V, Double>>();
 
@@ -47,7 +47,11 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<?>
 			}
 
 			for (V neig : graph.getNextHopsOf(current)) {
-				double edgeDist = metric.apply(new Tuple<E, V>(graph.getEdge(current, neig), neig));
+				
+				//double edgeDist = metric.apply(new Tuple<E, V>(graph.getEdge(current, neig), neig));
+				
+				double edgeDist = metric.apply(graph.getEdge(current, neig).getWeight());
+				
 				double oldPahtDist = predDist.get(neig.getID()).getSecond();
 				double altPathDist = edgeDist + predDist.get(current.getID()).getSecond();
 
@@ -61,7 +65,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<?>
 		return sp;
 	}
 
-	private Path<V, E> generateSP(List<Tuple<V, Double>> predDist, Path<V, E> sp) {
+	private Path<V, E, W> generateSP(List<Tuple<V, Double>> predDist, Path<V, E, W> sp) {
 		V t = sp.getTarget();
 		List<Tuple<E, V>> copy = new ArrayList<Tuple<E, V>>();
 

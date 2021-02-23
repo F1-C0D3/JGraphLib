@@ -1,4 +1,4 @@
-package de.jgraphlib.algorithms;
+package de.jgraphlib.graph.algorithms;
 
 import static org.junit.Assert.assertNotNull;
 

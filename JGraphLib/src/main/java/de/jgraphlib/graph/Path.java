@@ -4,29 +4,44 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import de.jgraphlib.util.Tuple;
 
-public class Path<V extends Vertex<?>, E extends WeightedEdge<?>> extends LinkedList<Tuple<E, V>> {
+public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends LinkedList<Tuple<E, V>> {
 
 	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
+	protected Function<W, Double> metric;
 
 	public Path() {
 		this.source = null;
 		this.target = null;
 	}
-
+	
 	public Path(V source) {
 		this.source = source;
 		super.add(new Tuple<E, V>(null, source));
+	}
+
+	public Path(V source, Function<W, Double> metric) {
+		this.source = source;
+		super.add(new Tuple<E, V>(null, source));
+		this.metric = metric;
 	}
 
 	public Path(V source, V target) {
 		this.source = source;
 		this.target = target;
 		super.add(new Tuple<E, V>(null, source));
+	}
+	
+	public Path(V source, V target, Function<W, Double> metric) {
+		this.source = source;
+		this.target = target;
+		super.add(new Tuple<E, V>(null, source));
+		this.metric = metric;
 	}
 
 	@Override
@@ -47,19 +62,19 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<?>> extends Linked
 	public V getTarget() {
 		return this.target;
 	}
-	
-	public List<V> getVertices(){
-		List<V> vertices = new ArrayList<V>();	
-		for(Tuple<E, V> tuple : this)
-			vertices.add(tuple.getSecond());		
-		return vertices;		
+
+	public List<V> getVertices() {
+		List<V> vertices = new ArrayList<V>();
+		for (Tuple<E, V> tuple : this)
+			vertices.add(tuple.getSecond());
+		return vertices;
 	}
-	
-	public List<E> getEdges(){
-		List<E> vertices = new ArrayList<E>();	
-		for(Tuple<E, V> tuple : this)
-			vertices.add(tuple.getFirst());		
-		return vertices;		
+
+	public List<E> getEdges() {
+		List<E> vertices = new ArrayList<E>();
+		for (Tuple<E, V> tuple : this)
+			vertices.add(tuple.getFirst());
+		return vertices;
 	}
 
 	@Override
@@ -120,12 +135,12 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<?>> extends Linked
 
 	public List<V> getVisitedVertices() {
 		List<V> vertices = new ArrayList<V>();
-		for (Tuple<E, V> vertexEdgeTuple : this)
-			vertices.add(vertexEdgeTuple.getSecond());
+		for (Tuple<E, V> tuple : this)
+			vertices.add(tuple.getSecond());
 		return vertices;
 	}
 
-	public boolean equals(Path<V, E> path) {
+	public boolean equals(Path<V, E, W> path) {
 		for (int i = 0; i < this.size(); i++) {
 			if (path.get(i) != null)
 				if (!path.get(i).getSecond().equals(this.get(i).getSecond()))
@@ -134,6 +149,18 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<?>> extends Linked
 					return false;
 		}
 		return true;
+	}
+
+	public Double getCost() {
+		if (metric != null) {
+			Double cost = 0d;
+			for (Tuple<E, V> tuple : this)
+				if (tuple.getFirst() != null)
+					cost += metric.apply(tuple.getFirst().getWeight());
+			if (cost > 0)
+				return cost;
+		}
+		return null;
 	}
 
 	@Override

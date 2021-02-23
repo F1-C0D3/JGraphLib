@@ -21,10 +21,8 @@ import javax.swing.WindowConstants;
 public class TerminalPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
 	JTextArea textArea = new JTextArea();
 	private JScrollPane scrollPane = new JScrollPane();
-
 	ArrayList<String> history = new ArrayList<String>();
 	private int historyIndex = 0;
 	private int inputStartPosition = 2;
