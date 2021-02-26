@@ -12,6 +12,10 @@ public class UndirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedE
 	public UndirectedWeightedGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
 		super(vertexSupplier, edgeSupplier);
 	}
+	
+	public UndirectedWeightedGraph(UndirectedWeightedGraph<V,P,E,W> graph) {
+		super(graph);
+	}
 
 	public E addEdge(V source, V target, W weight) {
 		if (containsEdge(source, target))
@@ -32,5 +36,8 @@ public class UndirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedE
 			edges.add(this.edges.get(adjacency.getFirst()));
 		return edges;
 	}
-
+		
+	public UndirectedWeightedGraph<V,P,E,W> copy() {
+	    return new UndirectedWeightedGraph<V,P,E,W>(this);
+	}
 }

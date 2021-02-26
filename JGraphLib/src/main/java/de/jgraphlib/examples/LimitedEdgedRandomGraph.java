@@ -13,7 +13,7 @@ import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.gui.VisualGraphApp;
 
-public class RandomGraph {
+public class LimitedEdgedRandomGraph {
 
 	public static void main(String[] args) {
 
