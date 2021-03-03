@@ -33,4 +33,10 @@ public class UndirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedE
 		return edges;
 	}
 
+	public List<Integer> getEdgeIdsOf(int vertexId) {
+		List<Integer> edges = new ArrayList<Integer>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertexId))
+			edges.add(adjacency.getFirst());
+		return edges;
+	}
 }
