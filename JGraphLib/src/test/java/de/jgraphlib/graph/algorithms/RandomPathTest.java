@@ -20,6 +20,8 @@ public class RandomPathTest {
 	@Test
 	public void randomPathTest() {
 		
+		// @formatter:off
+		
 		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());

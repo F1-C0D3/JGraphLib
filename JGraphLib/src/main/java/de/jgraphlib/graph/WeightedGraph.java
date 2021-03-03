@@ -9,7 +9,7 @@ import de.jgraphlib.util.Tuple;
 
 public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 
-	protected int VCount;
+	protected int vertexCount;
 	protected int edgeCount;
 	protected ArrayList<V> vertices;
 	protected ArrayList<E> edges;
@@ -26,10 +26,19 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 		this.vertexAdjacencies = new ArrayList<ArrayList<Tuple<Integer, Integer>>>();
 		this.edgeAdjacencies = new ArrayList<Tuple<Integer, Integer>>();
 	}
-
+	
+	public WeightedGraph(WeightedGraph<V,P,E,W> graph) {
+		this.vertexSupplier = graph.vertexSupplier;
+		this.edgeSupplier = graph.edgeSupplier;
+		this.vertices = graph.vertices;
+		this.edges = graph.edges;
+		this.vertexAdjacencies = graph.vertexAdjacencies;
+		this.edgeAdjacencies = graph.edgeAdjacencies;
+	}
+				
 	public V addVertex(P position) {
 		V v = vertexSupplier.get();
-		v.setID(VCount++);
+		v.setID(vertexCount++);
 		v.setPosition(position);
 		vertices.add(v);
 		vertexAdjacencies.add(new ArrayList<Tuple<Integer, Integer>>());
@@ -38,7 +47,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 
 	public boolean addVertex(V v) {
 		if (v.getPosition() != null) {
-			v.setID(VCount++);
+			v.setID(vertexCount++);
 			vertices.add(v);
 			vertexAdjacencies.add(new ArrayList<Tuple<Integer, Integer>>());
 			return true;
@@ -59,7 +68,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 	}
 
 	public V getLastVertex() {
-		return this.vertices.get(VCount - 1);
+		return this.vertices.get(vertexCount - 1);
 	}
 
 	public V getVertex(V v) {
@@ -165,7 +174,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 
 	public void clear() {
 		this.vertices.clear();
-		this.VCount = 0;
+		this.vertexCount = 0;
 		this.edges.clear();
 		this.edgeCount = 0;
 		this.vertexAdjacencies.clear();
