@@ -30,8 +30,10 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 	public WeightedGraph(WeightedGraph<V,P,E,W> graph) {
 		this.vertexSupplier = graph.vertexSupplier;
 		this.edgeSupplier = graph.edgeSupplier;
-		this.vertices = graph.vertices;
-		this.edges = graph.edges;
+		this.vertices = new ArrayList<V>();
+		this.vertices.addAll(graph.getVertices());
+		this.edges = new ArrayList<E>();
+		this.edges.addAll(graph.getEdges());	
 		this.vertexAdjacencies = graph.vertexAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;
 	}

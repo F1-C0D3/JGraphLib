@@ -13,8 +13,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
-	protected Function<W, Double> metric;
-
+	
 	public Path() {
 		this.source = null;
 		this.target = null;
@@ -25,28 +24,22 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.add(new Tuple<E, V>(null, source));
 	}
 
-	public Path(V source, Function<W, Double> metric) {
-		this.source = source;
-		super.add(new Tuple<E, V>(null, source));
-		this.metric = metric;
-	}
-
 	public Path(V source, V target) {
 		this.source = source;
 		this.target = target;
 		super.add(new Tuple<E, V>(null, source));
 	}
 	
-	public Path(V source, V target, Function<W, Double> metric) {
-		this.source = source;
-		this.target = target;
-		super.add(new Tuple<E, V>(null, source));
-		this.metric = metric;
+	public Path(Path<V,E,W> path) {
+		this.source = path.source;
+		this.target = path.target;
+		for(Tuple<E, V> tuple : path)
+			this.add(tuple);
 	}
-
+	
 	@Override
-	public boolean add(Tuple<E, V> linkAndNode) {
-		return super.add(linkAndNode);
+	public boolean add(Tuple<E, V> tuple) {
+		return super.add(tuple);
 	}
 
 	@Override
@@ -151,7 +144,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return true;
 	}
 
-	public Double getCost() {
+	public Double getCost(Function<W, Double> metric) {
 		if (metric != null) {
 			Double cost = 0d;
 			for (Tuple<E, V> tuple : this)
