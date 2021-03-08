@@ -33,8 +33,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	public Path(Path<V,E,W> path) {
 		this.source = path.source;
 		this.target = path.target;
-		for(Tuple<E, V> tuple : path)
-			this.add(tuple);
+		this.addAll(path);
 	}
 	
 	@Override

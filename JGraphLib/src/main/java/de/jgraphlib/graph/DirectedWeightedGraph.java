@@ -13,6 +13,17 @@ public class DirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedEdg
 		super(vertexSupplier, edgeSupplier);
 	}
 
+	public DirectedWeightedGraph(DirectedWeightedGraph<V, P, E, W> graph) {
+		/* ATTENTION: This is a shallow copy*/
+		super(graph);
+	}
+	
+	@Override
+	public DirectedWeightedGraph<V, P, E, W> copy() {
+		/* ATTENTION: This is a shallow copy*/
+		return new DirectedWeightedGraph<V,P,E,W>(this);
+	}
+
 	public E addEdge(V source, V target, W weight) {
 		if (containsEdge(source, target))
 			return null;

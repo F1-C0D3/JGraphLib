@@ -15,6 +15,8 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 	protected ArrayList<E> edges;
 	protected Supplier<V> vertexSupplier;
 	protected Supplier<E> edgeSupplier;
+	protected Supplier<W> edgeWeightSupplier;
+
 	protected ArrayList<ArrayList<Tuple<Integer, Integer>>> vertexAdjacencies;
 	protected ArrayList<Tuple<Integer, Integer>> edgeAdjacencies;
 
@@ -28,16 +30,21 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 	}
 	
 	public WeightedGraph(WeightedGraph<V,P,E,W> graph) {
+		/* ATTENTION: This is a shallow copy*/
 		this.vertexSupplier = graph.vertexSupplier;
 		this.edgeSupplier = graph.edgeSupplier;
 		this.vertices = new ArrayList<V>();
-		this.vertices.addAll(graph.getVertices());
 		this.edges = new ArrayList<E>();
-		this.edges.addAll(graph.getEdges());	
-		this.vertexAdjacencies = graph.vertexAdjacencies;
-		this.edgeAdjacencies = graph.edgeAdjacencies;
+		this.vertexAdjacencies = new ArrayList<ArrayList<Tuple<Integer, Integer>>>();
+		this.edgeAdjacencies = new ArrayList<Tuple<Integer, Integer>>();
 	}
-				
+	
+	public abstract WeightedGraph<V,P,E,W> copy();
+	
+	public void setEdgeWeightSupplier(Supplier<W> edgeWeightSupplier) {
+		this.edgeWeightSupplier = edgeWeightSupplier;
+	}
+					
 	public V addVertex(P position) {
 		V v = vertexSupplier.get();
 		v.setID(vertexCount++);
@@ -46,7 +53,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 		vertexAdjacencies.add(new ArrayList<Tuple<Integer, Integer>>());
 		return v;
 	}
-
+	
 	public boolean addVertex(V v) {
 		if (v.getPosition() != null) {
 			v.setID(vertexCount++);
@@ -56,7 +63,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 		}
 		return false;
 	}
-
+	
 	public List<E> getEdges() {
 		return edges;
 	}
@@ -140,7 +147,7 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 		return nextPaths;
 	}
 
-	public Iterator<V> VIterator() {
+	public Iterator<V> vertexIterator() {
 		Iterator<V> iterator = new Iterator<V>() {
 			private int i = 0;
 
