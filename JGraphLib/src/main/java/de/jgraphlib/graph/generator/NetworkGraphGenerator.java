@@ -11,25 +11,24 @@ import de.jgraphlib.util.RandomNumbers;
 public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
 
-	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph) {
-		super(graph);
+	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
+		super(graph, random);
 	}
 
-	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
-		super(graph, edgeWeightSupplier);
+	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+			RandomNumbers random) {
+		super(graph, edgeWeightSupplier, random);
 	}
 
 	public int generate(NetworkGraphProperties properties) {
 
-		int numberOfVertices = RandomNumbers.getRandom(properties.getVertexCount().min,
-				properties.getVertexCount().max);
+		int numberOfVertices = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max);
 		int vertexCount = 0, attemps = 0;
 		V currentVertex = graph.addVertex(0, 0);
 
 		while (vertexCount < numberOfVertices && attemps < 100) {
 
 			Position2D Position2D = generateRandomPosition2D(currentVertex, properties.getVertexDistance());
-
 			if (properties.isInside(Position2D.x(), Position2D.y())
 					&& !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {
 
@@ -42,7 +41,7 @@ public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends Weigh
 
 				currentVertex = newVertex;
 			} else
-				currentVertex = graph.getVertex(RandomNumbers.getRandom(0, vertexCount));
+				currentVertex = graph.getVertex(random.getRandom(0, vertexCount));
 
 			attemps++;
 		}

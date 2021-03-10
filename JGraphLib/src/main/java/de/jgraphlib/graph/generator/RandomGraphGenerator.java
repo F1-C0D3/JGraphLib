@@ -14,18 +14,18 @@ import de.jgraphlib.util.RandomNumbers;
 public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
 
-	public RandomGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph) {
-		super(graph);
+	public RandomGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
+		super(graph, random);
 	}
 
-	public RandomGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
-		super(graph, edgeWeightSupplier);
+	public RandomGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+			RandomNumbers random) {
+		super(graph, edgeWeightSupplier, random);
 	}
 
 	public int generate(GraphProperties properties) {
 
-		int numberOfVertices = RandomNumbers.getRandom(properties.getVertexCount().min,
-				properties.getVertexCount().max);
+		int numberOfVertices = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max);
 		int vertexCount = 0;
 		int attemps = 0;
 		log.info(String.format("GraphProperties: (%s)", properties.toString()));
@@ -70,10 +70,9 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 
 				if (properties.getVertexDistance().min <= properties.getEdgeDistance().max) {
 					graph.addEdge(currentVertex, newVertex);
-					edgeCount = RandomNumbers.getRandom(properties.getEdgeCount().min,
-							properties.getEdgeCount().max - 1);
+					edgeCount = random.getRandom(properties.getEdgeCount().min, properties.getEdgeCount().max - 1);
 				} else
-					edgeCount = RandomNumbers.getRandom(properties.getEdgeCount().min, properties.getEdgeCount().max);
+					edgeCount = random.getRandom(properties.getEdgeCount().min, properties.getEdgeCount().max);
 
 				// Update currentVertex with newVertex
 				currentVertex = newVertex;
@@ -83,7 +82,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 
 			} else {
 				// Take a random vertex from graph
-				currentVertex = graph.getVertex(RandomNumbers.getRandom(0, vertexCount));
+				currentVertex = graph.getVertex(random.getRandom(0, vertexCount));
 			}
 
 			attemps++;
@@ -96,8 +95,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 
 		// (1) Radius to gather vertices in environment, specified by a randomly chosen
 		// number in interval [properties.edgeDistance.min, properties.edgeDistance.max]
-		double edgeDistance = RandomNumbers.getRandom(properties.getEdgeDistance().min,
-				properties.getEdgeDistance().max);
+		double edgeDistance = random.getRandom(properties.getEdgeDistance().min, properties.getEdgeDistance().max);
 
 		// (2) Gather all vertices in radius, specified by a randomly chosen radius in
 		// interval [properties.edgeDistance.min, properties.edgeDistance.max]
@@ -106,7 +104,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 		if (verticesInRadius.size() > 0) {
 
 			// (3) Select n vertices randomly from vertex environment
-			List<V> randomVertices = RandomNumbers.selectNrandomOfM(verticesInRadius, edgeCount, new Random());
+			List<V> randomVertices = random.selectNrandomOfM(verticesInRadius, edgeCount, new Random());
 
 			// (4) Add edges
 			for (V target : randomVertices)

@@ -6,25 +6,34 @@ import java.util.Random;
 
 public class RandomNumbers {
 
-	public static int getRandom(int min, int max) {
+	private Random intRandom;
+	private Random doubleRandom;
+
+	public RandomNumbers(int seed) {
+		intRandom = new Random(seed);
+		doubleRandom = new Random(seed);
+	}
+
+	public RandomNumbers() {
+		intRandom = new Random();
+		doubleRandom = new Random();
+	}
+
+	public int getRandom(int min, int max) {
 		if (min == max)
 			return min;
 
-		Random random = new Random();
-
-		return random.nextInt(max - min) + min;
+		return intRandom.nextInt(max - min) + min;
 	}
 
-	public static double getRandom(double min, double max) {
+	public double getRandom(double min, double max) {
 		if (min == max)
 			return min;
 
-		Random random = new Random();
-
-		return min + (max - min) * random.nextDouble();
+		return min + (max - min) * doubleRandom.nextDouble();
 	}
 
-	public static <E> List<E> selectNrandomOfM(List<E> list, int n, Random r) {
+	public <E> List<E> selectNrandomOfM(List<E> list, int n, Random r) {
 
 		int length = list.size();
 
@@ -32,7 +41,7 @@ public class RandomNumbers {
 			return list;
 
 		for (int i = length - 1; i >= length - n; --i)
-			Collections.swap(list, i, r.nextInt(i + 1));
+			Collections.swap(list, i, intRandom.nextInt(i + 1));
 
 		return list.subList(length - n, length);
 	}

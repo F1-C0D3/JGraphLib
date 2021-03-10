@@ -43,7 +43,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private VisualGraph<V, E> graph;
 	private Scope scope;
 	private double xScale, yScale;
-	private int vertexWidth = 40, padding = 2*vertexWidth;
+	private int vertexWidth = 40, padding = 2 * vertexWidth;
 	private static Stroke EDGE_STROKE = new BasicStroke(1);
 	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
 			0.0f, new float[] { 10.0f, 2.0f }, 0);
@@ -324,8 +324,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		this.graph = graph;
 		this.scope = this.getScope(graph);
 	}
-	
-	public void addVisualPath(Path<V,E,?> path) {
+
+	public void addVisualPath(Path<V, E, ?> path) {
 		this.graph.addVisualPath(path);
 		this.repaint();
 	}
@@ -340,7 +340,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 						new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
 
 				NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, new EdgeDistanceSupplier());
+						graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
 				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
 						new DoubleRange(50d, 100d), 100);
@@ -354,7 +354,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 						graph);
 
 				for (int i = 1; i <= 10; i++)
-					visualGraph.addVisualPath(randomPath.compute(graph.getVertex(RandomNumbers.getRandom(0, graph.getVertices().size())), 5));
+					visualGraph.addVisualPath(randomPath
+							.compute(graph.getVertex(new RandomNumbers().getRandom(0, graph.getVertices().size())), 5));
 
 				VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>> panel = new VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
 						visualGraph);

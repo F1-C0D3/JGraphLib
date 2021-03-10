@@ -17,17 +17,20 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 	protected Log log;
 	protected UndirectedWeighted2DGraph<V, E, W> graph;
 	protected EdgeWeightSupplier<W> edgeWeightSupplier;
+	protected RandomNumbers random;
 
-	public Weighted2DGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph) {
+	public Weighted2DGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
+		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph,
-			EdgeWeightSupplier<W> edgeWeightSupplier) {
+	public Weighted2DGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+			RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.edgeWeightSupplier = edgeWeightSupplier;
+		this.random = random;
 	}
 
 	public Boolean edgeWeightSupplier() {
@@ -50,8 +53,8 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		Position2D position2D = null;
 		double angleRadians, x, y;
 
-		double distance = RandomNumbers.getRandom(vertexDistanceRange.min, vertexDistanceRange.max);
-		double angleDegrees = RandomNumbers.getRandom(0d, 360d);
+		double distance = random.getRandom(vertexDistanceRange.min, vertexDistanceRange.max);
+		double angleDegrees = random.getRandom(0d, 360d);
 
 		if ((angleDegrees >= 0d) && (angleDegrees < 90d)) {
 			angleRadians = Math.toRadians(angleDegrees);

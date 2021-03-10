@@ -10,27 +10,27 @@ import de.jgraphlib.graph.WeightedGraphSupplier;
 import de.jgraphlib.graph.generator.GridGraphGenerator;
 import de.jgraphlib.graph.generator.GridGraphProperties;
 import de.jgraphlib.gui.VisualGraphApp;
+import de.jgraphlib.util.RandomNumbers;
 
 public class GridGraph {
 
 	public static void main(String[] args) {
 
-		// @formatter:off	
-		
+		// @formatter:off
+
 		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
-			
-		GridGraphProperties properties = new GridGraphProperties(
-				/*playground width*/ 			1024, 
-				/*playground height*/			768, 
-				/*distance between vertices*/	100,
-				/*length of edges */			100);
-		
-		GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, new EdgeDistanceSupplier());
+
+		GridGraphProperties properties = new GridGraphProperties(/* playground width */ 1024,
+				/* playground height */ 768, /* distance between vertices */ 100, /* length of edges */ 100);
+
+		GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				graph, new EdgeDistanceSupplier(), new RandomNumbers());
 		generator.generate(properties);
 
-		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, new EdgeDistanceSupplier());
+		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				graph, new EdgeDistanceSupplier());
 		// @formatter:on
 	}
 }

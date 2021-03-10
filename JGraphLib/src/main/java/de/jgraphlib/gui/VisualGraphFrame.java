@@ -25,10 +25,10 @@ import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraphSupplier;
 import de.jgraphlib.graph.algorithms.RandomPath;
-import de.jgraphlib.graph.generator.NetworkGraphGenerator;
-import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
+import de.jgraphlib.graph.generator.NetworkGraphGenerator;
+import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.util.RandomNumbers;
 
 public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEdge<?>> extends JFrame {
@@ -123,7 +123,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 						new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
 
 				NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, new EdgeDistanceSupplier());
+						graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
 				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
 						new DoubleRange(50d, 100d), 100);
@@ -138,7 +138,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 
 				for (int i = 1; i <= 10; i++)
 					visualGraph.addVisualPath(randomPath
-							.compute(graph.getVertex(RandomNumbers.getRandom(0, graph.getVertices().size())), 5));
+							.compute(graph.getVertex(new RandomNumbers().getRandom(0, graph.getVertices().size())), 5));
 
 				VisualGraphFrame<Vertex<Position2D>, WeightedEdge<EdgeDistance>> frame = new VisualGraphFrame<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
 						visualGraph);
