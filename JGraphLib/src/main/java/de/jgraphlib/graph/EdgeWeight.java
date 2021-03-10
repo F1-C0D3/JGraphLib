@@ -1,3 +1,5 @@
 package de.jgraphlib.graph;
 
-public abstract class EdgeWeight {}
+public abstract class EdgeWeight {
+	
+}

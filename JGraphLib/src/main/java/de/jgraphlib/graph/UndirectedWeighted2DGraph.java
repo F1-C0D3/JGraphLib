@@ -8,7 +8,7 @@ import de.jgraphlib.util.Tuple;
 
 public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W>
 		extends UndirectedWeightedGraph<V, Position2D, E, W> {
-
+	
 	public UndirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
 		super(vertexSupplier, edgeSupplier);
 	}
@@ -37,7 +37,7 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 				return true;
 		return false;
 	}
-
+	
 	/*
 	 * For Genetic Algorithm network representation Phenotype -> Genotype
 	 */
