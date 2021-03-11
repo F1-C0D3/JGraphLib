@@ -23,7 +23,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 
 		/* Initializaton */
 		V current = source;
-		Path<V, E, W> sp = new Path<V, E, W>(source, target, metric);
+		Path<V, E, W> sp = new Path<V, E, W>(source, target);
 		List<Integer> vertices = new ArrayList<Integer>();
 		List<Tuple<V, Double>> predDist = new ArrayList<Tuple<V, Double>>();
 

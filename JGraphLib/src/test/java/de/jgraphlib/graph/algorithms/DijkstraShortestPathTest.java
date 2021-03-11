@@ -48,6 +48,6 @@ public class DijkstraShortestPathTest {
 		Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> shortestPath = dijkstraShortestPath
 				.compute(graph.getFirstVertex(), graph.getLastVertex(), metric);
 
-		System.out.println(shortestPath.getCost());
+		System.out.println(shortestPath.getCost(metric));
 	}
 }
