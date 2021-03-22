@@ -45,4 +45,14 @@ public class RandomNumbers {
 
 		return list.subList(length - n, length);
 	}
+
+	public int getRandomNotInE(int min, int max, List<Integer> e) {
+		int random = getRandom(min, max);
+		
+		while (e.contains(random))
+			random = getRandom(min, max);
+		
+		return random;
+
+	}
 }

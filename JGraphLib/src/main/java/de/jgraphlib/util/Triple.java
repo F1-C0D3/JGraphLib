@@ -5,6 +5,8 @@ public class Triple<F, S, T> {
 	private S second;
 	private T third;
 
+	public Triple() {}
+
 	public Triple(F first, S second, T third) {
 		this.first = first;
 		this.second = second;
