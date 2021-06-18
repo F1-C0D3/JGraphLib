@@ -6,8 +6,10 @@ import java.util.Random;
 
 public class RandomNumbers {
 
-	private Random intRandom;
-	private Random doubleRandom;
+	private static Random intRandom;
+	private static Random doubleRandom;
+
+	private static RandomNumbers randomNumbers;
 
 	public RandomNumbers(int seed) {
 		intRandom = new Random(seed);
@@ -17,6 +19,18 @@ public class RandomNumbers {
 	public RandomNumbers() {
 		intRandom = new Random();
 		doubleRandom = new Random();
+	}
+
+	final static public RandomNumbers getInstance(int seed) {
+		if (doubleRandom == null && intRandom == null) {
+			if (seed == -1) {
+				randomNumbers = new RandomNumbers();
+			} else {
+				randomNumbers = new RandomNumbers(seed);
+			}
+		}
+
+		return randomNumbers;
 	}
 
 	public int getRandom(int min, int max) {
@@ -48,10 +62,10 @@ public class RandomNumbers {
 
 	public int getRandomNotInE(int min, int max, List<Integer> e) {
 		int random = getRandom(min, max);
-		
+
 		while (e.contains(random))
 			random = getRandom(min, max);
-		
+
 		return random;
 
 	}
