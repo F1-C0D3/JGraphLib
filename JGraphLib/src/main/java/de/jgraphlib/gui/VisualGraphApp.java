@@ -258,7 +258,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 		graph.clear();
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768,
-				new IntRange(input.INT.get(0), input.INT.get(0)), new DoubleRange(50d, 100d), 100);
+				new IntRange(input.INT.get(0), input.INT.get(0)), new DoubleRange(50d, 100d), new DoubleRange(100,100));
 
 		NetworkGraphGenerator<V, E, W> generator = new NetworkGraphGenerator<V, E, W>(graph, edgeWeightSupplier,
 				new RandomNumbers());
@@ -273,7 +273,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 		graph.clear();
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768,
-				new IntRange(input.INT.get(0), input.INT.get(0)), new DoubleRange(50d, 100d), 75);
+				new IntRange(input.INT.get(0), input.INT.get(0)), new DoubleRange(50d, 100d), new DoubleRange(75,75));
 
 		RandomGraphGenerator<V, E, W> generator = new RandomGraphGenerator<V, E, W>(graph, edgeWeightSupplier,
 				new RandomNumbers());

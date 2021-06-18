@@ -31,7 +31,7 @@ public class DijkstraShortestPathTest {
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
 				/* playground height */ 768, /* number of vertices */ new IntRange(100, 200),
-				/* distance between vertices */ new DoubleRange(50d, 100d), /* edge distance */ 100);
+				/* distance between vertices */ new DoubleRange(50d, 100d), /* edge distance */ new DoubleRange(100,100));
 
 		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier(), new RandomNumbers());

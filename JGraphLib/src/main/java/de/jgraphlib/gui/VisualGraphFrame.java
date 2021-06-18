@@ -126,7 +126,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 						graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
 				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
-						new DoubleRange(50d, 100d), 100);
+						new DoubleRange(50d, 100d), new DoubleRange(100,100));
 
 				generator.generate(properties);
 
