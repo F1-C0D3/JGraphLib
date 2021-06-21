@@ -14,14 +14,14 @@ public class DirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedEdg
 	}
 
 	public DirectedWeightedGraph(DirectedWeightedGraph<V, P, E, W> graph) {
-		/* ATTENTION: This is a shallow copy*/
+		/* ATTENTION: This is a shallow copy */
 		super(graph);
 	}
-	
+
 	@Override
 	public DirectedWeightedGraph<V, P, E, W> copy() {
-		/* ATTENTION: This is a shallow copy*/
-		return new DirectedWeightedGraph<V,P,E,W>(this);
+		/* ATTENTION: This is a shallow copy */
+		return new DirectedWeightedGraph<V, P, E, W>(this);
 	}
 
 	public E addEdge(V source, V target, W weight) {
@@ -43,6 +43,17 @@ public class DirectedWeightedGraph<V extends Vertex<P>, P, E extends WeightedEdg
 			for (E edge : getOutgoingEdgesOf(vertices.get(adjacency.getSecond())))
 				if (getTargetOf(vertices.get(adjacency.getSecond()), edge).equals(vertex))
 					edges.add(edge);
+		}
+		return edges;
+	}
+
+	public List<Integer> getEdgeIdsOf(int vertexId) {
+		List<Integer> edges = new ArrayList<Integer>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertexId)) {
+			edges.add(adjacency.getFirst());
+			for (E edge : getOutgoingEdgesOf(vertices.get(adjacency.getSecond())))
+				if (getTargetOf(vertices.get(adjacency.getSecond()), edge).equals(vertexId))
+					edges.add(edge.getID());
 		}
 		return edges;
 	}
