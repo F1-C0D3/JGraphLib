@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
+import de.jgraphlib.graph.EdgeWeightSupplier;
 import de.jgraphlib.graph.Path;
 import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
+import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
@@ -18,7 +20,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<?>
 	private ArrayList<VisualVertex> vertices;
 	private ArrayList<VisualEdge> edges;
 
-	public VisualGraph(DirectedWeighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
+	public VisualGraph(Weighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
 
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();
@@ -40,6 +42,14 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<?>
 					markUp.getEdgeColor(), edgeText));
 		}
 	}
+	
+	public VisualGraph(DirectedWeighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
+		//TODO
+	} 
+	
+	public VisualGraph(UndirectedWeighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
+		//TODO
+	} 
 
 	public List<VisualVertex> getVertices() {
 		return this.vertices;

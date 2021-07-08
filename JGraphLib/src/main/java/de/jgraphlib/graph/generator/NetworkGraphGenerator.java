@@ -5,21 +5,21 @@ import de.jgraphlib.graph.EdgeWeightSupplier;
 import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
+import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.util.RandomNumbers;
 
 public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
 
-	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
+	public NetworkGraphGenerator(Weighted2DGraph<V, E, W> graph, RandomNumbers random) {
 		super(graph, random);
 	}
 
-	public NetworkGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
-			RandomNumbers random) {
+	public NetworkGraphGenerator(Weighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier, RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);
 	}
-
+		
 	public int generate(NetworkGraphProperties properties) {
 
 		int numberOfVertices = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max);

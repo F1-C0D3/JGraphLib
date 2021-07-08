@@ -6,16 +6,16 @@ import java.util.ListIterator;
 import java.util.function.Function;
 
 import de.jgraphlib.graph.Path;
-import de.jgraphlib.graph.UndirectedWeightedGraph;
 import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
+import de.jgraphlib.graph.WeightedGraph;
 import de.jgraphlib.util.Tuple;
 
 public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	protected UndirectedWeightedGraph<V, ?, E, ?> graph;
+	protected WeightedGraph<V, ?, E, ?> graph;
 
-	public DijkstraShortestPath(UndirectedWeightedGraph<V, ?, E, ?> graph) {
+	public DijkstraShortestPath(WeightedGraph<V, ?, E, ?> graph) {
 		this.graph = graph;
 	}
 

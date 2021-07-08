@@ -3,17 +3,17 @@ package de.jgraphlib.graph.algorithms;
 import java.util.List;
 
 import de.jgraphlib.graph.Path;
-import de.jgraphlib.graph.UndirectedWeightedGraph;
 import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
+import de.jgraphlib.graph.WeightedGraph;
 import de.jgraphlib.util.RandomNumbers;
 import de.jgraphlib.util.Tuple;
 
 public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	private UndirectedWeightedGraph<V, ?, E, W> graph;
+	private WeightedGraph<V, ?, E, W> graph;
 
-	public RandomPath(UndirectedWeightedGraph<V, ?, E, W> graph) {
+	public RandomPath(WeightedGraph<V, ?, E, W> graph) {
 		this.graph = graph;
 	}
 

@@ -4,36 +4,73 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import de.jgraphlib.util.Tuple;
+
 public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W>
-		extends DirectedWeightedGraph<V, Position2D, E, W> {
+		extends Weighted2DGraph<V, E, W> {
 
 	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
 		super(vertexSupplier, edgeSupplier);
-		// TODO Auto-generated constructor stub
 	}
 	
-	public V addVertex(double x, double y) {
-		return super.addVertex(new Position2D(x, y));
+	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W> graph) {
+		super(graph);
+	}
+	
+	@Override
+	public DirectedWeighted2DGraph<V, E, W> copy() {
+		/* ATTENTION: This is a shallow copy */
+		return new DirectedWeighted2DGraph<V, E, W>(this);
 	}
 
-	public double getDistance(Position2D p1, Position2D p2) {
-		double distance = Math.sqrt(Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2));
-		return distance;
+	public E addEdge(V source, V target, W weight) {
+		if (containsEdge(source, target))
+			return null;
+		E edge = edgeSupplier.get();
+		edge.setID(edgeCount++);
+		edge.setWeight(weight);
+		edges.add(edge);
+		super.vertexAdjacencies.get(source.getID()).add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
+		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
+		return edge;
 	}
 
-	public Boolean vertexInRadius(Position2D position, double radius) {
-		for (V vertex : vertices)
-			if (getDistance(position, vertex.getPosition()) <= radius)
-				return true;
-		return false;
+	public List<E> getEdgesOf(V vertex) {
+		List<E> edges = new ArrayList<E>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertex.getID())) {
+			edges.add(super.edges.get(adjacency.getFirst()));
+			for (E edge : getOutgoingEdgesOf(vertices.get(adjacency.getSecond())))
+				if (getTargetOf(vertices.get(adjacency.getSecond()), edge).equals(vertex))
+					edges.add(edge);
+		}
+		return edges;
 	}
 
-	public List<V> getVerticesInRadius(V source, double radius) {
-		List<V> vertices = new ArrayList<V>();
-		for (V vertex : this.vertices)
-			if (!vertex.equals(source) && getDistance(source.getPosition(), vertex.getPosition()) <= radius)
-				vertices.add(vertex);
-
-		return vertices;
+	public List<Integer> getEdgeIdsOf(int vertexId) {
+		List<Integer> edges = new ArrayList<Integer>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertexId)) {
+			edges.add(adjacency.getFirst());
+			for (E edge : getOutgoingEdgesOf(vertices.get(adjacency.getSecond())))
+				if (getTargetOf(vertices.get(adjacency.getSecond()), edge).equals(vertexId))
+					edges.add(edge.getID());
+		}
+		return edges;
 	}
+
+	public List<E> getOutgoingEdgesOf(Vertex<Position2D> vertex) {
+		List<E> edges = new ArrayList<E>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertex.getID()))
+			edges.add(super.edges.get(adjacency.getFirst()));
+		return edges;
+	}
+
+	public List<E> getIncomingEdgesOf(Vertex<Position2D> vertex) {
+		List<E> edges = new ArrayList<E>();
+		for (Tuple<Integer, Integer> adjacency : vertexAdjacencies.get(vertex.getID()))
+			for (E edge : getOutgoingEdgesOf(vertices.get(adjacency.getSecond())))
+				if (getTargetOf(vertices.get(adjacency.getSecond()), edge).equals(vertex))
+					edges.add(edge);
+		return edges;
+	}
+
 }

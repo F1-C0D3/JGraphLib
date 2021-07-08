@@ -12,12 +12,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.WindowConstants;
 
+import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.EdgeDistance;
 import de.jgraphlib.graph.EdgeDistanceSupplier;
 import de.jgraphlib.graph.EdgeWeightSupplier;
 import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
+import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraphSupplier;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
@@ -43,11 +45,11 @@ import de.jgraphlib.util.treeparser.ValueType;
 public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
 	protected VisualGraphFrame<V, E> frame;
-	protected UndirectedWeighted2DGraph<V, E, W> graph;
+	protected Weighted2DGraph<V, E, W> graph;
 	private EdgeWeightSupplier<W> edgeWeightSupplier;
 	private TreeParser treeParser;
 
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
 		this.graph = graph;
 		this.edgeWeightSupplier = edgeWeightSupplier;
 		treeParser = new TreeParser();
@@ -65,6 +67,14 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 		frame.getTerminal().addInputListener(this::acceptTerminalCommand);
 		frame.getTerminal().setText("JGraphLib\n\n");
 	}
+	
+	/*public VisualGraphApp(DirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
+		//TODO
+	} 
+	
+	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
+		//TODO
+	} */
 
 	public VisualGraphFrame<V, E> getVisualGraphFrame() {
 		return frame;

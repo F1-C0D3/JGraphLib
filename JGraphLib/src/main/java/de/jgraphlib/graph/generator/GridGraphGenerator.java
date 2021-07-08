@@ -2,23 +2,22 @@ package de.jgraphlib.graph.generator;
 
 import java.util.List;
 
-import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.EdgeDistance;
 import de.jgraphlib.graph.EdgeWeightSupplier;
 import de.jgraphlib.graph.Position2D;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
+import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.util.RandomNumbers;
 
 public class GridGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
 
-	public GridGraphGenerator(DirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
+	public GridGraphGenerator(Weighted2DGraph<V, E, W> graph, RandomNumbers random) {
 		super(graph, random);
 	}
 
-	public GridGraphGenerator(DirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public GridGraphGenerator(Weighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);
 	}
