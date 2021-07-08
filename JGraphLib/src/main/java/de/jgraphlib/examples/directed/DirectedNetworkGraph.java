@@ -1,4 +1,4 @@
-package de.jgraphlib.examples;
+package de.jgraphlib.examples.directed;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.EdgeDistance;
