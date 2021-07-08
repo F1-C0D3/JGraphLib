@@ -2,6 +2,7 @@ package de.jgraphlib.graph.generator;
 
 import java.util.List;
 
+import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.EdgeDistance;
 import de.jgraphlib.graph.EdgeWeightSupplier;
 import de.jgraphlib.graph.Position2D;
@@ -13,11 +14,11 @@ import de.jgraphlib.util.RandomNumbers;
 public class GridGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
 
-	public GridGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
+	public GridGraphGenerator(DirectedWeighted2DGraph<V, E, W> graph, RandomNumbers random) {
 		super(graph, random);
 	}
 
-	public GridGraphGenerator(UndirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public GridGraphGenerator(DirectedWeighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);
 	}
@@ -35,8 +36,10 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				currentVertex = newVertex;
 				vertexCount++;
 				List<V> verticesInRadius = graph.getVerticesInRadius(newVertex, properties.getEdgeDistance().max);
-				for (V target : verticesInRadius)
+				for (V target : verticesInRadius) {
 					graph.addEdge(newVertex, target);
+					graph.addEdge(target, newVertex);
+				}
 			}
 
 			while (currentVertex.getPosition()
@@ -48,8 +51,11 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				currentVertex = newVertex;
 				vertexCount++;
 				List<V> verticesInRadius = graph.getVerticesInRadius(newVertex, properties.getEdgeDistance().max);
-				for (V target : verticesInRadius)
+				for (V target : verticesInRadius) {
 					graph.addEdge(newVertex, target);
+					graph.addEdge(target, newVertex);
+				}
+
 			}
 		}
 	}

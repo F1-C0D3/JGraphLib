@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.Path;
 import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
@@ -17,7 +18,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<?>
 	private ArrayList<VisualVertex> vertices;
 	private ArrayList<VisualEdge> edges;
 
-	public VisualGraph(UndirectedWeighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
+	public VisualGraph(DirectedWeighted2DGraph<V, E, ?> graph, VisualGraphMarkUp markUp) {
 
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();

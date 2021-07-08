@@ -17,4 +17,9 @@ public class Position2D {
 	public double y() {
 		return this.y;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("x=%f,y=%f", x, y);
+	}
 }
