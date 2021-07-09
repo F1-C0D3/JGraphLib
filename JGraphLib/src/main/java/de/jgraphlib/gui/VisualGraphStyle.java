@@ -2,7 +2,7 @@ package de.jgraphlib.gui;
 
 import java.awt.Color;
 
-public class VisualGraphMarkUp {
+public class VisualGraphStyle {
 
 	/* Playground (background) mark up */
 	private Color backgroundColor = Color.WHITE;
@@ -19,6 +19,8 @@ public class VisualGraphMarkUp {
 
 	/* VisualPath mark up */
 	private int pathWidth = 4;
+	
+	private boolean isDirected;
 
 	/*
 	 * private VisualEdgeTextBuilder<E,W> edgeTextBuilder;
@@ -26,6 +28,18 @@ public class VisualGraphMarkUp {
 	 * public VisualGraphMarkUp(VisualEdgeTextBuilder<E,W> edgeTextBuilder) {
 	 * this.edgeTextBuilder = edgeTextBuilder; }
 	 */
+	
+	public VisualGraphStyle(boolean isDirected) {
+		this.isDirected = isDirected;
+	}
+	
+	public boolean isDirected() {
+		return this.isDirected;
+	}
+	
+	public boolean isUndirected() {
+		return !this.isDirected;
+	}
 
 	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;

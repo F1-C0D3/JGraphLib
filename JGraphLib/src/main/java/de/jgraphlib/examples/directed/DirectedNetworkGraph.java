@@ -36,6 +36,7 @@ public class DirectedNetworkGraph {
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier());
+		
 		// @formatter:on
 	}
 }

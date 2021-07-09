@@ -12,11 +12,11 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
 		super(vertexSupplier, edgeSupplier);
 	}
-	
+
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W> graph) {
 		super(graph);
 	}
-	
+
 	@Override
 	public DirectedWeighted2DGraph<V, E, W> copy() {
 		/* ATTENTION: This is a shallow copy */
@@ -72,5 +72,12 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 					edges.add(edge);
 		return edges;
 	}
-
+	
+	public V getSourceOf(E edge) {
+		return this.vertices.get(edgeAdjacencies.get(edge.getID()).getFirst());
+	}
+	
+	public V getTargetOf(E edge) {
+		return this.vertices.get(edgeAdjacencies.get(edge.getID()).getSecond());
+	}
 }

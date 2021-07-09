@@ -5,16 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.jgraphlib.graph.Position2D;
+import de.jgraphlib.maths.Point2D;
 
 public class VisualEdge {
 
-	private final Position2D startPosition;
-	private final Position2D targetPosition;
+	private final Point2D startPosition;
+	private final Point2D targetPosition;
 	private Color color;
 	private String text;
 	private List<VisualPath> visualPaths;
 
-	public VisualEdge(Position2D startPosition, Position2D targetPosition, Color color, String text) {
+	public VisualEdge(Point2D startPosition, Point2D targetPosition, Color color, String text) {
 		this.startPosition = startPosition;
 		this.targetPosition = targetPosition;
 		this.color = color;
@@ -22,11 +23,11 @@ public class VisualEdge {
 		this.visualPaths = new ArrayList<VisualPath>();
 	}
 
-	public Position2D getStartPosition() {
+	public Point2D getStartPosition() {
 		return this.startPosition;
 	}
 
-	public Position2D getTargetPosition() {
+	public Point2D getTargetPosition() {
 		return this.targetPosition;
 	}
 

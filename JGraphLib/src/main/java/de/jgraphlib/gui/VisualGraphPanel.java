@@ -137,12 +137,14 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 	public void paintEdge(Graphics2D g2, VisualEdge edge) {
 
-		// Edge Line
-
-		Line2D edgeLine = new Line2D(edge.getStartPosition().x() * xScale + padding,
-				(scope.y.max - edge.getStartPosition().y()) * yScale + padding,
-				edge.getTargetPosition().x() * xScale + padding,
+		// build (scaled & padded) source and target position of edge
+		Point2D startPosition = new Point2D(edge.getStartPosition().x() * xScale + padding,
+				(scope.y.max - edge.getStartPosition().y()) * yScale + padding);
+		Point2D targetPosition = new Point2D(edge.getTargetPosition().x() * xScale + padding,
 				(scope.y.max - edge.getTargetPosition().y()) * yScale + padding);
+
+		// 2D line through source and target position of edge
+		Line2D edgeLine = new Line2D(startPosition, targetPosition);
 
 		// Edge Visual Paths
 
@@ -195,6 +197,68 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		g2.setColor(edge.getColor());
 		g2.drawString(edge.getText(), (int) lineCenter.x() - (int) stringBounds.getCenterX(),
 				(int) lineCenter.y() - (int) stringBounds.getCenterY());
+
+		// Edge Arrows
+
+		int arrowLegLength = 20;
+
+		if (graph.getStyle().isDirected()) {
+				
+			double shortSide = Math.sqrt(Math.pow(arrowLegLength, 2)/2);
+			
+
+			/*		s 	: 	source (given)
+			 * 		t 	: 	target (given)
+			 * 		l-t	:	arrowLegLength (given)
+			 * 		a 	:   (sought)
+			 * 		l 	:	leftLegEndPosition (sought)
+			 * 		r 	: 	rightLegtEndPosition (sought)
+			 * 		 
+			 * 							l	
+			 * 							|\
+			 * 							| \
+			 * 		s ------------------a--t
+			 * 							| /
+			 * 							|/
+			 * 							r
+			 */
+			
+			// 2D vector line pointing from target t towards point a
+			VectorLine2D vectorLine1 = new VectorLine2D(targetPosition, startPosition, edgeLine.getSlope());
+			// 2D vector line pointing from point a towards points l and r
+			VectorLine2D vectorLine2 = new VectorLine2D(vectorLine1.getPointInDistance(shortSide),
+					edgeLine.getPerpendicularSlope());
+			
+			Point2D leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
+			Point2D rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
+	
+			g2.setStroke(EDGE_STROKE);
+			g2.setColor(Color.GRAY);
+			g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
+			g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) rightLegEndPosition.x(), (int) rightLegEndPosition.y());
+		}
+	}
+
+	public void paintArrow(Graphics2D g2, Point2D position, Point2D reference, double arrowLegLength) {
+
+		Line2D referenceLine = new Line2D(reference.x(), reference.y(), position.x(), position.y());
+
+		double shortSide = Math.sqrt(1 / 2 * Math.pow(arrowLegLength, 2));
+
+		VectorLine2D vectorLine1 = new VectorLine2D(position, reference, referenceLine.getSlope());
+		vectorLine1.getPointInDistance(shortSide);
+
+		VectorLine2D vectorLine2 = new VectorLine2D(vectorLine1.getPointInDistance(shortSide),
+				referenceLine.getPerpendicularSlope());
+
+		Point2D leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
+		Point2D rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
+
+		g2.setStroke(EDGE_PATH_STROKE);
+		g2.setColor(Color.GRAY);
+		g2.drawLine((int) position.x(), (int) position.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
+		g2.drawLine((int) position.x(), (int) position.y(), (int) rightLegEndPosition.x(),
+				(int) rightLegEndPosition.y());
 	}
 
 	public void paintTrainsmissionRange(Graphics2D g2, VisualVertex vertex) {
@@ -343,12 +407,12 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 						graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
 				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
-						new DoubleRange(50d, 100d), new DoubleRange(100,100));
+						new DoubleRange(50d, 100d), new DoubleRange(100, 100));
 
 				generator.generate(properties);
 
 				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						graph, new VisualGraphMarkUp());
+						graph, new VisualGraphStyle(false));
 
 				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph);
