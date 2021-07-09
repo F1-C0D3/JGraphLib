@@ -33,6 +33,9 @@ public class DirectedNetworkGraph {
 		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier(), new RandomNumbers());
 		generator.generate(properties);
+		
+		graph.addEdge(graph.getVertex(1), graph.getVertex(0));
+		graph.addEdge(graph.getVertex(0), graph.getVertex(1));
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier());
