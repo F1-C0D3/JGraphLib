@@ -66,12 +66,11 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	public void initializeFrame(VisualGraph<V, E> visualGraph){
 		frame = new VisualGraphFrame<V, E>(visualGraph);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setPreferredSize(
-				new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 3 / 4));
+		frame.setPreferredSize(new Dimension((int) screenSize.getWidth() * 3 / 4, (int) screenSize.getHeight() * 3 / 4));
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		frame.setVisible(true); 
 		
 		treeParser = new TreeParser();
 		treeParser.addOutputListener(this::acceptTreeParserOutput);

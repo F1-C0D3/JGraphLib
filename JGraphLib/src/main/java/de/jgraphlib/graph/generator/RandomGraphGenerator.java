@@ -35,14 +35,8 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 					"Given GraphProperties allows no edges because arguments have condition vertexDistance.min > edgeDistance.max");
 
 		// Add first vertex at a random position within GraphProperties
-		/*
-		 * Vertex<Position2D> * currentVertex =
-		 * graph.addVertex(RandomNumbers.getRandom(properties.width.min,
-		 * properties.width.max), RandomNumbers.getRandom(properties.height.min,
-		 * properties.height.max));
-		 */
-
-		V currentVertex = graph.addVertex(0, 0);
+		V currentVertex = graph.addVertex(random.getRandom(properties.getWidth().min, properties.getWidth().max),
+				random.getRandom(properties.getHeight().min, properties.getHeight().max));
 		vertexCount++;
 		log.info(String.format("Added Vertex %d at %s", vertexCount, graph.getFirstVertex().getPosition().toString()));
 

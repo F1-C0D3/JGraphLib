@@ -24,7 +24,9 @@ public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends Weigh
 
 		int numberOfVertices = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max);
 		int vertexCount = 0, attemps = 0;
-		V currentVertex = graph.addVertex(0, 0);
+		V currentVertex = graph.addVertex(
+				random.getRandom(properties.getWidth().min, properties.getWidth().max), 
+				random.getRandom(properties.getHeight().min, properties.getHeight().max));
 
 		while (vertexCount < numberOfVertices && attemps < 100) {
 
