@@ -131,7 +131,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 				generator.generate(properties);
 
 				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						graph, new VisualGraphStyle());
+						graph, new VisualGraphStyle(false));
 
 				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph);

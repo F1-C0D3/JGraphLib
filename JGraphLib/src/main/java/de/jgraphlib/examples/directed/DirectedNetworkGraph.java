@@ -25,8 +25,10 @@ public class DirectedNetworkGraph {
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
 				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
 
-		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
-				/* playground height */ 768, /* number of vertices */ new IntRange(100, 200),
+		NetworkGraphProperties properties = new NetworkGraphProperties(
+				/* playground width */ 1024,
+				/* playground height */ 768, 
+				/* number of vertices */ new IntRange(100, 200),
 				/* distance between vertices */ new DoubleRange(50d, 100d),
 				/* edge distance */ new DoubleRange(100, 100));
 

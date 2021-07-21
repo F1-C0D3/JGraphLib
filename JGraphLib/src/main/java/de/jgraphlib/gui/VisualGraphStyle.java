@@ -20,7 +20,7 @@ public class VisualGraphStyle {
 	/* VisualPath mark up */
 	private int pathWidth = 4;
 	
-	private boolean isDirected;
+	private boolean isDirected = false;
 
 	/*
 	 * private VisualEdgeTextBuilder<E,W> edgeTextBuilder;
@@ -28,6 +28,10 @@ public class VisualGraphStyle {
 	 * public VisualGraphMarkUp(VisualEdgeTextBuilder<E,W> edgeTextBuilder) {
 	 * this.edgeTextBuilder = edgeTextBuilder; }
 	 */
+	
+	public VisualGraphStyle() {
+		this.isDirected = false;
+	}
 	
 	public VisualGraphStyle(boolean isDirected) {
 		this.isDirected = isDirected;
