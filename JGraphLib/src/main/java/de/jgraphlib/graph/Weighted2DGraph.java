@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W> extends WeightedGraph<V, Position2D, E, W> {
+import de.jgraphlib.util.Tuple;
+
+public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W>
+		extends WeightedGraph<V, Position2D, E, W> {
 
 	public Weighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
 		super(vertexSupplier, edgeSupplier);
 	}
-	
+
 	public Weighted2DGraph(Weighted2DGraph<V, E, W> graph) {
 		super(graph);
 	}
-	
+
 	public V addVertex(double x, double y) {
 		return super.addVertex(new Position2D(x, y));
 	}
@@ -37,5 +40,12 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 			if (getDistance(position, vertex.getPosition()) <= radius)
 				return true;
 		return false;
+	}
+
+	/*
+	 * For Genetic Algorithm network representation Phenotype -> Genotype
+	 */
+	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
+		return this.vertexAdjacencies;
 	}
 }

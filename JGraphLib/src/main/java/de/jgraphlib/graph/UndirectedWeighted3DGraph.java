@@ -50,10 +50,5 @@ public class UndirectedWeighted3DGraph<V extends Vertex<Position3D>, E extends W
 		return edges;
 	}
 
-	/*
-	 * For Genetic Algorithm network representation Phenotype -> Genotype
-	 */
-	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
-		return this.vertexAdjacencies;
-	}
+
 }
