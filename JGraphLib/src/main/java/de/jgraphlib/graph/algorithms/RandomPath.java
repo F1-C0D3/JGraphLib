@@ -43,7 +43,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 			List<V> nextHops = randomPath.getUnvisitedVertices(graph.getNextHopsOf(randomPath.getLastVertex()));
 
 			if (!nextHops.isEmpty()) {
-				V nextHop = nextHops.get(RandomNumbers.getInstance(-1).getRandom(0, nextHops.size()));
+				V nextHop = nextHops.get(new RandomNumbers().getRandom(0, nextHops.size()));
 				randomPath.add(new Tuple<E, V>(graph.getEdge(randomPath.getLastVertex(), nextHop), nextHop));
 			} else
 				return new Path<V, E, W>(source);

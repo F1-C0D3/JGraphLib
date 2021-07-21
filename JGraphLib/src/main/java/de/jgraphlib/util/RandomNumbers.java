@@ -34,7 +34,8 @@ public class RandomNumbers {
 	}
 
 	public int getRandom(int min, int max) {
-		if (min == max)
+				
+		if (min >= max)
 			return min;
 
 		return intRandom.nextInt(max - min) + min;

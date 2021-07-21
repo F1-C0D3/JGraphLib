@@ -42,8 +42,12 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<?>
 	
 	private void buildVertices(Weighted2DGraph<V, E, ?> graph) {
 		for (Vertex<Position2D> vertex : graph.getVertices())
-			this.vertices.add(new VisualVertex(vertex.getPosition(), style.getVertexBackgroundColor(),
-					style.getVertexBorderColor(), Integer.toString(vertex.getID())));
+			this.vertices.add(
+					new VisualVertex(
+							vertex.getPosition(), 
+							style.getVertexBackgroundColor(),
+							style.getVertexBorderColor(), 
+							Integer.toString(vertex.getID())));
 	}
 
 	private void buildUndirectedEdges(UndirectedWeighted2DGraph<V, E, ?> graph) {

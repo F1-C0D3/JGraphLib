@@ -8,6 +8,7 @@ import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraphSupplier;
+import de.jgraphlib.graph.algorithms.RandomPath;
 import de.jgraphlib.graph.generator.NetworkGraphGenerator;
 import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
@@ -38,10 +39,17 @@ public class DirectedNetworkGraph {
 		
 		graph.addEdge(graph.getVertex(1), graph.getVertex(0));
 		graph.addEdge(graph.getVertex(0), graph.getVertex(1));
-
+		
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier());
-		
+				
+		RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				graph);
+			
+		for (int i = 1; i <= 5; i++)
+			visualGraphApp.getVisualGraphFrame().getVisualGraphPanel().getVisualGraph().addVisualPath(
+					randomPath.compute(graph.getVertex(new RandomNumbers().getRandom(5, graph.getVertices().size())), 10));
+				
 		// @formatter:on
 	}
 }

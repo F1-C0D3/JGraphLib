@@ -45,16 +45,14 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private VisualGraph<V, E> graph;
 	private Scope scope;
 	private double xScale, yScale;
-	private int vertexWidth = 40, padding = 2 * vertexWidth;
+	private int vertexWidth = 40, padding = 2 * vertexWidth, arrowLegLength = 10;
 	private static Stroke EDGE_STROKE = new BasicStroke(1);
-	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-			0.0f, new float[] { 10.0f, 2.0f }, 0);
-	private static Stroke VERTEX_STROKE = new BasicStroke(2);
-	private static Stroke VERTEX_PATH_STROKE = new BasicStroke(4);
+	//private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 10.0f, 2.0f }, 0);
+	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(3);
+	private static Stroke VERTEX_STROKE = new BasicStroke(0);
 	private static String header = "JGraphLib v1.0";
 
-	public VisualGraphPanel() {
-	}
+	public VisualGraphPanel() {}
 
 	public VisualGraphPanel(VisualGraph<V, E> graph) {
 		this.graph = graph;
@@ -72,9 +70,9 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 	public void paintPlayground(Graphics2D g2) {
 
-		g2.setColor(Color.LIGHT_GRAY);
 		FontMetrics fontMetrics = g2.getFontMetrics();
 		Rectangle2D stringBounds = fontMetrics.getStringBounds(header, g2);
+		g2.setColor(Color.LIGHT_GRAY);
 		
 		// Draw header text
 		g2.drawString(header, padding, padding / 2 + (int) (stringBounds.getHeight() / 2));
@@ -96,10 +94,9 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		Line2D xAxis = new Line2D(xAxisSource.x(), xAxisSource.y(), xAxisTarget.x(), xAxisTarget.y());	
 		g2.drawLine((int) xAxis.p1().x(), (int) xAxis.p1().y(), (int) xAxis.p2().x(), (int) xAxis.p2().y());	
-		paintArrow(g2, xAxis, xAxisSource, xAxisTarget, 10);
+		//paintArrow(g2, xAxis, xAxisSource, xAxisTarget, 10);
 		
 		// Paint y-Axis-Line
-
 		Point2D yAxisSource = new Point2D(
 				padding, 
 				(scope.y.max-scope.y.min) * yScale + padding);
@@ -109,7 +106,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		Line2D yAxis = new Line2D(yAxisSource.x(), yAxisSource.y(), yAxisTarget.x(), yAxisTarget.y());
 		g2.drawLine((int) yAxis.p1().x(), (int) yAxis.p1().y(), (int) yAxis.p2().x(), (int) yAxis.p2().y());	
-		paintArrow(g2, yAxis, yAxisSource, yAxisTarget, 10);
+		//paintArrow(g2, yAxis, yAxisSource, yAxisTarget, 10);
 
 		// Paint x-/y-Axis steps
 		DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -134,11 +131,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 					(int) xAxisPoint.y() + grindLineWidth);
 
 			Point2D yAxisPoint = yAxisVector.getPointInDistance(i * -yOffset);
-			g2.drawLine(
-					(int) yAxisPoint.x(), 
-					(int) yAxisPoint.y(), 
-					(int) yAxisPoint.x() - grindLineWidth,
-					(int) yAxisPoint.y());
+			g2.drawLine((int) yAxisPoint.x(), (int) yAxisPoint.y(), (int) yAxisPoint.x() - grindLineWidth, (int) yAxisPoint.y());
 
 			String xAxisPointText = decimalFormat.format(scope.x.min + (i * ((scope.x.max-scope.x.min)/steps)));
 			fontMetrics = g2.getFontMetrics();
@@ -147,7 +140,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 					xAxisPointText, 
 					(int) xAxisPoint.x() - (int) stringBounds.getCenterX(),
 					(int) xAxisPoint.y() - (int) stringBounds.getCenterY() + padding / 2);
-
+			
 			String yAxisPointText = decimalFormat.format(scope.x.min + (i * ((scope.y.max-scope.y.min)/steps)));
 			fontMetrics = g2.getFontMetrics();
 			stringBounds = fontMetrics.getStringBounds(yAxisPointText, g2);
@@ -155,58 +148,50 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 					yAxisPointText, 
 					(int) yAxisPoint.x() - (int) stringBounds.getWidth() - grindLineWidth,
 					(int) yAxisPoint.y() + (int) (stringBounds.getHeight() / 4));
-
 			g2.setColor(gridLineColor);
-
-			g2.drawLine(
-					(int) xAxisPoint.x(), 
-					(int) xAxisPoint.y(), 
-					(int) xAxisPoint.x(),
-					(int) (xAxisPoint.y() - (scope.y.max * yScale)));
-
-			g2.drawLine(
-					(int) yAxisPoint.x(), 
-					(int) yAxisPoint.y(), 
-					(int) (yAxisPoint.x() + (scope.x.max * xScale)),
-					(int) (yAxisPoint.y()));
+			g2.drawLine((int) xAxisPoint.x(), (int) xAxisPoint.y(), (int) xAxisPoint.x(), (int) (xAxisPoint.y() - (scope.y.max * yScale)));
+			g2.drawLine((int) yAxisPoint.x(), (int) yAxisPoint.y(), (int) (yAxisPoint.x() + (scope.x.max * xScale)), (int) (yAxisPoint.y()));
 		}
 	}
 
 	public void paintEdge(Graphics2D g2, VisualEdge edge) {
 
-		// build (scaled & padded) source and target position of edge
-		Point2D startPosition = new Point2D(edge.getStartPosition().x() * xScale + padding,
+		// Build (scaled & padded) source and target position of edge
+		Point2D startPosition = new Point2D(
+				(edge.getStartPosition().x()-scope.x.min) * xScale + padding,
 				(scope.y.max - edge.getStartPosition().y()) * yScale + padding);
-		Point2D targetPosition = new Point2D(edge.getTargetPosition().x() * xScale + padding,
+		
+		Point2D targetPosition = new Point2D(
+				(edge.getTargetPosition().x()-scope.x.min) * xScale + padding,
 				(scope.y.max - edge.getTargetPosition().y()) * yScale + padding);
 
 		// 2D line through source and target position of edge
 		Line2D edgeLine = new Line2D(startPosition, targetPosition);
 
-		// Edge Visual Paths
-
+		// Paint Edge Visual Paths
 		if (!edge.getVisualPaths().isEmpty()) {
 
-			VectorLine2D startPositionLine = new VectorLine2D(edge.getStartPosition().x() * xScale + padding,
+			VectorLine2D startPositionLine = new VectorLine2D(
+					(edge.getStartPosition().x()-scope.x.min) * xScale + padding,
 					(scope.y.max - edge.getStartPosition().y()) * yScale + padding, edgeLine.getPerpendicularSlope());
 
-			VectorLine2D targetPositionLine = new VectorLine2D(edge.getTargetPosition().x() * xScale + padding,
+			VectorLine2D targetPositionLine = new VectorLine2D(
+					(edge.getTargetPosition().x()-scope.x.min) * xScale + padding,
 					(scope.y.max - edge.getTargetPosition().y()) * yScale + padding, edgeLine.getPerpendicularSlope());
 
 			int i = 0;
 			int offset = 0;
-			int offsetSteps = 5;
-
+			int offsetSteps = 3+1;
+			
 			for (VisualPath visualPath : edge.getVisualPaths()) {
-
+				
 				Point2D pathStartPosition;
 				Point2D pathTargetPosition;
-
+				
 				if (i % 2 == 0) {
 					pathStartPosition = startPositionLine.getPointInDistance(offset);
 					pathTargetPosition = targetPositionLine.getPointInDistance(offset);
 					offset += offsetSteps;
-
 				} else {
 					pathStartPosition = startPositionLine.getPointInDistance(-offset);
 					pathTargetPosition = targetPositionLine.getPointInDistance(-offset);
@@ -214,20 +199,29 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 				g2.setStroke(EDGE_PATH_STROKE);
 				g2.setColor(visualPath.getColor());
-				g2.drawLine((int) pathStartPosition.x(), (int) pathStartPosition.y(), (int) pathTargetPosition.x(),
-						(int) pathTargetPosition.y());
+				g2.drawLine((int) pathStartPosition.x(), (int) pathStartPosition.y(), (int) pathTargetPosition.x(),(int) pathTargetPosition.y());	
+				
+				paintArrow(
+						g2, 
+						edgeLine, 
+						pathTargetPosition, 
+						pathStartPosition, 
+						new ArrowStyle(visualPath.getColor(), EDGE_PATH_STROKE, ArrowLegStyle.twoLegged, 10));
 
 				i++;
-			}
+			}		
+			
 		} else {
 			g2.setStroke(EDGE_STROKE);
 			g2.setColor(Color.GRAY);
 			g2.drawLine(edgeLine.x1().intValue(), edgeLine.y1().intValue(), edgeLine.x2().intValue(),
 					edgeLine.y2().intValue());
+			
+			if (graph.getStyle().isDirected()) 		
+				paintArrow(g2, edgeLine, targetPosition, startPosition, new ArrowStyle(Color.GRAY, EDGE_STROKE, ArrowLegStyle.twoLegged, 10));		
 		}
 
-		// Edge Text
-
+		// Edge Text (weight)
 		Point2D lineCenter = new Point2D(
 				edgeLine.x1() / 2 + edgeLine.x2() / 2, 
 				edgeLine.y1() / 2 + edgeLine.y2() / 2);
@@ -238,32 +232,10 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 				edge.getText(), 
 				(int) lineCenter.x() - (int) stringBounds.getCenterX(),
 				(int) lineCenter.y() - (int) stringBounds.getCenterY());
-
-		// Edge Arrows
-
-		int arrowLegLength = 20;
-
-		if (graph.getStyle().isDirected()) {
-				
-			double shortSide = Math.sqrt(Math.pow(arrowLegLength, 2)/2);
-					
-			// 2D vector line pointing from target t towards point a
-			VectorLine2D vectorLine1 = new VectorLine2D(targetPosition, startPosition, edgeLine.getSlope());
-			// 2D vector line pointing from point a towards points l and r
-			VectorLine2D vectorLine2 = new VectorLine2D(vectorLine1.getPointInDistance(shortSide),
-					edgeLine.getPerpendicularSlope());
-			
-			Point2D leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
-			Point2D rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
-	
-			g2.setStroke(EDGE_STROKE);
-			g2.setColor(Color.GRAY);
-			g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
-			g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) rightLegEndPosition.x(), (int) rightLegEndPosition.y());
-		}
+		
 	}
 
-	public void paintArrow(Graphics2D g2, Line2D line, Point2D startPosition, Point2D targetPosition, double arrowLegLength) {
+	public void paintArrow(Graphics2D g2, Line2D line, Point2D startPosition, Point2D targetPosition, ArrowStyle arrowStyle) {
 
 		double shortSide = Math.sqrt(Math.pow(arrowLegLength, 2)/2);
 		
@@ -291,13 +263,26 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 				vectorLine1.getPointInDistance(shortSide),
 				line.getPerpendicularSlope());
 		
-		Point2D leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
-		Point2D rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
-
-		g2.setStroke(EDGE_STROKE);
-		g2.setColor(Color.GRAY);
-		g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
-		g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) rightLegEndPosition.x(), (int) rightLegEndPosition.y());
+		g2.setStroke(arrowStyle.getStroke());
+		g2.setColor(arrowStyle.getColor());
+		
+		switch(arrowStyle.getLegStyle()) {
+			case leftLegged:
+				Point2D leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
+				g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
+				break;
+			case rightLegged:
+				Point2D rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
+				g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) rightLegEndPosition.x(), (int) rightLegEndPosition.y());
+				break;
+			case twoLegged:
+				leftLegEndPosition = vectorLine2.getPointInDistance(shortSide);
+				rightLegEndPosition = vectorLine2.getPointInDistance(-shortSide);
+				g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) leftLegEndPosition.x(), (int) leftLegEndPosition.y());
+				g2.drawLine((int) targetPosition.x(), (int) targetPosition.y(), (int) rightLegEndPosition.x(), (int) rightLegEndPosition.y());
+				break;
+		}	
+		
 	}
 
 	public void paintTrainsmissionRange(Graphics2D g2, VisualVertex vertex) {
@@ -326,6 +311,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		if (!vertex.getVisualPaths().isEmpty()) {
 
 			int angle = 360 / vertex.getVisualPaths().size();
+						
 			int angleOffset = 0;
 
 			for (VisualPath visualPath : vertex.getVisualPaths()) {
@@ -334,6 +320,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 				g2.drawArc(x, y, vertexWidth, vertexWidth, angleOffset, angle);
 				angleOffset += angle;
 			}
+			
 		} else {
 			g2.setStroke(VERTEX_STROKE);
 			g2.setColor(Color.GRAY);
