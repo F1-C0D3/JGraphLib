@@ -49,11 +49,5 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 			edges.add(adjacency.getFirst());
 		return edges;
 	}
-		
-	/*
-	 * For Genetic Algorithm network representation Phenotype -> Genotype
-	 */
-	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
-		return this.vertexAdjacencies;
-	}
+
 }
