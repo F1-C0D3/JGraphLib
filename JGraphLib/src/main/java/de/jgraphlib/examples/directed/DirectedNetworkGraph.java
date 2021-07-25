@@ -4,7 +4,6 @@ import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.EdgeDistance;
 import de.jgraphlib.graph.EdgeDistanceSupplier;
 import de.jgraphlib.graph.Position2D;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraphSupplier;

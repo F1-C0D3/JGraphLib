@@ -31,6 +31,7 @@ public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends Weigh
 		while (vertexCount < numberOfVertices && attemps < 100) {
 
 			Position2D Position2D = generateRandomPosition2D(currentVertex, properties.getVertexDistance());
+			
 			if (properties.isInside(Position2D.x(), Position2D.y())
 					&& !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {
 
@@ -47,6 +48,7 @@ public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends Weigh
 
 			attemps++;
 		}
+		
 		return vertexCount;
 	}
 }

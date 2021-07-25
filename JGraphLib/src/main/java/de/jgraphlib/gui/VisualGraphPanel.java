@@ -57,7 +57,6 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	public VisualGraphPanel(VisualGraph<V, E> graph) {
 		this.graph = graph;
 		this.scope = this.getScope(graph);
-		System.out.println(this.scope);
 	}
 
 	public int getVertexWidth() {

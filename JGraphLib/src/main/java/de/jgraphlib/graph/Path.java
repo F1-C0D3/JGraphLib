@@ -13,12 +13,12 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
-	
+
 	public Path() {
 		this.source = null;
 		this.target = null;
 	}
-	
+
 	public Path(V source) {
 		this.source = source;
 		super.add(new Tuple<E, V>(null, source));
@@ -29,13 +29,13 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		this.target = target;
 		super.add(new Tuple<E, V>(null, source));
 	}
-	
-	public Path(Path<V,E,W> path) {
+
+	public Path(Path<V, E, W> path) {
 		this.source = path.source;
 		this.target = path.target;
 		this.addAll(path);
 	}
-	
+
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
@@ -63,10 +63,10 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 
 	public List<E> getEdges() {
-		List<E> vertices = new ArrayList<E>();
-		for (Tuple<E, V> tuple : this)
-			vertices.add(tuple.getFirst());
-		return vertices;
+		List<E> edges = new ArrayList<E>();
+		for (int i=1; i<this.size(); i++)
+			edges.add(get(i).getFirst());
+		return edges;
 	}
 
 	@Override

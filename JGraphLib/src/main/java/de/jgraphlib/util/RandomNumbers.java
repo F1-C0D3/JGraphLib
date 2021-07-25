@@ -1,5 +1,6 @@
 package de.jgraphlib.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -62,6 +63,7 @@ public class RandomNumbers {
 	}
 
 	public int getRandomNotInE(int min, int max, List<Integer> e) {
+		
 		int random = getRandom(min, max);
 
 		while (e.contains(random))
@@ -69,5 +71,15 @@ public class RandomNumbers {
 
 		return random;
 
+	}
+	
+	public List<Integer> selectNranndomInInterval(int n, int min, int max){
+		
+		List<Integer> numbers = new ArrayList<Integer>();
+		
+		for(int i=0; i<n; i++)
+			numbers.add(getRandom(min,max));
+		
+		return numbers;	
 	}
 }
