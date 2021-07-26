@@ -22,6 +22,10 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		/* ATTENTION: This is a shallow copy */
 		return new DirectedWeighted2DGraph<V, E, W>(this);
 	}
+	
+	public E addEdge(V source, V target) {
+		return null;
+	}
 
 	public E addEdge(V source, V target, W weight) {
 		if (containsEdge(source, target))
@@ -79,5 +83,9 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	
 	public V getTargetOf(E edge) {
 		return this.vertices.get(edgeAdjacencies.get(edge.getID()).getSecond());
+	}
+	
+	public Boolean isDirected() {
+		return true;
 	}
 }

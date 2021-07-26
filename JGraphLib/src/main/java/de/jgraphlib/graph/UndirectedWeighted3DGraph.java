@@ -50,5 +50,14 @@ public class UndirectedWeighted3DGraph<V extends Vertex<Position3D>, E extends W
 		return edges;
 	}
 
+	@Override
+	public Boolean isDirected() {
+		return false;
+	}
+
+	@Override
+	public E addEdge(V source, V target) {
+		return null;
+	}
 
 }

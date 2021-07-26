@@ -63,7 +63,13 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 		}
 		return false;
 	}
+		
+	public abstract Boolean isDirected();
+		
+	public abstract E addEdge(V source, V target, W weight);
 	
+	public abstract E addEdge(V source, V target);
+
 	public List<E> getEdges() {
 		return edges;
 	}
@@ -115,12 +121,6 @@ public abstract class WeightedGraph<V extends Vertex<P>, P, E extends WeightedEd
 					return true;
 		return false;
 	}
-
-	public E addEdge(V source, V target) {
-		return this.addEdge(source, target, null);
-	}
-
-	public abstract E addEdge(V source, V target, W weight);
 
 	public abstract List<E> getEdgesOf(V V);
 
