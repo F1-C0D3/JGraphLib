@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.jgraphlib.graph.Position2D;
+import de.jgraphlib.graph.elements.Position2D;
 
 public class VisualVertex {
 

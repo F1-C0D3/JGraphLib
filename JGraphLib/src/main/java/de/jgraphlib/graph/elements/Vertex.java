@@ -1,4 +1,4 @@
-package de.jgraphlib.graph;
+package de.jgraphlib.graph.elements;
 
 public class Vertex<P> {
 

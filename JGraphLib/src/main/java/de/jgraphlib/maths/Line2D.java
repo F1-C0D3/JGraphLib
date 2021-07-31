@@ -2,7 +2,7 @@ package de.jgraphlib.maths;
 
 import java.text.DecimalFormat;
 
-import de.jgraphlib.graph.Position2D;
+import de.jgraphlib.graph.elements.Position2D;
 
 public class Line2D {
 

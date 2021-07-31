@@ -17,30 +17,30 @@ import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import de.jgraphlib.graph.EdgeDistance;
-import de.jgraphlib.graph.EdgeDistanceSupplier;
-import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
-import de.jgraphlib.graph.Vertex;
-import de.jgraphlib.graph.WeightedEdge;
-import de.jgraphlib.graph.WeightedGraphSupplier;
 import de.jgraphlib.graph.algorithms.RandomPath;
+import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.Position2D;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
+import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
+import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.graph.generator.NetworkGraphGenerator;
 import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.util.RandomNumbers;
 
-public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEdge<?>> extends JFrame {
+public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> extends JFrame {
 
 	TerminalPanel terminal;
-	VisualGraphPanel<V, E> visualGraphPanel;
+	VisualGraphPanel<V, E, W> visualGraphPanel;
 
-	public VisualGraphFrame(VisualGraph<V, E> graph) {
+	public VisualGraphFrame(VisualGraph<V, E, W> graph) {
 
 		this.setLayout(new BorderLayout());
 
-		this.visualGraphPanel = new VisualGraphPanel<V, E>(graph);
+		this.visualGraphPanel = new VisualGraphPanel<V, E, W>(graph);
 		this.visualGraphPanel.setFont(new Font("NotoSans", Font.PLAIN, 14));
 		this.visualGraphPanel.setLayout(new OverlayLayout(this.visualGraphPanel));
 
@@ -77,7 +77,7 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 		terminal.repaint();
 	}
 
-	public VisualGraphPanel<V, E> getVisualGraphPanel() {
+	public VisualGraphPanel<V, E, W> getVisualGraphPanel() {
 		return this.visualGraphPanel;
 	}
 
@@ -111,48 +111,5 @@ public class VisualGraphFrame<V extends Vertex<Position2D>, E extends WeightedEd
 				break;
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-
-				UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
-						new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
-
-				NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, new EdgeDistanceSupplier(), new RandomNumbers());
-
-				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
-						new DoubleRange(50d, 100d), new DoubleRange(100,100));
-
-				generator.generate(properties);
-
-				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						graph, new VisualGraphStyle(false));
-
-				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph);
-
-				for (int i = 1; i <= 10; i++)
-					visualGraph.addVisualPath(randomPath
-							.compute(graph.getVertex(new RandomNumbers().getRandom(0, graph.getVertices().size())), 5));
-
-				VisualGraphFrame<Vertex<Position2D>, WeightedEdge<EdgeDistance>> frame = new VisualGraphFrame<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						visualGraph);
-
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				int width = (int) screenSize.getWidth() * 3 / 4;
-				int height = (int) screenSize.getHeight() * 3 / 4;
-				frame.setPreferredSize(new Dimension(width, height));
-				frame.setFont(new Font("Consolas", Font.PLAIN, 14));
-				frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-			}
-		});
 	}
 }

@@ -1,4 +1,4 @@
-package de.jgraphlib.graph;
+package de.jgraphlib.graph.suppliers;
 
 import java.util.function.Supplier;
 

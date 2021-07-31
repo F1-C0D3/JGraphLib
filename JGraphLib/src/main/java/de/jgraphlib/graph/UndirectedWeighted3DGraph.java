@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import de.jgraphlib.graph.elements.Path;
+import de.jgraphlib.graph.elements.Position3D;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public class UndirectedWeighted3DGraph<V extends Vertex<Position3D>, E extends WeightedEdge<W>, W>
-		extends Weighted3DGraph<V, E, W> {
+public class UndirectedWeighted3DGraph<V extends Vertex<Position3D>, E extends WeightedEdge<W>, W, P extends Path<V,E,W>>
+		extends Weighted3DGraph<V, E, W, P> {
 
-	public UndirectedWeighted3DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier) {
-		super(vertexSupplier, edgeSupplier);
+	public UndirectedWeighted3DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier, Supplier<P> pathSupplier) {
+		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
 	}
-
-	public UndirectedWeighted3DGraph(UndirectedWeighted3DGraph<V, E, W> graph) {
-		super(graph);
-	}
-
+	
 	@Override
-	public UndirectedWeighted3DGraph<V, E, W> copy() {
-		return new UndirectedWeighted3DGraph<V, E, W>(this);
+	public WeightedGraph<V, Position3D, E, W, P> copy() {
+		return null;
 	}
 
 	public E addEdge(V source, V target, W weight) {
@@ -60,4 +60,8 @@ public class UndirectedWeighted3DGraph<V extends Vertex<Position3D>, E extends W
 		return null;
 	}
 
+	@Override
+	public List<E> getOutgoingEdgesOf(V vertex) {
+		return null;
+	}
 }

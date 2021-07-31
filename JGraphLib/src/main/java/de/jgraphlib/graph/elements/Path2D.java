@@ -1,4 +1,4 @@
-package de.jgraphlib.graph;
+package de.jgraphlib.graph.elements;
 
 import de.jgraphlib.util.Tuple;
 
@@ -20,7 +20,6 @@ public class Path2D<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W e
 
 	public double getDistance() {
 		double distance = 0;
-
 		for (Tuple<E, V> edgeVertexTuple : this)
 			if (edgeVertexTuple.getFirst() != null)
 				distance += edgeVertexTuple.getFirst().getWeight().getDistance();

@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
 
-import de.jgraphlib.graph.Path;
-import de.jgraphlib.graph.Vertex;
-import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraph;
+import de.jgraphlib.graph.elements.Path;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
 public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	protected WeightedGraph<V, ?, E, ?> graph;
+	protected WeightedGraph<V, ?, E, ?, ?> graph;
 
-	public DijkstraShortestPath(WeightedGraph<V, ?, E, ?> graph) {
+	public DijkstraShortestPath(WeightedGraph<V, ?, E, ?, ?> graph) {
 		this.graph = graph;
 	}
 

@@ -3,32 +3,32 @@ package de.jgraphlib.graph.generator;
 import java.util.List;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
-import de.jgraphlib.graph.EdgeDistance;
-import de.jgraphlib.graph.EdgeWeightSupplier;
-import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
-import de.jgraphlib.graph.Vertex;
 import de.jgraphlib.graph.Weighted2DGraph;
-import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraph;
+import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.Position2D;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.util.Log;
 import de.jgraphlib.util.RandomNumbers;
 
 public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
 	protected Log log;
-	protected Weighted2DGraph<V, E, W> graph;
+	protected Weighted2DGraph<V, E, W, ?> graph;
 	protected EdgeWeightSupplier<W> edgeWeightSupplier;
 	protected RandomNumbers random;
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W> graph, RandomNumbers random) {
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
@@ -47,8 +47,11 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 				W edgeWeight = edgeWeightSupplier.get();
 				edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
 				graph.addEdge(vertex, targetVertex, edgeWeight);
-			} else
+				graph.addEdge(targetVertex, vertex, edgeWeight);
+			} else {
 				graph.addEdge(vertex, targetVertex);
+				graph.addEdge(targetVertex, vertex);
+			}
 	}
 
 	protected Position2D generateRandomPosition2D(V source, DoubleRange vertexDistanceRange) {

@@ -13,23 +13,25 @@ import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
+import java.util.function.Function;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import de.jgraphlib.graph.EdgeDistance;
-import de.jgraphlib.graph.EdgeDistanceSupplier;
-import de.jgraphlib.graph.Path;
-import de.jgraphlib.graph.Position2D;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
-import de.jgraphlib.graph.Vertex;
-import de.jgraphlib.graph.WeightedEdge;
-import de.jgraphlib.graph.WeightedGraphSupplier;
 import de.jgraphlib.graph.algorithms.RandomPath;
+import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.EdgeWeight;
+import de.jgraphlib.graph.elements.Path;
+import de.jgraphlib.graph.elements.Position2D;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
+import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
+import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.graph.generator.NetworkGraphGenerator;
 import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.maths.Line2D;
@@ -37,12 +39,12 @@ import de.jgraphlib.maths.Point2D;
 import de.jgraphlib.maths.VectorLine2D;
 import de.jgraphlib.util.RandomNumbers;
 
-public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEdge<?>> extends JPanel {
+public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> extends JPanel {
 
 	// @formatter:off
 	
 	private static final long serialVersionUID = 1L;
-	private VisualGraph<V, E> graph;
+	private VisualGraph<V, E, W> graph;
 	private Scope scope;
 	private double xScale, yScale;
 	private int vertexWidth = 40, padding = 2 * vertexWidth, arrowLegLength = 10;
@@ -51,10 +53,10 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(3);
 	private static Stroke VERTEX_STROKE = new BasicStroke(0);
 	private static String header = "JGraphLib v1.0";
-
+		
 	public VisualGraphPanel() {}
 
-	public VisualGraphPanel(VisualGraph<V, E> graph) {
+	public VisualGraphPanel(VisualGraph<V, E, W> graph) {
 		this.graph = graph;
 		this.scope = this.getScope(graph);
 	}
@@ -380,7 +382,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		}
 	}
 
-	private Scope getScope(VisualGraph<V, E> graph) {
+	private Scope getScope(VisualGraph<V, E, ?> graph) {
 
 		Scope scope = new Scope();
 
@@ -406,64 +408,17 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		return scope;
 	}
 
-	public VisualGraph<V, E> getVisualGraph() {
+	public VisualGraph<V, E, W> getVisualGraph() {
 		return this.graph;
 	}
 
-	public void updateVisualGraph(VisualGraph<V, E> graph) {
+	public void updateVisualGraph(VisualGraph<V, E, W> graph) {
 		this.graph = graph;
 		this.scope = this.getScope(graph);
 	}
 
 	public void addVisualPath(Path<V, E, ?> path) {
-		this.graph.addVisualPath(path);
+		this.graph.buildPath(path);
 		this.repaint();
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-
-				UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
-						new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier());
-
-				NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, new EdgeDistanceSupplier(), new RandomNumbers());
-
-				NetworkGraphProperties properties = new NetworkGraphProperties(1024, 768, new IntRange(100, 200),
-						new DoubleRange(50d, 100d), new DoubleRange(100, 100));
-
-				generator.generate(properties);
-
-				VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>> visualGraph = new VisualGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						graph, new VisualGraphStyle(false));
-
-				RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph);
-
-				for (int i = 1; i <= 10; i++)
-					visualGraph.addVisualPath(randomPath
-							.compute(graph.getVertex(new RandomNumbers().getRandom(0, graph.getVertices().size())), 5));
-
-				VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>> panel = new VisualGraphPanel<Vertex<Position2D>, WeightedEdge<EdgeDistance>>(
-						visualGraph);
-
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				int width = (int) screenSize.getWidth() * 3 / 4;
-				int height = (int) screenSize.getHeight() * 3 / 4;
-				panel.setPreferredSize(new Dimension(width, height));
-				panel.setFont(new Font("Consolas", Font.PLAIN, 14));
-				panel.setLayout(null);
-
-				JFrame frame = new JFrame("VisualGraphPanel");
-				frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-				frame.getContentPane().add(panel);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-			}
-		});
 	}
 }

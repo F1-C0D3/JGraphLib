@@ -1,4 +1,4 @@
-package de.jgraphlib.graph;
+package de.jgraphlib.graph.elements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,12 +30,6 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.add(new Tuple<E, V>(null, source));
 	}
 
-	public Path(Path<V, E, W> path) {
-		this.source = path.source;
-		this.target = path.target;
-		this.addAll(path);
-	}
-
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
@@ -46,9 +40,17 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.clear();
 		super.add(new Tuple<E, V>(null, source));
 	}
+	
+	public void setSource(V source) {
+		this.source = source;
+	}
 
 	public V getSource() {
 		return this.source;
+	}
+	
+	public void setTarget(V target) {
+		this.target = target;
 	}
 
 	public V getTarget() {
@@ -64,7 +66,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 
 	public List<E> getEdges() {
 		List<E> edges = new ArrayList<E>();
-		for (int i=1; i<this.size(); i++)
+		for (int i=1 ; i<this.size(); i++)
 			edges.add(get(i).getFirst());
 		return edges;
 	}

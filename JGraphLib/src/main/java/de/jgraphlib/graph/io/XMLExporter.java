@@ -4,18 +4,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import de.jgraphlib.graph.EdgeDistance;
-import de.jgraphlib.graph.EdgeDistanceSupplier;
-import de.jgraphlib.graph.Position2D;
+import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
-import de.jgraphlib.graph.Vertex;
-import de.jgraphlib.graph.WeightedEdge;
 import de.jgraphlib.graph.WeightedGraph;
-import de.jgraphlib.graph.WeightedGraphSupplier;
+import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.Path;
+import de.jgraphlib.graph.elements.Position2D;
+import de.jgraphlib.graph.elements.Vertex;
+import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.generator.NetworkGraphGenerator;
 import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
+import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
+import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
 import de.jgraphlib.util.RandomNumbers;
 import de.jgraphlib.util.Tuple;
@@ -37,15 +39,15 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 
-	WeightedGraph<V, P, E, W> graph;
-	VertexPositionXMLInterface<P> vertexPositionXMLInterface;
-	EdgeWeightXMLInterface<W> edgeWeightXMLInterface;
+	WeightedGraph<V, P, E, W, ?> graph;
+	VertexPositionMapper<P> vertexPositionMapper;
+	//EdgeWeightMapper<W> edgeWeightMapper;
 
-	public XMLExporter(WeightedGraph<V, P, E, W> graph, VertexPositionXMLInterface<P> vertexPositionInterface,
-			EdgeWeightXMLInterface<W> edgeWeightInterface) {
+	public XMLExporter(WeightedGraph<V, P, E, W, ?> graph, VertexPositionMapper<P> vertexPositionInterface /*,
+			EdgeWeightMapper<W> edgeWeightInterface*/) {
 		this.graph = graph;
-		this.vertexPositionXMLInterface = vertexPositionInterface;
-		this.edgeWeightXMLInterface = edgeWeightInterface;
+		this.vertexPositionMapper = vertexPositionInterface;
+		//this.edgeWeightMapper = edgeWeightInterface;
 	}
 
 	public boolean exportGraph(String xmlFilePath) {
@@ -81,17 +83,16 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 			for (E edge : graph.getEdges())
 				XMLEdges.appendChild(getXmlEdge(document, edge));
 
-			Element XMLAdjacencies = document.createElement("adjacencies");
-			XMLGraph.appendChild(XMLAdjacencies);
+			/*Element XMLAdjacencies = document.createElement("adjacencies");
+			XMLGraph.appendChild(XMLAdjacencies);			
+			 * for (int i = 0; i < graph.getVertexAdjacencies().size(); i++)
+			 * XMLAdjacencies.appendChild(getXmlElement(document, XMLAdjacencies,
+			 * String.format("vertex%d", i),
+			 * graph.getVertexAdjacencies().get(i).stream().map(tuple ->
+			 * String.valueOf(tuple.getSecond())) .collect(Collectors.joining(","))));
+			 */
 
-			/*
-			for (int i = 0; i < graph.getVertexAdjacencies().size(); i++)
-				XMLAdjacencies.appendChild(getXmlElement(document, XMLAdjacencies, String.format("vertex%d", i),
-						graph.getVertexAdjacencies().get(i).stream().map(tuple -> String.valueOf(tuple.getSecond()))
-								.collect(Collectors.joining(","))));
-			*/
-
-			toConsole(document);
+			//toConsole(document);
 			toXmlFile(document, xmlFilePath);
 			return true;
 
@@ -132,7 +133,7 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 		Element XMLVertex = document.createElement("vertex");
 		XMLVertex.setAttribute("ID", Integer.toString(vertex.getID()));
 
-		List<Tuple<String, String>> attributesValues = vertexPositionXMLInterface.translate(vertex.getPosition());
+		List<Tuple<String, String>> attributesValues = vertexPositionMapper.translate(vertex.getPosition());
 
 		for (Tuple<String, String> attributeValue : attributesValues)
 			XMLVertex.appendChild(
@@ -149,13 +150,13 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 		XMLEdge.appendChild(getXmlElement(document, XMLEdge, "source", Integer.toString(vertices.getFirst().getID())));
 		XMLEdge.appendChild(getXmlElement(document, XMLEdge, "target", Integer.toString(vertices.getSecond().getID())));
 
-		Element XMLEdgeWeight = document.createElement("weight");
+		/*Element XMLEdgeWeight = document.createElement("weight");
 		XMLEdge.appendChild(XMLEdgeWeight);
 
-		List<Tuple<String, String>> edgeWeightAttributeValuePairs = edgeWeightXMLInterface.translate(edge.getWeight());
+		List<Tuple<String, String>> edgeWeightAttributeValuePairs = edgeWeightMapper.translate(edge.getWeight());
 		for (Tuple<String, String> edgeWeightAttributeValuePair : edgeWeightAttributeValuePairs)
 			XMLEdgeWeight.appendChild(getXmlElement(document, XMLEdgeWeight, edgeWeightAttributeValuePair.getFirst(),
-					edgeWeightAttributeValuePair.getSecond()));
+					edgeWeightAttributeValuePair.getSecond()));*/
 
 		return XMLEdge;
 	}
@@ -169,55 +170,28 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 	/* TEST */
 	public static void main(String args[]) {
 
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				new WeightedGraphSupplier<Position2D, EdgeDistance>().getVertexSupplier(),
-				new WeightedGraphSupplier<Position2D, EdgeDistance>().getEdgeSupplier(), new EdgeDistanceSupplier());
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+						new Weighted2DGraphSupplier().getVertexSupplier(),
+						new Weighted2DGraphSupplier().getEdgeSupplier(),
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
 
-		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
-				new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, new EdgeDistanceSupplier(), new RandomNumbers());
-		
-		NetworkGraphProperties properties = new NetworkGraphProperties(
-				/* playground width */ 			1024,
-				/* playground height */ 		768, 
-				/* number of vertices */ 		new IntRange(150, 150),
-				/* distance between vertices */ new DoubleRange(50d, 100d), 
-				/* edge distance */ 			new DoubleRange(100d, 100d));
-		
-		generator.generate(properties);	
+		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
+		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
+				/* playground height */ 768, /* number of vertices */ new IntRange(150, 150),
+				/* distance between vertices */ new DoubleRange(50d, 100d),
+				/* edge distance */ new DoubleRange(100d, 100d));
+
+		generator.generate(properties);
+		
 		XMLExporter<Vertex<Position2D>, Position2D, WeightedEdge<EdgeDistance>, EdgeDistance> exporter = new XMLExporter<Vertex<Position2D>, Position2D, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, new VertexPositionXMLInterface<Position2D>() {
-					@Override
-					public List<Tuple<String, String>> translate(Position2D position) {
-						List<Tuple<String, String>> attributesValues = new ArrayList<Tuple<String, String>>();
-						attributesValues.add(new Tuple<String, String>("x", Double.toString(position.x())));
-						attributesValues.add(new Tuple<String, String>("y", Double.toString(position.y())));
-						return attributesValues;
-					}
+				graph, new VertextPosition2DMapper());
 
-					@Override
-					public Position2D translate(List<Tuple<String, String>> attributesValues) {
-						return new Position2D(Double.parseDouble(attributesValues.get(0).getSecond()),
-								Double.parseDouble(attributesValues.get(1).getSecond()));
-					}
-				}, new EdgeWeightXMLInterface<EdgeDistance>() {
-
-					@Override
-					public List<Tuple<String, String>> translate(EdgeDistance edgeWeight) {
-						List<Tuple<String, String>> attributesValues = new ArrayList<Tuple<String, String>>();
-
-						attributesValues
-								.add(new Tuple<String, String>("distance", Double.toString(edgeWeight.getDistance())));
-						return attributesValues;
-					}
-
-					@Override
-					public EdgeDistance translate(List<Tuple<String, String>> attributesValues) {
-						return new EdgeDistance(Double.parseDouble(attributesValues.get(0).getSecond()));
-					}
-				});
 		exporter.exportGraph("graph.xml");
-		
+
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> app = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier());
 	}

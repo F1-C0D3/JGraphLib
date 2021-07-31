@@ -1,4 +1,4 @@
-package de.jgraphlib.graph;
+package de.jgraphlib.graph.elements;
 
 import java.text.DecimalFormat;
 
