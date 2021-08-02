@@ -36,7 +36,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
 	public Path<V, E, W> compute(V source, int hops) {
 
-		Path<V, E, W> randomPath = new Path<V, E, W>(source);
+		Path<V, E, W> randomPath = new Path<V, E, W>(source, null);
 
 		for (int i = 0; i < hops; i++) {
 
@@ -46,7 +46,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 				V nextHop = nextHops.get(new RandomNumbers().getRandom(0, nextHops.size()));
 				randomPath.add(new Tuple<E, V>(graph.getEdge(randomPath.getLastVertex(), nextHop), nextHop));
 			} else
-				return new Path<V, E, W>(source);
+				return new Path<V, E, W>(source, null);
 		}
 		return randomPath;
 	}

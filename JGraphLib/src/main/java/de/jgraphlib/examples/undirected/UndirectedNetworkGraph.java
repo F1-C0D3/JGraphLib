@@ -43,8 +43,7 @@ public class UndirectedNetworkGraph {
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = 
 				new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, 
-						new EdgeDistanceSupplier());
+						graph);
 		
 		// @formatter:on
 	}

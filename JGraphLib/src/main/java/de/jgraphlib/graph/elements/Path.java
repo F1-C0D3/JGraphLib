@@ -13,23 +13,21 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
-
-	public Path() {
-		this.source = null;
-		this.target = null;
-	}
-
-	public Path(V source) {
-		this.source = source;
-		super.add(new Tuple<E, V>(null, source));
-	}
-
+	
 	public Path(V source, V target) {
 		this.source = source;
 		this.target = target;
 		super.add(new Tuple<E, V>(null, source));
 	}
 
+	public Path() {}
+	
+	public void set(V source, V target) {
+		setSource(source);
+		setTarget(target);
+		this.add(new Tuple<E,V>(null, source));
+	}
+	
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);

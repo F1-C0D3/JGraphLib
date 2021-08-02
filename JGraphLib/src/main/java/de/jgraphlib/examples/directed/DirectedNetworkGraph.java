@@ -37,13 +37,15 @@ public class DirectedNetworkGraph {
 				/* distance between vertices */ new DoubleRange(50d, 100d),
 				/* edge distance */ new DoubleRange(100, 100));
 
-		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, new EdgeDistanceSupplier(), new RandomNumbers());
+		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
+				new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+						graph, 
+						new EdgeDistanceSupplier(), 
+						new RandomNumbers());
 		
 		generator.generate(properties);
 		
-		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, null);
+		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
 						
 		// @formatter:on
 	}

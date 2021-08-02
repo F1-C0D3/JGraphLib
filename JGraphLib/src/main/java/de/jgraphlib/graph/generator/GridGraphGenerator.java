@@ -37,7 +37,6 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				List<V> verticesInRadius = graph.getVerticesInRadius(newVertex, properties.getEdgeDistance().max);
 				for (V target : verticesInRadius) {
 					graph.addEdge(newVertex, target);
-					graph.addEdge(target, newVertex);
 				}
 			}
 
@@ -52,9 +51,7 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				List<V> verticesInRadius = graph.getVerticesInRadius(newVertex, properties.getEdgeDistance().max);
 				for (V target : verticesInRadius) {
 					graph.addEdge(newVertex, target);
-					graph.addEdge(target, newVertex);
 				}
-
 			}
 		}
 	}

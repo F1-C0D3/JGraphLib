@@ -60,6 +60,6 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 	 * For Genetic Algorithm network representation Phenotype -> Genotype
 	 */
 	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
-		return this.vertexAdjacencies;
+		return this.sourceTargetAdjacencies;
 	}
 }

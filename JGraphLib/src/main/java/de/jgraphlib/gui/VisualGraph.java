@@ -26,34 +26,31 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 	private ArrayList<VisualEdge> edges;
 	private ArrayList<VisualPath> paths;
 	private VisualGraphStyle style;
-	private EdgeWeightPrinter<W> edgeWeightPrinter;
+	private EdgePrinter<E,W> edgePrinter;
 
-	public VisualGraph(Weighted2DGraph<V, E, ?, ?> graph, VisualGraphStyle style, EdgeWeightPrinter<W> edgeWeightPrinter) {
+	public VisualGraph(Weighted2DGraph<V, E, ?, ?> graph, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();
 		this.paths = new ArrayList<VisualPath>();
 		this.style = style;
-		this.edgeWeightPrinter = edgeWeightPrinter;
+		this.edgePrinter = edgePrinter;
 		
 		buildVertices(graph);
 		
-		// quick and dirty --> replace with visitor pattern
-		if(graph instanceof UndirectedWeighted2DGraph)
+		if(graph.isDirected())
+			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?, ?>) graph);
+		else
 			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?, ?>) graph);
-		
-		// quick and dirty --> replace with visitor pattern
-		if(graph instanceof DirectedWeighted2DGraph) 
-			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?, ?>) graph);	
-		
+				
 		buildPaths(graph);		
 	}
 	
-	public void setEdgeWeightPrinter(EdgeWeightPrinter<W> edgeWeightPrinter) {
-		this.edgeWeightPrinter = edgeWeightPrinter;
+	public void setEdgePrinter(EdgePrinter<E,W> edgePrinter) {
+		this.edgePrinter = edgePrinter;
 	}
 	
-	public Boolean hasEdgeWeightPrinter() {
-		return edgeWeightPrinter != null;
+	public Boolean hasEdgePrinter() {
+		return edgePrinter != null;
 	}
 
 	private void buildVertices(Weighted2DGraph<V, E, ?, ?> graph) {
@@ -72,8 +69,8 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 			String edgeText = "";
 
 			if (edge.getWeight() != null)
-				if(hasEdgeWeightPrinter())
-					edgeText = edgeWeightPrinter.print(edge.getWeight());
+				if(hasEdgePrinter())
+					edgeText = edgePrinter.print(edge);
 				else
 					edgeText = edge.getWeight().toString();
 
@@ -93,8 +90,8 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 			String edgeText = "";
 
 			if (edge.getWeight() != null)
-				if(hasEdgeWeightPrinter())
-					edgeText = edgeWeightPrinter.print(edge.getWeight());
+				if(hasEdgePrinter())
+					edgeText = edgePrinter.print(edge);
 				else
 					edgeText = edge.getWeight().toString();
 

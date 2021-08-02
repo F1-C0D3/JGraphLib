@@ -50,15 +50,24 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	private EdgeWeightSupplier<W> edgeWeightSupplier;
 	private TreeParser treeParser;
 	
-	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph, EdgeWeightPrinter<W> edgeWeightPrinter) {
+	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph) {
+		this.graph = graph;
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), null));
+	} 
+	
+	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph) {
+		this.graph = graph;
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), null));
+	} 
+	
+	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
 		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), edgeWeightPrinter));
 	} 
 	
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier) {
+	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
-		this.edgeWeightSupplier = edgeWeightSupplier;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), null));
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), edgeWeightPrinter));
 	} 
 		
 	public void initializeFrame(VisualGraph<V, E, W> visualGraph){

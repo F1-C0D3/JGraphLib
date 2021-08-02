@@ -193,6 +193,6 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 		exporter.exportGraph("graph.xml");
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> app = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, new EdgeDistanceSupplier());
+				graph);
 	}
 }

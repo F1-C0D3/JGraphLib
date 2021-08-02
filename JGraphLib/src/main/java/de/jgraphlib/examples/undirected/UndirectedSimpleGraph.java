@@ -29,9 +29,8 @@ public class UndirectedSimpleGraph {
 		graph.addVertex(6d, 6d);
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = 
-				new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, 
-						new EdgeDistanceSupplier());
+				new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
+		
 		// @formatter:on
 		
 	}
