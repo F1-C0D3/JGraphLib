@@ -205,8 +205,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 				paintArrow(
 						g2, 
 						edgeLine, 
-						pathTargetPosition, 
 						pathStartPosition, 
+						pathTargetPosition, 
 						new ArrowStyle(visualPath.getColor(), EDGE_PATH_STROKE, ArrowLegStyle.twoLegged, 10));
 
 				i++;
@@ -219,7 +219,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 					edgeLine.y2().intValue());
 			
 			if (graph.getStyle().isDirected()) 		
-				paintArrow(g2, edgeLine, targetPosition, startPosition, new ArrowStyle(Color.GRAY, EDGE_STROKE, ArrowLegStyle.twoLegged, 10));		
+				paintArrow(g2, edgeLine, startPosition, targetPosition, new ArrowStyle(Color.GRAY, EDGE_STROKE, ArrowLegStyle.twoLegged, 10));		
 		}
 
 		// Edge Text (weight)
@@ -260,9 +260,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		// 2D vector line pointing from target t towards point a
 		VectorLine2D vectorLine1 = new VectorLine2D(targetPosition, startPosition, line.getSlope());
 		// 2D vector line pointing from point a towards points l and r
-		VectorLine2D vectorLine2 = new VectorLine2D(
-				vectorLine1.getPointInDistance(shortSide),
-				line.getPerpendicularSlope());
+		VectorLine2D vectorLine2 = new VectorLine2D(vectorLine1.getPointInDistance(shortSide), line.getPerpendicularSlope());
 		
 		g2.setStroke(arrowStyle.getStroke());
 		g2.setColor(arrowStyle.getColor());

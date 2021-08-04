@@ -47,6 +47,8 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 				W edgeWeight = edgeWeightSupplier.get();
 				edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
 				graph.addEdge(vertex, targetVertex, edgeWeight);
+				graph.addEdge(targetVertex, vertex, edgeWeight);
+
 			} else {
 				graph.addEdge(vertex, targetVertex);
 			}

@@ -16,17 +16,15 @@ import de.jgraphlib.util.Tuple;
 public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V, E, W>>
 		extends Weighted2DGraph<V, E, W, P> {
 
-	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,
-			Supplier<P> pathSupplier) {
+	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,Supplier<P> pathSupplier) {
 		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
 	}
 
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
-		this.edgeWeightSupplier = graph.edgeWeightSupplier;
-		this.pathSupplier = graph.pathSupplier;
 		this.vertices = graph.vertices;
 		this.edges = graph.copyEdges();
+		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;
@@ -35,7 +33,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph<V, E, W, P> copy() {
 		return new DirectedWeighted2DGraph<V, E, W, P>(this);
 	}
-
+	
 	public E addEdge(V source, V target) {
 
 		if (containsEdge(source, target))
@@ -48,16 +46,15 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		edge.setWeight(weight);
 		edges.add(edge);
 
-		super.sourceTargetAdjacencies.get(source.getID())
-				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
-		super.targetSourceAdjacencies.get(target.getID())
-				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
+		super.sourceTargetAdjacencies.get(source.getID()).add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
+		super.targetSourceAdjacencies.get(target.getID()).add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
 		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
 
 	public E addEdge(V source, V target, W weight) {
+		
 		if (containsEdge(source, target))
 			return null;
 
@@ -66,10 +63,8 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		edge.setWeight(weight);
 		edges.add(edge);
 
-		super.sourceTargetAdjacencies.get(source.getID())
-				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
-		super.targetSourceAdjacencies.get(target.getID())
-				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
+		super.sourceTargetAdjacencies.get(source.getID()).add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
+		super.targetSourceAdjacencies.get(target.getID()).add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));	
 		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
@@ -100,8 +95,8 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 	public List<E> getOutgoingEdgesOf(V vertex) {
 		List<E> edges = new ArrayList<E>();
-		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
-			edges.add(super.edges.get(adjacency.getFirst()));
+		for (Tuple<Integer, Integer> edgeVertexTuple : sourceTargetAdjacencies.get(vertex.getID()))
+			edges.add(super.edges.get(edgeVertexTuple.getFirst()));
 		return edges;
 	}
 

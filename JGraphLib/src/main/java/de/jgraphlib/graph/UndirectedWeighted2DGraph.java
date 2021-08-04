@@ -1,6 +1,5 @@
 package de.jgraphlib.graph;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +26,7 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 		this.pathSupplier = graph.pathSupplier;
 		this.vertices = graph.vertices;
 		this.edges = graph.copyEdges(); // deep copy edges
+		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;
@@ -85,10 +85,14 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
 			edges.add(this.edges.get(adjacency.getFirst()));
 		
-		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
+		for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
 			edges.add(this.edges.get(adjacency.getFirst()));
 		
 		return List.copyOf(edges);
+	}
+	
+	public List<E> getOutgoingEdgesOf(V vertex) {
+		return getEdgesOf(vertex);
 	}
 
 	public Tuple<V, V> getVerticesOf(E edge) {
@@ -99,4 +103,5 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 	public Boolean isDirected() {
 		return false;
 	}
+
 }
