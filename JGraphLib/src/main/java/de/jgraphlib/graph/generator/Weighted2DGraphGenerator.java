@@ -35,7 +35,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		this.edgeWeightSupplier = edgeWeightSupplier;
 		this.random = random;
 	}
-	
+
 	public Boolean edgeWeightSupplier() {
 		return edgeWeightSupplier != null;
 	}
@@ -48,10 +48,11 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 				edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
 				graph.addEdge(vertex, targetVertex, edgeWeight);
 				graph.addEdge(targetVertex, vertex, edgeWeight);
-
 			} else {
 				graph.addEdge(vertex, targetVertex);
+				graph.addEdge(targetVertex, vertex);
 			}
+
 	}
 
 	protected Position2D generateRandomPosition2D(V source, DoubleRange vertexDistanceRange) {
