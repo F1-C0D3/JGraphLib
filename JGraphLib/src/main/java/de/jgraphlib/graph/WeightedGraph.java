@@ -107,8 +107,8 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 		return this.paths.get(i);
 	}
 	
-	public P setPath(int i) {
-		return this.paths.;
+	public P setPath(int i, P path) {
+		return this.paths.set(i, path);
 	}
 
 	public V addVertex(L position) {

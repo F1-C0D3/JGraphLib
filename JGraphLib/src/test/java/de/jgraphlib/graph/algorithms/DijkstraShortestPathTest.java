@@ -45,12 +45,13 @@ public class DijkstraShortestPathTest {
 			return w.getDistance();
 		};
 
-		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph);
+		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = 
+				new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph.getFirstVertex(), graph.getLastVertex());
 
-		Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> shortestPath = dijkstraShortestPath
-				.compute(graph.getFirstVertex(), graph.getLastVertex(), metric);
+		dijkstraShortestPath.computeShortestPath(graph, metric);
 
-		System.out.println(shortestPath.getCost(metric));
+		System.out.println(dijkstraShortestPath.toString());
+
+		System.out.println(dijkstraShortestPath.getCost(metric));
 	}
 }

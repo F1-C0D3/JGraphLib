@@ -23,7 +23,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
 		while (!randomPath.isComplete()) {
 
-			List<V> nextHops = randomPath.getUnvisitedVertices(graph.getNextHopsOf(randomPath.getLastVertex()));
+			List<V> nextHops = randomPath.getUnvisitedVerticesOf(graph.getNextHopsOf(randomPath.getLastVertex()));
 
 			if (!nextHops.isEmpty()) {
 				V nextHop = nextHops.get(RandomNumbers.getInstance(-1).getRandom(0, nextHops.size()));
@@ -40,7 +40,7 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
 		for (int i = 0; i < hops; i++) {
 
-			List<V> nextHops = randomPath.getUnvisitedVertices(graph.getNextHopsOf(randomPath.getLastVertex()));
+			List<V> nextHops = randomPath.getUnvisitedVerticesOf(graph.getNextHopsOf(randomPath.getLastVertex()));
 
 			if (!nextHops.isEmpty()) {
 				V nextHop = nextHops.get(new RandomNumbers().getRandom(0, nextHops.size()));
