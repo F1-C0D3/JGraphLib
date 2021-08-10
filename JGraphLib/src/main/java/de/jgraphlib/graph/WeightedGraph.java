@@ -24,16 +24,17 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	protected Supplier<W> edgeWeightSupplier;
 	protected Supplier<P> pathSupplier;
 
-	/* SourceVertexID i : (EdgeID, TargetVertexID), (EdgeID, TargetVertexID), ...*/
+	/* SourceVertexID i : (EdgeID, TargetVertexID), (EdgeID, TargetVertexID), ... */
 	protected List<ArrayList<Tuple<Integer, Integer>>> sourceTargetAdjacencies;
-	
-	/* TargetVertexID i : (EdgeID, SourceVertexID), (EdgeID, SourceVertexID), ...*/
+
+	/* TargetVertexID i : (EdgeID, SourceVertexID), (EdgeID, SourceVertexID), ... */
 	protected List<ArrayList<Tuple<Integer, Integer>>> targetSourceAdjacencies;
-	
-	/* edge i : (SourceVertexID, TargetVertexID)*/
+
+	/* edge i : (SourceVertexID, TargetVertexID) */
 	protected List<Tuple<Integer, Integer>> edgeAdjacencies;
 
-	public WeightedGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier, Supplier<P> pathSupplier) {
+	public WeightedGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,
+			Supplier<P> pathSupplier) {
 		this.vertexSupplier = vertexSupplier;
 		this.edgeSupplier = edgeSupplier;
 		this.edgeWeightSupplier = edgeWeightSupplier;
@@ -49,10 +50,10 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public Supplier<P> getPathSupplier() {
 		return this.pathSupplier;
 	}
-	
+
 	public abstract WeightedGraph<V, L, E, W, P> copy();
 
-	protected List<E> copyEdges() {		
+	protected List<E> copyEdges() {
 		List<E> edgeCopies = new ArrayList<E>();
 		for (E edge : getEdges()) {
 			E edgeCopy = edgeSupplier.get();
@@ -60,7 +61,7 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 			W edgeWeight = edgeWeightSupplier.get();
 			edgeCopy.setWeight(edgeWeight);
 			edgeCopies.add(edgeCopy);
-		}	
+		}
 		return edgeCopies;
 	}
 
@@ -80,14 +81,14 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public P copyPath(int i) {
 		P pathCopy = pathSupplier.get();
 		pathCopy.set(paths.get(i).getSource(), paths.get(i).getTarget());
-		pathCopy.addAll(paths.get(i).subList(1, paths.get(i).size()));		
+		pathCopy.addAll(paths.get(i).subList(1, paths.get(i).size()));
 		return pathCopy;
 	}
 
 	public void addPath(P path) {
 		this.paths.add(path);
 	}
-	
+
 	public P addPath(V source, V target) {
 		P path = pathSupplier.get();
 		path.set(source, target);
@@ -102,7 +103,7 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public List<P> getPaths() {
 		return paths;
 	}
-	
+
 	public P getPath(int i) {
 		return this.paths.get(i);
 	}
@@ -141,7 +142,7 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public List<E> getEdges() {
 		return edges;
 	}
-	
+
 	public List<V> getVertices() {
 		return vertices;
 	}
@@ -181,11 +182,11 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 				return this.edges.get(adjacency.getFirst());
 		return null;
 	}
-	
+
 	public abstract List<E> getOutgoingEdgesOf(V vertex);
 
 	public abstract List<E> getEdgesOf(V vertex);
-	
+
 	public boolean containsEdge(V source, V target) {
 		if (source.getID() < sourceTargetAdjacencies.size())
 			for (Tuple<Integer, Integer> edgeVertexTuple : sourceTargetAdjacencies.get(source.getID()))
@@ -209,14 +210,14 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 			nextHops.add(vertices.get(adjacency.getSecond()));
 		return nextHops;
 	}
-	
+
 	public List<Tuple<E, V>> getNextPathsOf(V vertex) {
 		List<Tuple<E, V>> nextPaths = new ArrayList<Tuple<E, V>>();
 		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
 			nextPaths.add(new Tuple<E, V>(edges.get(adjacency.getSecond()), vertices.get(adjacency.getFirst())));
 		return nextPaths;
 	}
-	
+
 	public Iterator<V> vertexIterator() {
 		Iterator<V> iterator = new Iterator<V>() {
 			private int i = 0;
