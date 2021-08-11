@@ -11,9 +11,9 @@ import de.jgraphlib.util.Tuple;
 
 public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	private WeightedGraph<V, ?, E, W, ?> graph;
+	private WeightedGraph<V, ?, E, W> graph;
 
-	public RandomPath(WeightedGraph<V, ?, E, W, ?> graph) {
+	public RandomPath(WeightedGraph<V, ?, E, W> graph) {
 		this.graph = graph;
 	}
 

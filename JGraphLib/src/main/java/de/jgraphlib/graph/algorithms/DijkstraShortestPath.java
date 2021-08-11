@@ -13,9 +13,9 @@ import de.jgraphlib.util.Tuple;
 
 public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
-	protected WeightedGraph<V, ?, E, ?, ?> graph;
+	protected WeightedGraph<V, ?, E, ?> graph;
 
-	public DijkstraShortestPath(WeightedGraph<V, ?, E, ?, ?> graph) {
+	public DijkstraShortestPath(WeightedGraph<V, ?, E, ?> graph) {
 		this.graph = graph;
 	}
 

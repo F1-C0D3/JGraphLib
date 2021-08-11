@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
-import de.jgraphlib.graph.elements.EdgeWeight;
 import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
@@ -28,7 +26,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 	private VisualGraphStyle style;
 	private EdgePrinter<E,W> edgePrinter;
 
-	public VisualGraph(Weighted2DGraph<V, E, ?, ?> graph, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
+	public VisualGraph(Weighted2DGraph<V, E, ?> graph, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();
 		this.paths = new ArrayList<VisualPath>();
@@ -38,11 +36,27 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		buildVertices(graph);
 		
 		if(graph.isDirected())
-			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?, ?>) graph);
+			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?>) graph);
 		else
-			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?, ?>) graph);
+			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?>) graph);
 				
-		buildPaths(graph);		
+	}
+	
+	public VisualGraph(Weighted2DGraph<V, E, ?> graph, List<Path<V,E,W>> paths, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
+		this.vertices = new ArrayList<VisualVertex>();
+		this.edges = new ArrayList<VisualEdge>();
+		this.paths = new ArrayList<VisualPath>();
+		this.style = style;
+		this.edgePrinter = edgePrinter;
+		
+		buildVertices(graph);
+		
+		if(graph.isDirected())
+			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?>) graph);
+		else
+			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?>) graph);
+				
+		buildPaths(paths);		
 	}
 	
 	public void setEdgePrinter(EdgePrinter<E,W> edgePrinter) {
@@ -53,7 +67,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		return edgePrinter != null;
 	}
 
-	private void buildVertices(Weighted2DGraph<V, E, ?, ?> graph) {
+	private void buildVertices(Weighted2DGraph<V, E, ?> graph) {
 		for (Vertex<Position2D> vertex : graph.getVertices())
 			this.vertices.add(
 					new VisualVertex(
@@ -63,7 +77,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 							Integer.toString(vertex.getID())));
 	}
 
-	private void buildUndirectedEdges(UndirectedWeighted2DGraph<V, E, ?, ?> graph) {
+	private void buildUndirectedEdges(UndirectedWeighted2DGraph<V, E, ?> graph) {
 		for (E edge : graph.getEdges()) {
 
 			String edgeText = "";
@@ -84,7 +98,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		}
 	}
 
-	private void buildDirectedEdges(DirectedWeighted2DGraph<V, E, ?, ?> graph) {
+	private void buildDirectedEdges(DirectedWeighted2DGraph<V, E, ?> graph) {
 		for (E edge : graph.getEdges()) {
 
 			String edgeText = "";
@@ -138,11 +152,11 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		return this.style;
 	}
 
-	public void buildPaths(Weighted2DGraph<V, E, ?, ?> graph) {
+	public void buildPaths(List<Path<V,E,W>> paths) {
 		
 		Random random = new Random();
 		
-		for(Path<V,E,?> path : graph.getPaths()) 
+		for(Path<V,E,?> path : paths) 
 			buildPath(path, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));	
 	}
 	

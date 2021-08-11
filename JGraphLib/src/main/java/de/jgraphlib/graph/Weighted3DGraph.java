@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position3D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 
-public abstract class Weighted3DGraph<V extends Vertex<Position3D>, E extends WeightedEdge<W>, W, P extends Path<V,E,W>>
-		extends WeightedGraph<V, Position3D, E, W, P> {
+public abstract class Weighted3DGraph<V extends Vertex<Position3D>, E extends WeightedEdge<W>, W>
+		extends WeightedGraph<V, Position3D, E, W> {
 
-	public Weighted3DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier, Supplier<P> pathSupplier) {
-		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
+	public Weighted3DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier) {
+		super(vertexSupplier, edgeSupplier, edgeWeightSupplier);
 	}
 
 	public V addVertex(double x, double y, double z) {

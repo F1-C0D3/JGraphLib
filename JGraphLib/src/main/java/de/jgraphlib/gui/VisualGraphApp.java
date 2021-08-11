@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.WindowConstants;
@@ -46,28 +47,26 @@ import de.jgraphlib.util.treeparser.ValueType;
 public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
 	protected VisualGraphFrame<V, E, W> frame;
-	protected Weighted2DGraph<V, E, W, ?> graph;
+	protected Weighted2DGraph<V, E, W> graph;
 	private EdgeWeightSupplier<W> edgeWeightSupplier;
 	private TreeParser treeParser;
 	
-	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W> graph) {
 		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), null));
+		
+		if(graph.isDirected())
+			initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), null));
+		else
+			initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), null));
 	} 
 	
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W> graph, List<Path<V,E,W>> paths, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), null));
-	} 
-	
-	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), edgeWeightPrinter));
-	} 
-	
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), edgeWeightPrinter));
+		
+		if(graph.isDirected())
+			initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), edgeWeightPrinter));
+		else
+			initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), edgeWeightPrinter));
 	} 
 		
 	public void initializeFrame(VisualGraph<V, E, W> visualGraph){

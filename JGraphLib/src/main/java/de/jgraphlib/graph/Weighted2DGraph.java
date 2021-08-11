@@ -11,11 +11,11 @@ import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V,E,W>>
-		extends WeightedGraph<V, Position2D, E, W, P> {
+public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
+		extends WeightedGraph<V, Position2D, E, W> {
 
-	public Weighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier, Supplier<P> pathSupplier) {
-		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
+	public Weighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier) {
+		super(vertexSupplier, edgeSupplier, edgeWeightSupplier);
 	}
 		
 	public List<E> copyEdges() {	

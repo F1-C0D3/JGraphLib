@@ -2,7 +2,6 @@ package de.jgraphlib.examples.undirected;
 
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
-import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
@@ -19,12 +18,11 @@ public class UndirectedDensedGridGraph {
 
 		// @formatter:off
 
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
-				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
-						new Weighted2DGraphSupplier().getPathSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
 
 		GridGraphProperties properties = new GridGraphProperties(/* playground width */ 1024,
 				/* playground height */ 768, /* distance between vertices */ 100, /* length of edges */ 300);
