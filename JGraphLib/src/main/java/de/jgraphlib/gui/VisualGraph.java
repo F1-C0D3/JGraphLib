@@ -42,6 +42,23 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 				
 	}
 	
+	public VisualGraph(Weighted2DGraph<V, E, ?> graph, Path<V,E,W> path, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
+		this.vertices = new ArrayList<VisualVertex>();
+		this.edges = new ArrayList<VisualEdge>();
+		this.paths = new ArrayList<VisualPath>();
+		this.style = style;
+		this.edgePrinter = edgePrinter;
+		
+		buildVertices(graph);
+		
+		if(graph.isDirected())
+			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?>) graph);
+		else
+			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?>) graph);
+				
+		buildPath(path);		
+	}
+	
 	public VisualGraph(Weighted2DGraph<V, E, ?> graph, List<Path<V,E,W>> paths, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();

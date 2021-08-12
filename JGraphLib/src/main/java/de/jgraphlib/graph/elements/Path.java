@@ -28,7 +28,14 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		this.add(new Tuple<E,V>(null, source));
 	}
 	
+	public Path<V,E,W> copy() {
+		Path<V,E,W> pathCopy = new Path<V,E,W>(getSource(), getTarget());		
+		pathCopy.addAll(this.subList(1, this.size()));
+		return pathCopy;
+	}
+	
 	public void update(Path<V,E,W> path) {	
+		this.clear();
 		super.addAll(path.subList(1, path.size()));	
 	}
 	

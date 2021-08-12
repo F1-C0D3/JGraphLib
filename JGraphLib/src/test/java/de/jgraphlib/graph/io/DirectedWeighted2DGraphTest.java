@@ -64,7 +64,7 @@ public class DirectedWeighted2DGraphTest {
 
 		importer.importGraph(String.format("%s.xml", this.getClass().getName()));
 
-		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> app = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, null, null);
+		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> app = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
 		
 		System.out.println(graph.toString());
 		
