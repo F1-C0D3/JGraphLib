@@ -172,4 +172,8 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		}
 		return stringBuilder.toString();
 	}
+	
+	public Tuple<V,V> getSourceTargetTuple(){
+		return new Tuple<V,V>(getSource(), getTarget());	
+	}
 }

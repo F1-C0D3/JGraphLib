@@ -38,8 +38,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		if(graph.isDirected())
 			buildDirectedEdges((DirectedWeighted2DGraph<V, E, ?>) graph);
 		else
-			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?>) graph);
-				
+			buildUndirectedEdges((UndirectedWeighted2DGraph<V, E, ?>) graph);				
 	}
 	
 	public VisualGraph(Weighted2DGraph<V, E, ?> graph, Path<V,E,W> path, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
@@ -59,7 +58,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		buildPath(path);		
 	}
 	
-	public VisualGraph(Weighted2DGraph<V, E, ?> graph, List<Path<V,E,W>> paths, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
+	public  <P extends Path<V,E,W>> VisualGraph(Weighted2DGraph<V, E, ?> graph, List<P> paths, VisualGraphStyle style, EdgePrinter<E,W> edgePrinter) {
 		this.vertices = new ArrayList<VisualVertex>();
 		this.edges = new ArrayList<VisualEdge>();
 		this.paths = new ArrayList<VisualPath>();
@@ -169,11 +168,11 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		return this.style;
 	}
 
-	public void buildPaths(List<Path<V,E,W>> paths) {
+	public <P extends Path<V,E,W>> void buildPaths(List<P> paths) {
 		
 		Random random = new Random();
 		
-		for(Path<V,E,?> path : paths) 
+		for(P path : paths) 
 			buildPath(path, new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));	
 	}
 	
