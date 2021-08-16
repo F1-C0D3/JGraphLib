@@ -11,7 +11,7 @@ import de.jgraphlib.util.Tuple;
 public class SourceSinkGenerator<V extends Vertex<?>, E extends WeightedEdge<?>> {
 
 	
-	public SourceSinkGenerator(WeightedGraph<V,?,E,?> graph, int objectives) {
+	public SourceSinkGenerator(WeightedGraph<V,?,E,?, ?> graph, int objectives) {
 		
 	}
 	

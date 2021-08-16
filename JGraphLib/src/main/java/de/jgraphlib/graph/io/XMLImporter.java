@@ -27,11 +27,11 @@ import de.jgraphlib.util.Tuple;
 
 public class XMLImporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 
-	WeightedGraph<V, P, E, W> graph;
+	WeightedGraph<V, P, E, W, ?> graph;
 	VertexPositionMapper<P> vertexPositionMapper;
 	//EdgeWeightMapper<W> edgeWeightMapper;
 
-	public XMLImporter(WeightedGraph<V, P, E, W> graph, VertexPositionMapper<P> vertexPositionInterface /*,
+	public XMLImporter(WeightedGraph<V, P, E, W, ?> graph, VertexPositionMapper<P> vertexPositionInterface /*,
 			EdgeWeightMapper<W> edgeWeightInterface*/) {
 		this.graph = graph;
 		this.vertexPositionMapper = vertexPositionInterface;
@@ -129,11 +129,12 @@ public class XMLImporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 	public static void main(String args[]) {
 
 		// Empty graph
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
-				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
 
 		XMLImporter<Vertex<Position2D>, Position2D, WeightedEdge<EdgeDistance>, EdgeDistance> importer = new XMLImporter<Vertex<Position2D>, Position2D, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new VertextPosition2DMapper());

@@ -18,17 +18,17 @@ import de.jgraphlib.util.RandomNumbers;
 public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
 	protected Log log;
-	protected Weighted2DGraph<V, E, W> graph;
+	protected Weighted2DGraph<V, E, W, ?> graph;
 	protected EdgeWeightSupplier<W> edgeWeightSupplier;
 	protected RandomNumbers random;
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W> graph, RandomNumbers random) {
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;

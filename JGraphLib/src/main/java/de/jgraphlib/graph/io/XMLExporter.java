@@ -39,11 +39,11 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 
-	WeightedGraph<V, P, E, W> graph;
+	WeightedGraph<V, P, E, W, ?> graph;
 	VertexPositionMapper<P> vertexPositionMapper;
 	//EdgeWeightMapper<W> edgeWeightMapper;
 
-	public XMLExporter(WeightedGraph<V, P, E, W> graph, VertexPositionMapper<P> vertexPositionInterface /*,
+	public XMLExporter(WeightedGraph<V, P, E, W, ?> graph, VertexPositionMapper<P> vertexPositionInterface /*,
 			EdgeWeightMapper<W> edgeWeightInterface*/) {
 		this.graph = graph;
 		this.vertexPositionMapper = vertexPositionInterface;
@@ -170,11 +170,12 @@ public class XMLExporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 	/* TEST */
 	public static void main(String args[]) {
 
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
-				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
 
 		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier(), new RandomNumbers());

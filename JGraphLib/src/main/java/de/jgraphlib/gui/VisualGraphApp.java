@@ -43,27 +43,27 @@ import de.jgraphlib.util.treeparser.ValueType;
 public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
 	protected VisualGraphFrame<V, E, W> frame;
-	protected Weighted2DGraph<V, E, W> graph;
+	protected Weighted2DGraph<V, E, W, ?> graph;
 	private EdgeWeightSupplier<W> edgeWeightSupplier;
 	private TreeParser treeParser;
 	
-	public VisualGraphApp(Weighted2DGraph<V, E, W> graph) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph) {
 		this.graph = graph;	
 		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), null));
 
 	} 
 	
-	public VisualGraphApp(Weighted2DGraph<V, E, W> graph, EdgePrinter<E,W> edgeWeightPrinter) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
 		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
 	}
 
-	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W> graph, P path, EdgePrinter<E,W> edgeWeightPrinter) {
+	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, P path, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
 		initializeFrame(new VisualGraph<V, E, W>(graph, path, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
 	} 
 	
-	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W> graph, List<P> paths, EdgePrinter<E,W> edgeWeightPrinter) {
+	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, List<P> paths, EdgePrinter<E,W> edgeWeightPrinter) {
 		initializeFrame(new VisualGraph<V, E, W>(graph, paths, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));	
 	} 
 		

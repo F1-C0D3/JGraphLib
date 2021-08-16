@@ -1,3 +1,4 @@
+
 package de.jgraphlib.graph;
 
 import java.util.ArrayList;
@@ -7,29 +8,31 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
-		extends Weighted2DGraph<V, E, W> {
+public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V,E,W>>
+		extends Weighted2DGraph<V, E, W, P> {
 
-	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier) {
-		super(vertexSupplier, edgeSupplier, edgeWeightSupplier);
+	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier, Supplier<P> pathSupplier) {
+		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
 	}
 
-	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W> graph) {
-		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier);
+	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
+		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.vertices = graph.vertices;
 		this.edges = graph.copyEdges();
+		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;
 	}
 
-	public DirectedWeighted2DGraph<V, E, W> copy() {
-		return new DirectedWeighted2DGraph<V, E, W>(this);
+	public DirectedWeighted2DGraph<V, E, W, P> copy() {
+		return new DirectedWeighted2DGraph<V, E, W, P>(this);
 	}
 	
 	public E addEdge(V source, V target) {
