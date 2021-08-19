@@ -2,13 +2,13 @@ package de.jgraphlib.graph.generator;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.util.RandomNumbers;
 
 public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
@@ -18,7 +18,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 		super(graph, random);
 	}
 
-	public RandomGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public RandomGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);
 	}

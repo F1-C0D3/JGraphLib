@@ -12,6 +12,9 @@ import de.jgraphlib.util.Tuple;
 
 public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEdge<W>, W, P extends Path<V,E,W>> {
 
+	protected int ID = 0;
+	protected String name = String.format("WeightedGraph %d", ID);
+	
 	protected int vertexCount;
 	protected int edgeCount;
 
@@ -46,6 +49,22 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 		this.edgeAdjacencies = new ArrayList<Tuple<Integer, Integer>>();
 	}
 
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+	
+	public int getID() {
+		return this.ID;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
 	public abstract WeightedGraph<V, L, E, W, P> copy();
 	
 	protected List<P> copyPaths() {
