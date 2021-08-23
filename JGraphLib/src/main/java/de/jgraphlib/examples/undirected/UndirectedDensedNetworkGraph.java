@@ -21,12 +21,12 @@ public class UndirectedDensedNetworkGraph {
 
 		// @formatter:off
 
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
-				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
-
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
 		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
 				/* playground height */ 768, /* number of vertices */ new IntRange(100, 200),
 				/* distance between vertices */ new DoubleRange(50d, 100d), /* edge distance */ new DoubleRange(150,150));
