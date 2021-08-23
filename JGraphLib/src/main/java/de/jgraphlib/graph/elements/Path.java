@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Function;
 
 import de.jgraphlib.util.Tuple;
@@ -13,25 +14,26 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
-	
+
 	public Path(V source, V target) {
 		this.source = source;
 		this.target = target;
 		super.add(new Tuple<E, V>(null, source));
 	}
 
-	public Path() {}
-	
+	public Path() {
+	}
+
 	public void set(V source, V target) {
 		this.source = source;
 		this.target = target;
-		this.add(new Tuple<E,V>(null, source));
+		this.add(new Tuple<E, V>(null, source));
 	}
-	
-	public void update(Path<V,E,W> path) {	
-		super.addAll(path.subList(1, path.size()));	
+
+	public void update(Path<V, E, W> path) {
+		super.addAll(path.subList(1, path.size()));
 	}
-	
+
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
@@ -42,7 +44,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.clear();
 		super.add(new Tuple<E, V>(null, source));
 	}
-	
+
 	public void setSource(V source) {
 		this.source = source;
 	}
@@ -50,7 +52,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	public V getSource() {
 		return this.source;
 	}
-	
+
 	public void setTarget(V target) {
 		this.target = target;
 	}
@@ -68,7 +70,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 
 	public List<E> getEdges() {
 		List<E> edges = new ArrayList<E>();
-		for (int i=1 ; i<this.size(); i++)
+		for (int i = 1; i < this.size(); i++)
 			edges.add(get(i).getFirst());
 		return edges;
 	}
@@ -108,10 +110,14 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 
 	public boolean contains(E edge) {
-		if (edge != null && this.size() > 0)
-			for (Tuple<E, V> tuple : this)
-				if (edge.equals(tuple.getFirst()))
+		if (edge != null && this.size() > 0) {
+
+			for (E e : this.getEdges()) {
+
+				if (edge.equals(e))
 					return true;
+			}
+		}
 		return false;
 	}
 
