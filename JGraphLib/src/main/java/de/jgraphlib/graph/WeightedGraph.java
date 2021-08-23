@@ -186,6 +186,8 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public abstract List<E> getOutgoingEdgesOf(V vertex);
 
 	public abstract List<E> getEdgesOf(V vertex);
+	
+	public abstract List<E> getNeighboringEdgesOf(E edge);
 
 	public boolean containsEdge(V source, V target) {
 		if (source.getID() < sourceTargetAdjacencies.size())

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -79,18 +80,18 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 	}
 
 	public List<E> getEdgesOf(V vertex) {
-		
+
 		Set<E> edges = new HashSet<E>();
-		
+
 		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
 			edges.add(this.edges.get(adjacency.getFirst()));
-		
+
 		for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
 			edges.add(this.edges.get(adjacency.getFirst()));
-		
+
 		return List.copyOf(edges);
 	}
-	
+
 	public List<E> getOutgoingEdgesOf(V vertex) {
 		return getEdgesOf(vertex);
 	}
@@ -102,6 +103,22 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 
 	public Boolean isDirected() {
 		return false;
+	}
+
+	@Override
+	public List<E> getNeighboringEdgesOf(E edge) {
+
+		Set<E> neighboringEdges = new HashSet<E>();
+
+		Tuple<V, V> vertices = this.getVerticesOf(edge);
+
+		for (E e : this.getEdgesOf(vertices.getFirst()))
+			neighboringEdges.add(e);
+
+		for (E e : this.getEdgesOf(vertices.getSecond()))
+			neighboringEdges.add(e);
+
+		return neighboringEdges.stream().collect(Collectors.toList());
 	}
 
 }

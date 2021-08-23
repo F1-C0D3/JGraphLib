@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -16,7 +17,8 @@ import de.jgraphlib.util.Tuple;
 public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V, E, W>>
 		extends Weighted2DGraph<V, E, W, P> {
 
-	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,Supplier<P> pathSupplier) {
+	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,
+			Supplier<P> pathSupplier) {
 		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
 	}
 
@@ -33,7 +35,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph<V, E, W, P> copy() {
 		return new DirectedWeighted2DGraph<V, E, W, P>(this);
 	}
-	
+
 	public E addEdge(V source, V target) {
 
 		if (containsEdge(source, target))
@@ -46,15 +48,17 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		edge.setWeight(weight);
 		edges.add(edge);
 
-		super.sourceTargetAdjacencies.get(source.getID()).add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
-		super.targetSourceAdjacencies.get(target.getID()).add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
+		super.sourceTargetAdjacencies.get(source.getID())
+				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
+		super.targetSourceAdjacencies.get(target.getID())
+				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
 		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
 
 	public E addEdge(V source, V target, W weight) {
-		
+
 		if (containsEdge(source, target))
 			return null;
 
@@ -63,29 +67,34 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		edge.setWeight(weight);
 		edges.add(edge);
 
-		super.sourceTargetAdjacencies.get(source.getID()).add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
-		super.targetSourceAdjacencies.get(target.getID()).add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));	
+		super.sourceTargetAdjacencies.get(source.getID())
+				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
+		super.targetSourceAdjacencies.get(target.getID())
+				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
 		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
 
-	// Returns a list of vertices that are related to a vertex via incoming or outgoing edges
+	// Returns a list of vertices that are related to a vertex via incoming or
+	// outgoing edges
 	public List<V> getConnectedVertices(V vertex) {
 		Set<V> vertices = new HashSet<V>();
-		
-		// Gather all targets that are connected via an outgoing link with vertex (vertex -> ?)
+
+		// Gather all targets that are connected via an outgoing link with vertex
+		// (vertex -> ?)
 		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
 			vertices.add(getVertex(adjacency.getSecond()));
-		
-		// Gather all vertices that are connected via an incoming link with vertex (? -> vertex)
+
+		// Gather all vertices that are connected via an incoming link with vertex (? ->
+		// vertex)
 		for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
 			vertices.add(getVertex(adjacency.getSecond()));
 
 		return List.copyOf(vertices);
 	}
 
-	// Returns a list of incoming and outgoing edges related to a vertex 
+	// Returns a list of incoming and outgoing edges related to a vertex
 	public List<E> getEdgesOf(V vertex) {
 		Set<E> edges = new HashSet<E>();
 		edges.addAll(getOutgoingEdgesOf(vertex));
@@ -117,5 +126,21 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 	public Boolean isDirected() {
 		return true;
+	}
+
+	@Override
+	public List<E> getNeighboringEdgesOf(E edge) {
+
+		Set<E> neighboringEdges = new HashSet<E>();
+
+		Tuple<V, V> vertices = this.getVerticesOf(edge);
+
+		for (E e : this.getEdgesOf(vertices.getFirst()))
+			neighboringEdges.add(e);
+
+		for (E e : this.getEdgesOf(vertices.getSecond()))
+			neighboringEdges.add(e);
+
+		return neighboringEdges.stream().collect(Collectors.toList());
 	}
 }
