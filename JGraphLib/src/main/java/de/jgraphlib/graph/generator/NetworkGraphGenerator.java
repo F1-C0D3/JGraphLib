@@ -1,14 +1,12 @@
 package de.jgraphlib.graph.generator;
 
-import de.jgraphlib.graph.DirectedWeighted2DGraph;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
+import java.util.function.Supplier;
+
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
-import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.util.RandomNumbers;
 
@@ -19,11 +17,10 @@ public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends Weigh
 		super(graph, random);
 	}
 
-	public NetworkGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier, RandomNumbers random) {
+	public NetworkGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);
 	}
 	
-
 	public int generate(NetworkGraphProperties properties) {
 
 		int numberOfVertices = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max);

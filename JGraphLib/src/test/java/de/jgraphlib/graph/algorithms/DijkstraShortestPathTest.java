@@ -25,12 +25,11 @@ public class DijkstraShortestPathTest {
 
 		// @formatter:off
 
-		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
-				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+		UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
+				new UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
-						new Weighted2DGraphSupplier().getPathSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
 				/* playground height */ 768, /* number of vertices */ new IntRange(100, 200),
@@ -45,12 +44,12 @@ public class DijkstraShortestPathTest {
 			return w.getDistance();
 		};
 
-		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph);
+		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = 
+				new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
 
-		Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> shortestPath = dijkstraShortestPath
-				.compute(graph.getFirstVertex(), graph.getLastVertex(), metric);
+		dijkstraShortestPath.compute(graph.getFirstVertex(), graph.getLastVertex(), metric);
 
-		System.out.println(shortestPath.getCost(metric));
+		System.out.println(dijkstraShortestPath.toString());
+
 	}
 }

@@ -8,17 +8,14 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.WindowConstants;
 
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
-import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
-import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
-import de.jgraphlib.graph.DirectedWeighted2DGraph;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -50,24 +47,24 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	private EdgeWeightSupplier<W> edgeWeightSupplier;
 	private TreeParser treeParser;
 	
-	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), null));
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph) {
+		this.graph = graph;	
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), null));
+
 	} 
 	
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
 		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), null));
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
+	}
+
+	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, P path, EdgePrinter<E,W> edgeWeightPrinter) {
+		this.graph = graph;
+		initializeFrame(new VisualGraph<V, E, W>(graph, path, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
 	} 
 	
-	public VisualGraphApp(DirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(true), edgeWeightPrinter));
-	} 
-	
-	public VisualGraphApp(UndirectedWeighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(false), edgeWeightPrinter));
+	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, List<P> paths, EdgePrinter<E,W> edgeWeightPrinter) {
+		initializeFrame(new VisualGraph<V, E, W>(graph, paths, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));	
 	} 
 		
 	public void initializeFrame(VisualGraph<V, E, W> visualGraph){

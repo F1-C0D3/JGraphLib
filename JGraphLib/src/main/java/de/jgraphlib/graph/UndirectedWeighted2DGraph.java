@@ -13,7 +13,7 @@ import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V, E, W>>
+public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V,E,W>>
 		extends Weighted2DGraph<V, E, W, P> {
 
 	public UndirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier,
@@ -24,10 +24,8 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 	public UndirectedWeighted2DGraph(UndirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.edgeWeightSupplier = graph.edgeWeightSupplier;
-		this.pathSupplier = graph.pathSupplier;
 		this.vertices = graph.vertices;
 		this.edges = graph.copyEdges(); // deep copy edges
-		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;

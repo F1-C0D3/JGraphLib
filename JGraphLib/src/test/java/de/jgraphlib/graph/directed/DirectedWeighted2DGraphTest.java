@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
-import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
@@ -15,12 +14,11 @@ public class DirectedWeighted2DGraphTest {
 	@Test
 	public void TestFunction_getVerticesOf() {
 		
-		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
-				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
+				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
-						new Weighted2DGraphSupplier().getPathSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
 		
 		Vertex<Position2D> v1 = graph.addVertex(0d,0d);
 		Vertex<Position2D> v2 = graph.addVertex(0d,1d);
@@ -38,12 +36,11 @@ public class DirectedWeighted2DGraphTest {
 	@Test
 	public void TestFunction_getNextHopsOf() {
 		
-		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
-				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
+				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
-						new Weighted2DGraphSupplier().getPathSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
 		
 		Vertex<Position2D> v1 = graph.addVertex(0d,0d);
 		Vertex<Position2D> v2 = graph.addVertex(0d,0d);

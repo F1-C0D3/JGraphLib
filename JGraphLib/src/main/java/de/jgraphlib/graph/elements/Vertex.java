@@ -7,7 +7,7 @@ public class Vertex<P> {
 
 	public Vertex() {
 	}
-
+	
 	public Vertex(P position) {
 		this.position = position;
 	}

@@ -32,6 +32,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 
 	public void update(Path<V, E, W> path) {
 		super.addAll(path.subList(1, path.size()));
+
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 			edges.add(get(i).getFirst());
 		return edges;
 	}
-
+	
 	@Override
 	public Tuple<E, V> getFirst() {
 		if (this.get(0) != null)
@@ -94,7 +95,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 			return this.get(this.size() - 1).getSecond();
 		return null;
 	}
-
+	
 	public E getLastEdge() {
 		if (this.size() > 0)
 			return this.get(this.size() - 1).getFirst();
@@ -120,13 +121,13 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		}
 		return false;
 	}
-
+	
 	public Boolean isComplete() {
 		if (this.getLast() != null)
 			return this.getLast().getSecond().equals(target);
 		return false;
 	}
-
+	
 	public List<V> getUnvisitedVerticesOf(List<V> vertices) {
 		List<V> unvisitedVertices = new ArrayList<V>();
 		for (V vertex : vertices)
@@ -170,5 +171,9 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 				stringBuilder.append(next.getSecond().getID());
 		}
 		return stringBuilder.toString();
+	}
+	
+	public Tuple<V,V> getSourceTargetTuple(){
+		return new Tuple<V,V>(getSource(), getTarget());	
 	}
 }

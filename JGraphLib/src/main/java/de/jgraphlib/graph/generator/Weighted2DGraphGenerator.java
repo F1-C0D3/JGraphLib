@@ -1,6 +1,7 @@
 package de.jgraphlib.graph.generator;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
@@ -11,7 +12,6 @@ import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.util.Log;
 import de.jgraphlib.util.RandomNumbers;
 
@@ -19,7 +19,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 
 	protected Log log;
 	protected Weighted2DGraph<V, E, W, ?> graph;
-	protected EdgeWeightSupplier<W> edgeWeightSupplier;
+	protected Supplier<W> edgeWeightSupplier;
 	protected RandomNumbers random;
 
 	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
@@ -28,7 +28,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightSupplier<W> edgeWeightSupplier,
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,
 			RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
