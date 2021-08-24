@@ -30,12 +30,6 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		this.add(new Tuple<E, V>(null, source));
 	}
 
-	public void update(Path<V, E, W> path) {
-		super.addAll(path.subList(1, path.size()));
-
-	}
-<<<<<<< HEAD
-	
 	public void update(Path<V,E,W> path) {	
 		this.clear();
 		super.addAll(path.subList(1, path.size()));	
@@ -56,10 +50,6 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return removedItems;
 	}
 	
-	
-=======
-
->>>>>>> branch 'master' of https://github.com/eikeviehmann/JGraphLib.git
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);

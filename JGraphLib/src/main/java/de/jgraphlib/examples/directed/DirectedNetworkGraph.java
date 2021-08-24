@@ -30,11 +30,7 @@ public class DirectedNetworkGraph {
 
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
-<<<<<<< HEAD
 						new Weighted2DGraphSupplier().getVertexSupplier(),
-=======
-						new Weighted2DGraphSupplier().getVertexSupplier(), 
->>>>>>> branch 'master' of https://github.com/eikeviehmann/JGraphLib.git
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
 						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
 						new Weighted2DGraphSupplier().getPathSupplier());
