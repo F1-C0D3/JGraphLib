@@ -40,7 +40,7 @@ public class Weighted2DGraphSupplier {
 		}
 	}
 	
-	private class EdgeWeightSupplier implements Supplier<EdgeDistance> {
+	public class EdgeWeightSupplier implements Supplier<EdgeDistance> {
 		@Override
 		public EdgeDistance get() {
 			return new EdgeDistance();

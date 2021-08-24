@@ -1,4 +1,4 @@
-package de.jgraphlib.gui;
+package de.jgraphlib.gui.style;
 
 public enum ArrowLegStyle {
 	leftLegged,

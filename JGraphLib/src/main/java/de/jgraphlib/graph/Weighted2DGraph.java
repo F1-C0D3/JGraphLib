@@ -36,8 +36,7 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 	}
 
 	public double getDistance(Position2D p1, Position2D p2) {
-		double distance = Math.sqrt(Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2));
-		return distance;
+		return Math.sqrt(Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2));
 	}
 
 	public List<V> getVerticesInRadius(V source, double radius) {

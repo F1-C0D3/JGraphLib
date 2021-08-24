@@ -1,4 +1,4 @@
-package de.jgraphlib.gui;
+package de.jgraphlib.gui.printer;
 
 import de.jgraphlib.graph.elements.EdgeWeight;
 import de.jgraphlib.graph.elements.WeightedEdge;

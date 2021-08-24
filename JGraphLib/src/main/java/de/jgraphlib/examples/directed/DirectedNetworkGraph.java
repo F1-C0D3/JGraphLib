@@ -1,5 +1,8 @@
 package de.jgraphlib.examples.directed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.algorithms.RandomPath;
@@ -15,6 +18,8 @@ import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
+import de.jgraphlib.gui.printer.EdgeIDPrinter;
+import de.jgraphlib.gui.printer.EdgePrinter;
 import de.jgraphlib.util.RandomNumbers;
 
 public class DirectedNetworkGraph {
@@ -23,11 +28,12 @@ public class DirectedNetworkGraph {
 
 		// @formatter:off
 
-		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> graph = 
-				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
 						new Weighted2DGraphSupplier().getEdgeSupplier(),
-						new Weighted2DGraphSupplier().getEdgeWeightSupplier());
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(
 				/* playground width */ 1024,
@@ -44,8 +50,21 @@ public class DirectedNetworkGraph {
 		
 		generator.generate(properties);
 		
-		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
-						
+		RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = 
+				new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
+		
+		List<Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> paths = new ArrayList<Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>();
+	
+		RandomNumbers random = new RandomNumbers();
+		
+		for(int i=0; i<5; i++) {
+			paths.add(randomPath.compute(graph.getVertex(random.getRandom(0, graph.getVertices().size()-1)), random.getRandom(0, 10)));
+			System.out.println(paths.get(paths.size()-1));
+		}
+		
+		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = 
+				new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, paths, new EdgeIDPrinter());
+		
 		// @formatter:on
 	}
 }

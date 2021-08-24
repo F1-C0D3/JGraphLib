@@ -12,7 +12,7 @@ import de.jgraphlib.util.Tuple;
 public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 
 	private WeightedGraph<V, ?, E, W, ?> graph;
-
+	
 	public RandomPath(WeightedGraph<V, ?, E, W, ?> graph) {
 		this.graph = graph;
 	}
@@ -43,11 +43,14 @@ public class RandomPath<V extends Vertex<?>, E extends WeightedEdge<W>, W> {
 			List<V> nextHops = randomPath.getUnvisitedVerticesOf(graph.getNextHopsOf(randomPath.getLastVertex()));
 
 			if (!nextHops.isEmpty()) {
-				V nextHop = nextHops.get(new RandomNumbers().getRandom(0, nextHops.size()));
+				V nextHop = nextHops.get(new RandomNumbers().getRandom(0, nextHops.size()-1));
 				randomPath.add(new Tuple<E, V>(graph.getEdge(randomPath.getLastVertex(), nextHop), nextHop));
 			} else
 				return new Path<V, E, W>(source, null);
 		}
+		
+		randomPath.setTarget(randomPath.getLastVertex());
+		
 		return randomPath;
 	}
 }

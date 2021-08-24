@@ -1,4 +1,4 @@
-package de.jgraphlib.gui;
+package de.jgraphlib.gui.style;
 
 import java.awt.Color;
 
@@ -14,21 +14,17 @@ public class VisualGraphStyle {
 	private Color vertexBorderColor = Color.BLACK;
 
 	/* VisualEdge mark up */
-	private int edgeWidth = 2;
+	private int edgeLineWidth = 2;
 	private Color edgeColor = Color.BLACK;
 
+	private int visualEdgeTupleDistance = 2;
+	
 	/* VisualPath mark up */
-	private int pathWidth = 4;
+	private int visualPathLineWidth = 2;
+	private int visualPathLineDistance = 4;
 	
 	private boolean isDirected = false;
 
-	/*
-	 * private VisualEdgeTextBuilder<E,W> edgeTextBuilder;
-	 * 
-	 * public VisualGraphMarkUp(VisualEdgeTextBuilder<E,W> edgeTextBuilder) {
-	 * this.edgeTextBuilder = edgeTextBuilder; }
-	 */
-	
 	public VisualGraphStyle() {
 		this.isDirected = false;
 	}
@@ -52,8 +48,6 @@ public class VisualGraphStyle {
 	public Color getBackgroundColor() {
 		return this.backgroundColor;
 	}
-
-	/* Vertex mark up */
 
 	public void setVertexWidth(int vertexWidth) {
 		this.vertexWidth = vertexWidth;
@@ -87,22 +81,12 @@ public class VisualGraphStyle {
 		return this.vertexBorderColor;
 	}
 
-	/* Edge mark up */
-
-	/*
-	 * public VisualEdgeTextBuilder<E,W> getEdgeTextBuilder(){ return
-	 * this.edgeTextBuilder; }
-	 * 
-	 * public void setEdgeTextBuilder(VisualEdgeTextBuilder<E,W> edgeText) {
-	 * this.edgeTextBuilder = edgeText; }
-	 */
-
-	public void setEdgeWidth(Integer edgeWidth) {
-		this.edgeWidth = edgeWidth;
+	public void setEdgeLineWidth(int edgeLineWidth) {
+		this.edgeLineWidth = edgeLineWidth;
 	}
 
-	public Integer getEdgeWidth() {
-		return this.edgeWidth;
+	public int getEdgeLineWidth() {
+		return this.edgeLineWidth;
 	}
 
 	public void setEdgeColor(Color edgeColor) {
@@ -112,15 +96,23 @@ public class VisualGraphStyle {
 	public Color getEdgeColor() {
 		return this.edgeColor;
 	}
+	
+	public int getVisualEdgeTupleDistance() {
+		return visualEdgeTupleDistance;
+	}
+	
+	public int getVisualPathLineDistance() {
+		return this.visualPathLineDistance;
+	}
 
 	/* VisualPath mark up */
 
-	public void setPathWidth(Integer pathWidth) {
-		this.pathWidth = pathWidth;
+	public void setVisualPathLineWidth(int visualPathLineWidth) {
+		this.visualPathLineWidth = visualPathLineWidth;
 	}
 
-	public Integer getPathWidth() {
-		return this.pathWidth;
+	public int getVisualPathLineWidth() {
+		return this.visualPathLineWidth;
 	}
 
 }

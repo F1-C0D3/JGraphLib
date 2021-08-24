@@ -39,6 +39,22 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.addAll(path.subList(1, path.size()));	
 	}
 	
+	public List<Tuple<E,V>> cropUntil(V vertex) {
+		
+		List<Tuple<E,V>> removedItems = new ArrayList<Tuple<E,V>>();
+		
+		while(size() > 0) {
+			
+			if(getLast().getSecond().equals(vertex))
+				return removedItems;
+			else
+				removedItems.add(removeLast());
+		}
+		
+		return removedItems;
+	}
+	
+	
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
@@ -148,15 +164,16 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 
 	public Double getCost(Function<W, Double> metric) {
-		if (metric != null) {
-			Double cost = 0d;
-			for (Tuple<E, V> tuple : this)
-				if (tuple.getFirst() != null)
-					cost += metric.apply(tuple.getFirst().getWeight());
-			if (cost > 0)
-				return cost;
+	
+		for (Tuple<E, V> tuple : this) {
+			double cost = 0;
+			if (tuple.getFirst() != null) {
+				cost += metric.apply(tuple.getFirst().getWeight());
+			}
+			return cost;
 		}
-		return null;
+		
+		return Double.POSITIVE_INFINITY;
 	}
 
 	@Override

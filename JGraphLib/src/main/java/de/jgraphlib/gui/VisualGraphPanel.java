@@ -13,6 +13,8 @@ import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.swing.JFrame;
@@ -32,6 +34,8 @@ import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
+import de.jgraphlib.gui.style.ArrowLegStyle;
+import de.jgraphlib.gui.style.ArrowStyle;
 import de.jgraphlib.graph.generator.NetworkGraphGenerator;
 import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.maths.Line2D;
@@ -53,6 +57,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(3);
 	private static Stroke VERTEX_STROKE = new BasicStroke(0);
 	private static String header = "JGraphLib v1.0";
+	
+	private static List<Integer> paintedEdges;
 		
 	public VisualGraphPanel() {}
 
@@ -95,7 +101,6 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		Line2D xAxis = new Line2D(xAxisSource.x(), xAxisSource.y(), xAxisTarget.x(), xAxisTarget.y());	
 		g2.drawLine((int) xAxis.p1().x(), (int) xAxis.p1().y(), (int) xAxis.p2().x(), (int) xAxis.p2().y());	
-		//paintArrow(g2, xAxis, xAxisSource, xAxisTarget, 10);
 		
 		// Paint y-Axis-Line
 		Point2D yAxisSource = new Point2D(
@@ -107,7 +112,6 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		Line2D yAxis = new Line2D(yAxisSource.x(), yAxisSource.y(), yAxisTarget.x(), yAxisTarget.y());
 		g2.drawLine((int) yAxis.p1().x(), (int) yAxis.p1().y(), (int) yAxis.p2().x(), (int) yAxis.p2().y());	
-		//paintArrow(g2, yAxis, yAxisSource, yAxisTarget, 10);
 
 		// Paint x-/y-Axis steps
 		DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -154,8 +158,71 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 			g2.drawLine((int) yAxisPoint.x(), (int) yAxisPoint.y(), (int) (yAxisPoint.x() + (scope.x.max * xScale)), (int) (yAxisPoint.y()));
 		}
 	}
-
-	public void paintEdge(Graphics2D g2, VisualEdge edge) {
+	
+	public void paintVisualEdgeTuple(Graphics2D g2, VisualEdgeTuple visualEdgeTuple) {
+		
+		paintVisualEdge(g2, visualEdgeTuple.getFirst(), ArrowLegStyle.twoLegged);
+		paintVisualEdge(g2, visualEdgeTuple.getSecond(), ArrowLegStyle.twoLegged);	
+		
+	}
+	
+	public Point2D scale(Point2D point) {
+		return new Point2D((point.x()-scope.x.min) * xScale, (scope.y.max - point.y()) * yScale);
+	}
+	
+	public Point2D pad(Point2D point) {
+		return new Point2D(point.x() + padding, point.y() + padding);
+	}
+		
+	public void paintVisualEdge(Graphics2D g2, VisualEdge edge, ArrowLegStyle arrowLegStyle) {
+			
+		Point2D startPosition = pad(scale(edge.getStartPosition()));
+		Point2D targetPosition = pad(scale(edge.getTargetPosition()));
+		Line2D edgeLine = new Line2D(startPosition, targetPosition);		
+		g2.setStroke(EDGE_STROKE);
+		g2.setColor(Color.GRAY);
+		
+		// Paint edge line or visualPaths
+		if (edge.getVisualPaths().isEmpty()) {
+			g2.drawLine(edgeLine.x1().intValue(), edgeLine.y1().intValue(), edgeLine.x2().intValue(),edgeLine.y2().intValue());
+			paintArrow(g2, edgeLine, startPosition, targetPosition, new ArrowStyle(Color.GRAY, EDGE_STROKE, arrowLegStyle, 5));	
+		}
+		else
+			paintVisualPaths(g2, edge, edgeLine);
+		
+		// Paint edge text
+		Point2D textPosition = pad(scale(edge.getTextPosition()));
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		Rectangle2D stringBounds = fontMetrics.getStringBounds(edge.getText(), g2);
+		g2.setColor(edge.getColor());
+		g2.drawString(edge.getText(), (int) textPosition.x() - (int) stringBounds.getCenterX(), (int) textPosition.y() - (int) stringBounds.getCenterY());				
+	}
+	
+	public void paintVisualPaths(Graphics2D g2, VisualEdge edge, Line2D edgeLine) {
+			
+		VectorLine2D startPositionLine = new VectorLine2D(edgeLine.p1(), edgeLine.getPerpendicularSlope());
+		VectorLine2D targetPositionLine = new VectorLine2D(edgeLine.p2(), edgeLine.getPerpendicularSlope());
+		
+		int offset = getVisualGraph().getStyle().getVisualPathLineDistance();
+		
+		for(int i=0; i<edge.getVisualPaths().size(); i++) {		
+			Point2D pathStartPosition = startPositionLine.getPointInDistance(i*offset);
+			Point2D pathTargetPosition = targetPositionLine.getPointInDistance(i*offset);
+			
+			g2.setStroke(EDGE_PATH_STROKE);
+			g2.setColor(edge.getVisualPaths().get(i).getColor());
+			g2.drawLine((int) pathStartPosition.x(), (int) pathStartPosition.y(), (int) pathTargetPosition.x(),(int) pathTargetPosition.y());	
+			
+			paintArrow(
+					g2, 
+					edgeLine, 
+					pathStartPosition, 
+					pathTargetPosition, 
+					new ArrowStyle(edge.getVisualPaths().get(i).getColor(), EDGE_PATH_STROKE, ArrowLegStyle.twoLegged, 10));			
+		}
+	}
+	
+	public void paintVisualEdgeOld(Graphics2D g2, VisualEdge edge) {
 
 		// Build (scaled & padded) source and target position of edge
 		Point2D startPosition = new Point2D(
@@ -175,7 +242,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 			VectorLine2D startPositionLine = new VectorLine2D(
 					(edge.getStartPosition().x()-scope.x.min) * xScale + padding,
 					(scope.y.max - edge.getStartPosition().y()) * yScale + padding, edgeLine.getPerpendicularSlope());
-
+	
 			VectorLine2D targetPositionLine = new VectorLine2D(
 					(edge.getTargetPosition().x()-scope.x.min) * xScale + padding,
 					(scope.y.max - edge.getTargetPosition().y()) * yScale + padding, edgeLine.getPerpendicularSlope());
@@ -238,7 +305,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 	public void paintArrow(Graphics2D g2, Line2D line, Point2D startPosition, Point2D targetPosition, ArrowStyle arrowStyle) {
 
-		double shortSide = Math.sqrt(Math.pow(arrowLegLength, 2)/2);
+		double shortSide = Math.sqrt(Math.pow(arrowStyle.getLegLength(), 2)/2);
 		
 
 		/*		s 	: 	source (given)
@@ -344,19 +411,22 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 		g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 
-		if (graph.getVertices().isEmpty())
+		if (graph.getVisualVertices().isEmpty())
 			return;
 
 		this.xScale = ((double) getWidth() - 2 * padding) / (scope.x.max-scope.x.min);
 		this.yScale = ((double) getHeight() - 2 * padding) / (scope.y.max-scope.y.min);
-
+		
 		this.paintPlayground(g2);
 
-		for (VisualEdge edge : graph.getEdges())
-			this.paintEdge(g2, edge);
+		//for (VisualEdge edge : graph.getEdges())
+		//	this.paintEdge(g2, edge);
 
-		for (VisualVertex vertex : graph.getVertices())
-			this.paintVertex(g2, vertex);
+		for (VisualEdgeTuple visualEdgeTuple : graph.getVisualEdgeTuples())
+			paintVisualEdgeTuple(g2, visualEdgeTuple);
+		
+		for (VisualVertex vertex : graph.getVisualVertices())
+			paintVertex(g2, vertex);
 	}
 
 	private class Scope {
@@ -384,7 +454,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 		Scope scope = new Scope();
 
-		for (VisualVertex vertex : graph.getVertices()) {
+		for (VisualVertex vertex : graph.getVisualVertices()) {
 
 			if (!scope.isSet) {
 				scope.x = new Range(vertex.getPosition().x(), vertex.getPosition().x());
@@ -416,7 +486,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	}
 
 	public void addVisualPath(Path<V, E, ?> path) {
-		this.graph.buildPath(path);
+		//this.graph.buildPath(path);
 		this.repaint();
 	}
 }

@@ -16,6 +16,8 @@ import javax.swing.WindowConstants;
 import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
+import de.jgraphlib.gui.printer.EdgePrinter;
+import de.jgraphlib.gui.style.VisualGraphStyle;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;

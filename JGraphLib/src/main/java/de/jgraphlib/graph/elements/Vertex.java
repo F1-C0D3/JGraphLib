@@ -1,8 +1,9 @@
 package de.jgraphlib.graph.elements;
 
-public class Vertex<P> {
+public class Vertex<P>{
 
 	int ID;
+	String name = "";
 	P position;
 
 	public Vertex() {
@@ -11,6 +12,11 @@ public class Vertex<P> {
 	public Vertex(P position) {
 		this.position = position;
 	}
+	
+	public Vertex(P position, String name) {
+		this.position = position;
+		this.name = name;
+	}
 
 	public void setID(int ID) {
 		this.ID = ID;
@@ -18,6 +24,14 @@ public class Vertex<P> {
 
 	public int getID() {
 		return this.ID;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setPosition(P position) {

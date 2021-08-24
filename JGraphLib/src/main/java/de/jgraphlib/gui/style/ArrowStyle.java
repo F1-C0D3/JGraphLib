@@ -1,4 +1,4 @@
-package de.jgraphlib.gui;
+package de.jgraphlib.gui.style;
 
 import java.awt.Color;
 import java.awt.Stroke;
@@ -29,7 +29,7 @@ public class ArrowStyle {
 		return this.legStyle;
 	}
 	
-	public int legLength() {
+	public int getLegLength() {
 		return this.legLength;
 	}
 }
