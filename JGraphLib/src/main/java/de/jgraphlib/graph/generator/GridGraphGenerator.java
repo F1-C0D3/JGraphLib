@@ -38,6 +38,10 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				for (V target : verticesInRadius) {
 					graph.addEdge(target, newVertex);
 					graph.addEdge(newVertex, target);
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/eikeviehmann/JGraphLib.git
 				}
 			}
 
