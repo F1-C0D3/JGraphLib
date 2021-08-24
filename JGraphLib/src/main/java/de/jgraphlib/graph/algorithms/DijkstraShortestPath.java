@@ -19,11 +19,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 		this.graph = graph;
 	}
 
-
-	public DijkstraShortestPath() {
-		// TODO Auto-generated constructor stub
-	}
-
+	public DijkstraShortestPath() {}
 
 	public Path<V, E, W> compute(V source, V target, Function<W, Double> metric) {
 
@@ -54,9 +50,6 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 
 			for (V neig : graph.getNextHopsOf(current)) {
 
-				// double edgeDist = metric.apply(new Tuple<E, V>(graph.getEdge(current, neig),
-				// neig));
-
 				double edgeDist = metric.apply(graph.getEdge(current, neig).getWeight());
 
 				double oldPahtDist = predDist.get(neig.getID()).getSecond();
@@ -83,7 +76,10 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 				return sp;
 			}
 
-			copy.add(0, new Tuple<E, V>(graph.getEdge(t, pred), t));
+			// Dieser Fix hat mich locker 2 Stunden gekostet xD
+			//copy.add(0, new Tuple<E, V>(graph.getEdge(t, pred), t));
+			copy.add(0, new Tuple<E, V>(graph.getEdge(pred, t), t));
+
 			t = pred;
 		} while (t.getID() != sp.getSource().getID());
 
