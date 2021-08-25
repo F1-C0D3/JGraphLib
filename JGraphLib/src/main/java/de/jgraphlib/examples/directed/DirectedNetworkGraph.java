@@ -53,15 +53,11 @@ public class DirectedNetworkGraph {
 		
 		RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> randomPath = 
 				new RandomPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
-		
-		List<Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> paths = new ArrayList<Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>();
-	
+			
 		RandomNumbers random = new RandomNumbers();
 		
-		for(int i=0; i<5; i++) {
-			paths.add(randomPath.compute(graph.getVertex(random.getRandom(0, graph.getVertices().size()-1)), random.getRandom(0, 10)));
-			System.out.println(paths.get(paths.size()-1));
-		}
+		for(int i=0; i<5; i++) 
+			graph.addPath(randomPath.compute(graph.getVertex(random.getRandom(0, graph.getVertices().size()-1)), random.getRandom(0, 10)));
 		
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
