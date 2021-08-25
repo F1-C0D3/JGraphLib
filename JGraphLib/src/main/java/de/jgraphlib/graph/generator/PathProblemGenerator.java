@@ -38,10 +38,12 @@ public class PathProblemGenerator<V extends Vertex<?>, E extends WeightedEdge<W>
 			
 			int pathLength = randomNumbers.getRandom(pathProblemProperties.minLength, pathProblemProperties.maxLength);
 			
-			Path<V,E,W> path = randomPath.compute(source, pathLength);	
+			Path<V,E,W> path;
 
-			while(path.size() < pathLength)
-				path = randomPath.compute(source, pathLength);		
+			while((path = randomPath.compute(source, pathLength)).size() < pathLength) {
+				source = randomNode(graph);
+				path = randomPath.compute(source, pathLength);	
+			}
 			
 			P problem = pathSupplier.get();
 			

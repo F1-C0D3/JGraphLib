@@ -57,9 +57,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	private static BasicStroke EDGE_PATH_STROKE = new BasicStroke(3);
 	private static Stroke VERTEX_STROKE = new BasicStroke(0);
 	private static String header = "JGraphLib v1.0";
-	
-	private static List<Integer> paintedEdges;
-		
+			
 	public VisualGraphPanel() {}
 
 	public VisualGraphPanel(VisualGraph<V, E, W> graph) {
@@ -159,11 +157,9 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		}
 	}
 	
-	public void paintVisualEdgeTuple(Graphics2D g2, VisualEdgeTuple visualEdgeTuple) {
-		
+	public void paintVisualEdgeTuple(Graphics2D g2, VisualEdgeTuple visualEdgeTuple) {	
 		paintVisualEdge(g2, visualEdgeTuple.getFirst(), ArrowLegStyle.twoLegged);
-		paintVisualEdge(g2, visualEdgeTuple.getSecond(), ArrowLegStyle.twoLegged);	
-		
+		paintVisualEdge(g2, visualEdgeTuple.getSecond(), ArrowLegStyle.twoLegged);		
 	}
 	
 	public Point2D scale(Point2D point) {
@@ -212,13 +208,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 			g2.setStroke(EDGE_PATH_STROKE);
 			g2.setColor(edge.getVisualPaths().get(i).getColor());
 			g2.drawLine((int) pathStartPosition.x(), (int) pathStartPosition.y(), (int) pathTargetPosition.x(),(int) pathTargetPosition.y());	
-			
-			paintArrow(
-					g2, 
-					edgeLine, 
-					pathStartPosition, 
-					pathTargetPosition, 
-					new ArrowStyle(edge.getVisualPaths().get(i).getColor(), EDGE_PATH_STROKE, ArrowLegStyle.twoLegged, 10));			
+	
+			paintArrow(g2, edgeLine, pathStartPosition, pathTargetPosition, new ArrowStyle(edge.getVisualPaths().get(i).getColor(), EDGE_PATH_STROKE, ArrowLegStyle.twoLegged, 10));			
 		}
 	}
 	

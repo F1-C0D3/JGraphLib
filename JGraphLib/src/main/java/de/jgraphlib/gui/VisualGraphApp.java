@@ -17,6 +17,7 @@ import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.gui.printer.EdgePrinter;
+import de.jgraphlib.gui.printer.EdgeWeightPrinter;
 import de.jgraphlib.gui.style.VisualGraphStyle;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -42,7 +43,7 @@ import de.jgraphlib.util.treeparser.Value;
 import de.jgraphlib.util.treeparser.ValueOption;
 import de.jgraphlib.util.treeparser.ValueType;
 
-public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
+public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> implements Runnable {
 
 	protected VisualGraphFrame<V, E, W> frame;
 	protected Weighted2DGraph<V, E, W, ?> graph;
@@ -51,23 +52,21 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	
 	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph) {
 		this.graph = graph;	
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), null));
-
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected())));
 	} 
 	
-	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgeWeightPrinter) {
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, EdgePrinter<E,W> edgePrinter) {
 		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
-	}
-
-	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, P path, EdgePrinter<E,W> edgeWeightPrinter) {
-		this.graph = graph;
-		initializeFrame(new VisualGraph<V, E, W>(graph, path, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), edgePrinter));
 	} 
 	
-	public <P extends Path<V,E,W>> VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, List<P> paths, EdgePrinter<E,W> edgeWeightPrinter) {
-		initializeFrame(new VisualGraph<V, E, W>(graph, paths, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));	
+	public VisualGraphApp(Weighted2DGraph<V, E, W, ?> graph, EdgeWeightPrinter<W> edgeWeightPrinter) {
+		this.graph = graph;
+		initializeFrame(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(graph.isDirected()), edgeWeightPrinter));	
 	} 
+	
+	@Override
+	public void run() {}
 		
 	public void initializeFrame(VisualGraph<V, E, W> visualGraph){
 		frame = new VisualGraphFrame<V, E, W>(visualGraph);
@@ -77,11 +76,9 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true); 
-		
 		treeParser = new TreeParser();
 		treeParser.addOutputListener(this::acceptTreeParserOutput);
 		buildOptions(treeParser);
-		
 		frame.getTerminal().addInputListener(this::acceptTerminalCommand);
 		frame.getTerminal().setText("JGraphLib\n\n");
 	}
@@ -258,7 +255,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	private void createEmpty(Input input) {
 		graph.clear();
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
@@ -273,7 +270,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 		generator.generate(properties);
 
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
@@ -288,7 +285,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 		generator.generate(properties);
 
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
@@ -302,19 +299,19 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 		generator.generate(properties);
 
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
 	private void addVertex(Input input) {
 		graph.addVertex(input.DOUBLE.get(0), input.DOUBLE.get(1));
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
 	private void addEdge(Input input) {
 		graph.addEdge(graph.getVertex(input.INT.get(0)), graph.getVertex(input.INT.get(1)));
-		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle(), null));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
 	}
 
@@ -393,5 +390,4 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	private void exit(Input input) {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
-
 }

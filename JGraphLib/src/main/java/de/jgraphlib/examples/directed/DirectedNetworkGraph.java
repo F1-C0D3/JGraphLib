@@ -1,10 +1,12 @@
 package de.jgraphlib.examples.directed;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.algorithms.RandomPath;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -18,13 +20,12 @@ import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
-import de.jgraphlib.gui.printer.EdgeIDPrinter;
-import de.jgraphlib.gui.printer.EdgePrinter;
+import de.jgraphlib.gui.printer.WeightedEdgeIDPrinter;
 import de.jgraphlib.util.RandomNumbers;
 
 public class DirectedNetworkGraph {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
 		// @formatter:off
 
@@ -62,9 +63,9 @@ public class DirectedNetworkGraph {
 			System.out.println(paths.get(paths.size()-1));
 		}
 		
-		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> visualGraphApp = 
-				new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, paths, new EdgeIDPrinter());
-		
+		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+				graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
+
 		// @formatter:on
 	}
 }
