@@ -4,6 +4,7 @@ public class CorridorClusterGraphProperties extends GraphProperties{
 
 	int corridorQuantity;
 	int corridorDistance;
+	int corridorEdgeDistance;
 	CorridorDirection corridorDirection; 
 	
 	public CorridorClusterGraphProperties(
@@ -14,11 +15,13 @@ public class CorridorClusterGraphProperties extends GraphProperties{
 			DoubleRange edgeDistance,
 			int corridorQuantity,
 			int corridorDistance,
+			int corridorEdgeDistance,
 			CorridorDirection corridorDirection) {
 		
 		super(width, height, vertexCount, vertexDistance, null, edgeDistance);
 		this.corridorQuantity = corridorQuantity;
 		this.corridorDistance = corridorDistance;
+		this.corridorEdgeDistance = corridorEdgeDistance;
 		this.corridorDirection = corridorDirection;
 	}
 	
@@ -36,5 +39,9 @@ public class CorridorClusterGraphProperties extends GraphProperties{
 	
 	public CorridorDirection getCorridorDirection() {
 		return corridorDirection;
+	}
+	
+	public int getCorridorEdgeDistance() {
+		return corridorEdgeDistance;
 	}
 }

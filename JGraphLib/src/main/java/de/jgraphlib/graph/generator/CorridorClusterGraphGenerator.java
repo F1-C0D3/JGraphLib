@@ -1,9 +1,7 @@
 package de.jgraphlib.graph.generator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -84,27 +82,38 @@ extends Weighted2DGraphGenerator<V, E, W> {
 
 			//System.out.println(String.format("corridor %s", corridor.toString()));
 			
-			int vertexCount = 0;
+			int vertexCount = 0; int attempts = 0;
 			V currentVertex = graph.addVertex(
 					random.getRandom(corridor.x, corridor.x + corridor.width),
 					random.getRandom(corridor.y - corridor.height, corridor.y));
 			corridor.vertices.add(currentVertex);
 
-			while(vertexCount < corridorVertexQuantity) {
+			while(vertexCount < corridorVertexQuantity && attempts < 100) {
 				
+				attempts = 0;
 				Position2D Position2D = generateRandomPosition2D(currentVertex, properties.getVertexDistance());
-
-				if(corridor.isInside(Position2D.x(), Position2D.y()) && !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {
-					
+				
+				if(corridor.isInside(Position2D.x(), Position2D.y()) && !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {		
 					V newVertex = graph.addVertex(Position2D.x(), Position2D.y());
 					corridor.vertices.add(newVertex);							
 					vertexCount++;	
+					
+					// Connect new vertex with all vertices that are in edgeDistance of the same corridor
 					connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);	
+					
+					// Connect newVertex with all vertices that are in edgeCorridor distance of foreign corridors
+					connectVerticesInRadius(newVertex, properties.getCorridorEdgeDistance(), corridor.vertices);
+					
 					currentVertex = newVertex;
 					
 				} else
 					currentVertex = corridor.vertices.get(random.getRandom(0, corridor.vertices.size()-1));
-			}		
+				
+				attempts++;
+			}	
+			
+			if(attempts >= 100)
+				System.out.println("There just isnt enough space to place a new vertex! Increase the size of the playground or decrease number of vertices");
 		}
 	}
 		
