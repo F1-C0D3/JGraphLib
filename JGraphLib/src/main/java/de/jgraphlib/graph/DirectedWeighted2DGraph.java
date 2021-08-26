@@ -45,7 +45,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		E edge = edgeSupplier.get();
 		edge.setID(edgeCount++);
 		W weight = edgeWeightSupplier.get();
-		weight.setDistance(this.getDistance(source.getPosition(), target.getPosition()));
+		weight.setDistance(getDistance(source.getPosition(), target.getPosition()));
 		edge.setWeight(weight);
 		edges.add(edge);
 

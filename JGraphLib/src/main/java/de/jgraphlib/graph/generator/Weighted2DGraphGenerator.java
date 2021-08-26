@@ -44,15 +44,16 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		List<V> verticesInRadius = graph.getVerticesInRadius(vertex, radius);
 		for (V targetVertex : verticesInRadius)
 			if (edgeWeightSupplier()) {
-				W edgeWeight = edgeWeightSupplier.get();
-				edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
-				graph.addEdge(vertex, targetVertex, edgeWeight);
-				graph.addEdge(targetVertex, vertex, edgeWeight);
+				W edgeWeight1 = edgeWeightSupplier.get();
+				W edgeWeight2 = edgeWeightSupplier.get();
+				edgeWeight1.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
+				edgeWeight2.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
+				graph.addEdge(vertex, targetVertex, edgeWeight1);
+				graph.addEdge(targetVertex, vertex, edgeWeight2);
 			} else {
 				graph.addEdge(vertex, targetVertex);
 				graph.addEdge(targetVertex, vertex);
 			}
-
 	}
 
 	protected Position2D generateRandomPosition2D(V source, DoubleRange vertexDistanceRange) {
