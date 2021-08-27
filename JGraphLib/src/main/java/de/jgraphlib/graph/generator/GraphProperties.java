@@ -19,7 +19,7 @@ public class GraphProperties {
 		this.edgeCount = edgeCount;
 		this.edgeDistance = edgeDistance;
 	}
-
+	
 	public boolean isInside(double x, double y) {
 		return (x >= width.min && x <= width.max) && (y >= height.min && y <= height.max);
 	}

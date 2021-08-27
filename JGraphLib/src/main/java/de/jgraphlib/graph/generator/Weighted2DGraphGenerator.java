@@ -67,7 +67,11 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 			}	
 	}
 
-	protected Position2D generateRandomPosition2D(V source, DoubleRange vertexDistanceRange) {
+	protected Position2D getRandomPosition(Position2D source, double vertexDistance) {
+		return getRandomPosition(source, new DoubleRange(vertexDistance, vertexDistance));
+	}
+	
+	protected Position2D getRandomPosition(Position2D source, DoubleRange vertexDistanceRange) {
 
 		Position2D position2D = null;
 		double angleRadians, x, y;
@@ -79,28 +83,28 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 			angleRadians = Math.toRadians(angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() + y);
+			position2D = new Position2D(source.x() + x, source.y() + y);
 		}
 
 		if ((angleDegrees > 90d) && (angleDegrees <= 180d)) {
 			angleRadians = Math.toRadians(180 - angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() + y);
+			position2D = new Position2D(source.x() - x, source.y() + y);
 		}
 
 		if ((angleDegrees > 180d) && (angleDegrees <= 270d)) {
 			angleRadians = Math.toRadians(270 - angleDegrees);
 			x = distance * Math.sin(angleRadians);
 			y = distance * Math.cos(angleRadians);
-			position2D = new Position2D(source.getPosition().x() - x, source.getPosition().y() - y);
+			position2D = new Position2D(source.x() - x, source.y() - y);
 		}
 
 		if ((angleDegrees > 270d) && (angleDegrees <= 360d)) {
 			angleRadians = Math.toRadians(360 - angleDegrees);
 			x = distance * Math.cos(angleRadians);
 			y = distance * Math.sin(angleRadians);
-			position2D = new Position2D(source.getPosition().x() + x, source.getPosition().y() - y);
+			position2D = new Position2D(source.x() + x, source.y() - y);
 		}
 
 		return position2D;

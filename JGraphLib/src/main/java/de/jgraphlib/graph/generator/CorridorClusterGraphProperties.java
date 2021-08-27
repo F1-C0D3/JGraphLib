@@ -1,6 +1,6 @@
 package de.jgraphlib.graph.generator;
 
-public class CorridorClusterGraphProperties extends GraphProperties{
+public class CorridorClusterGraphProperties extends GraphProperties {
 
 	int corridorQuantity;
 	int corridorDistance;

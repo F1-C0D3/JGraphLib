@@ -75,7 +75,7 @@ extends Weighted2DGraphGenerator<V, E, W> {
 			break;
 		}	
 		
-		int corridorVertexQuantity = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max) / 3;
+		int corridorVertexQuantity = random.getRandom(properties.getVertexCount().min, properties.getVertexCount().max) / properties.getCorridorQuantity();
 			
 		// Generate nodes in each corridor
 		for(Corridor<V> corridor : corridors) {
@@ -90,8 +90,7 @@ extends Weighted2DGraphGenerator<V, E, W> {
 
 			while(vertexCount < corridorVertexQuantity && attempts < 100) {
 				
-				attempts = 0;
-				Position2D Position2D = generateRandomPosition2D(currentVertex, properties.getVertexDistance());
+				Position2D Position2D = getRandomPosition(currentVertex.getPosition(), properties.getVertexDistance());
 				
 				if(corridor.isInside(Position2D.x(), Position2D.y()) && !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {		
 					V newVertex = graph.addVertex(Position2D.x(), Position2D.y());
@@ -101,7 +100,7 @@ extends Weighted2DGraphGenerator<V, E, W> {
 					// Connect new vertex with all vertices that are in edgeDistance of the same corridor
 					connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);	
 					
-					// Connect newVertex with all vertices that are in edgeCorridor distance of foreign corridors
+					// Connect newVertex with all vertices that are in edgeCorridorDistance of foreign corridors
 					connectVerticesInRadius(newVertex, properties.getCorridorEdgeDistance(), corridor.vertices);
 					
 					currentVertex = newVertex;

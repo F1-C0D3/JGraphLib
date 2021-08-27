@@ -47,7 +47,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 
 			// Search a Position2D in GraphProperties which matches vertexDistance
 			// requirements
-			Position2D Position2D = generateRandomPosition2D(currentVertex, properties.getVertexDistance());
+			Position2D Position2D = getRandomPosition(currentVertex.getPosition(), properties.getVertexDistance());
 
 			if (properties.isInside(Position2D.x(), Position2D.y())
 					&& !graph.vertexInRadius(Position2D, properties.getVertexDistance().min)) {
