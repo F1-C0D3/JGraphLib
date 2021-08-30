@@ -21,8 +21,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.add(new Tuple<E, V>(null, source));
 	}
 
-	public Path() {
-	}
+	public Path() {}
 
 	public void set(V source, V target) {
 		this.source = source;
