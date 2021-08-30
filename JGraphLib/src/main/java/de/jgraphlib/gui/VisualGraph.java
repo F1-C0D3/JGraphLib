@@ -2,15 +2,14 @@ package de.jgraphlib.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
-import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -30,8 +29,8 @@ import de.jgraphlib.util.Tuple;
 
 public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance> {
 
-	private ArrayList<VisualVertex> visualVertices;
-	private VisualEdge[] visualEdges;
+	private TreeMap<Integer,VisualVertex> visualVertices;
+	private TreeMap<Integer,VisualEdge> visualEdges;
 	private ArrayList<VisualEdgeTuple> visualEdgeTuples;	
 	private ArrayList<VisualPath> paths;
 	private VisualGraphStyle style;
@@ -39,8 +38,8 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 	private EdgeWeightPrinter<W> edgeWeightPrinter;
 	
 	public VisualGraph(Weighted2DGraph<V, E, W, ?> graph, VisualGraphStyle style, EdgePrinter<E, W> edgePrinter) {
-		this.visualVertices = new ArrayList<VisualVertex>();
-		this.visualEdges = new VisualEdge[graph.getEdges().size()];
+		this.visualVertices = new TreeMap<Integer, VisualVertex>();
+		this.visualEdges = new TreeMap<Integer, VisualEdge>();
 		this.visualEdgeTuples = new ArrayList<VisualEdgeTuple>();
 		this.paths = new ArrayList<VisualPath>();
 		this.style = style;		
@@ -51,8 +50,8 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 	}
 	
 	public VisualGraph(Weighted2DGraph<V, E, W, ?> graph, VisualGraphStyle style, EdgeWeightPrinter<W> edgeWeightPrinter) {
-		this.visualVertices = new ArrayList<VisualVertex>();
-		this.visualEdges = new VisualEdge[graph.getEdges().size()];
+		this.visualVertices = new TreeMap<Integer, VisualVertex>();
+		this.visualEdges = new TreeMap<Integer, VisualEdge>();
 		this.visualEdgeTuples = new ArrayList<VisualEdgeTuple>();
 		this.paths = new ArrayList<VisualPath>();
 		this.style = style;		
@@ -76,16 +75,21 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 
 	private void createVisualVertices(Weighted2DGraph<V, E, ?, ?> graph) {
 		for (Vertex<Position2D> vertex : graph.getVertices())
-			visualVertices.add(new VisualVertex(vertex.getPosition(), style.getVertexBackgroundColor(),style.getVertexBorderColor(), Integer.toString(vertex.getID())));
+			visualVertices.put(
+					vertex.getID(),
+					new VisualVertex(
+							vertex.getPosition(), 
+							style.getVertexBackgroundColor(),style.getVertexBorderColor(), 
+							Integer.toString(vertex.getID())));
 	}
 
-	private void createUndirectedVisualEdges(UndirectedWeighted2DGraph<V, E, ?, ?> graph) {
+	/*private void createUndirectedVisualEdges(UndirectedWeighted2DGraph<V, E, ?, ?> graph) {
 		for (E edge : graph.getEdges()) {
 			Tuple<V, V> vertices = graph.getVerticesOf(edge);
 			Tuple<Point2D, Point2D> edgePosition = createVisualEdgePosition(vertices.getFirst().getPosition(), vertices.getSecond().getPosition());
 			//visualEdges.add(new VisualEdge(edgePosition.getFirst(), edgePosition.getSecond(), style.getEdgeColor(), createEdgeText(edge)));
 		}
-	}
+	}*/
 
 	private void createVisualEdges(DirectedWeighted2DGraph<V, E, ?, ?> graph) {
 
@@ -113,7 +117,7 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 									createEdgeTextPosition(source.getPosition(), target.getPosition(), EdgeTextPosition.top_center),
 									createEdgeText(edge)));
 					
-					visualEdges[edge.getID()] = visualEdgeTuple.getFirst();
+					visualEdges.put(edge.getID(), visualEdgeTuple.getFirst());
 					
 					E opposedEdge = graph.getEdge(target, source);
 					
@@ -126,18 +130,19 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 									createEdgeTextPosition(graph.getSourceOf(opposedEdge).getPosition(), graph.getTargetOf(opposedEdge).getPosition(), EdgeTextPosition.top_center),
 									createEdgeText(opposedEdge)));
 					
-					visualEdges[opposedEdge.getID()] = visualEdgeTuple.getSecond();
+					visualEdges.put(opposedEdge.getID(), visualEdgeTuple.getSecond());
 					
 					visualEdgeTuples.add(visualEdgeTuple);
 					
 					memorize.add(opposedEdge);
 				}
-				else visualEdges[edge.getID()] = 
+				else visualEdges.put(
+						edge.getID(),
 						new VisualEdge(
 								createVisualEdgePosition(source.getPosition(), target.getPosition()), 
 								style.getEdgeColor(), 
 								createEdgeTextPosition(source.getPosition(), target.getPosition(), EdgeTextPosition.center), 
-								createEdgeText(edge));
+								createEdgeText(edge)));
 			}
 		}
 	}
@@ -242,27 +247,21 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 
 		VisualPath visualPath = new VisualPath(color);
 
-		for (Tuple<E, V> edgeVertexTuple : path) {
-
-			E edge = edgeVertexTuple.getFirst();
-			V vertex = edgeVertexTuple.getSecond();
-
-			if (edge != null)
-				visualEdges[edge.getID()].addVisualPath(visualPath);
-
-			if (vertex != null)
-				visualVertices.get(vertex.getID()).addVisualPath(visualPath);
-		}
+		for (V vertex : path.getVertices()) 
+			visualVertices.get(vertex.getID()).addVisualPath(visualPath);
+		
+		for (E edge : path.getEdges()) 
+			visualEdges.get(edge.getID()).addVisualPath(visualPath);
 
 		this.paths.add(visualPath);
 	}
 
 	public List<VisualVertex> getVisualVertices() {
-		return visualVertices;
+		return new ArrayList<VisualVertex>(visualVertices.values());
 	}
 
 	public List<VisualEdge> getVisualEdges() {
-		return Arrays.asList(visualEdges);
+		return new ArrayList<VisualEdge>(visualEdges.values());
 	}
 	
 	public List<VisualEdgeTuple> getVisualEdgeTuples() {

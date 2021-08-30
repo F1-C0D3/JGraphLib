@@ -36,18 +36,18 @@ public class DirectedRandomClusterGraph {
 		ClusterGraphProperties properties = new ClusterGraphProperties(
 				/* playground width */ 			3000,
 				/* playground height */ 		3000, 
-				/* number of vertices */ 		new IntRange(30, 30),
+				/* number of vertices */ 		new IntRange(50, 50),
 				/* distance between vertices */ new DoubleRange(50d, 50d),
 				null, /* edge distance */ 			new DoubleRange(50d, 100d),
-				/* corridorQuantity*/ 			3,
-				/* corridorEdgeDistance*/ 		new DoubleRange(200d, 200d));
+				/* corridorQuantity*/ 			5,
+				/* corridorEdgeDistance*/ 		new DoubleRange(150d, 200d));
 
 		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
 				new RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph, new RandomNumbers());
 		
 		generator.generate(properties);
-		
+				
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistancePrinter<EdgeDistance>()));
 

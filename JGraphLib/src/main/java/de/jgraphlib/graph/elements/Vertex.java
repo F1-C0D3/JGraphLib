@@ -2,7 +2,7 @@ package de.jgraphlib.graph.elements;
 
 public class Vertex<P>{
 
-	int ID;
+	private int ID;
 	String name = "";
 	P position;
 

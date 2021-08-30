@@ -36,17 +36,13 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 	
 	public List<Tuple<E,V>> cropUntil(V vertex) {
-		
-		List<Tuple<E,V>> removedItems = new ArrayList<Tuple<E,V>>();
-		
-		while(size() > 0) {
-			
+		List<Tuple<E,V>> removedItems = new ArrayList<Tuple<E,V>>();	
+		while(size() > 0) {	
 			if(getLast().getSecond().equals(vertex))
 				return removedItems;
 			else
 				removedItems.add(removeLast());
-		}
-		
+		}	
 		return removedItems;
 	}
 	
@@ -89,6 +85,20 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		for (int i = 1; i < this.size(); i++)
 			edges.add(get(i).getFirst());
 		return edges;
+	}
+	
+	public E getIncomingEdge(V vertex) {
+		for(int i=0; i < size(); i++) 
+			if(get(i).getSecond().equals(vertex))
+				return get(i).getFirst();	
+		return null;
+	}
+	
+	public E getOutgoingEdgeOf(V vertex) {
+		for(int i=0; i < size(); i++) 
+			if(get(i).getSecond().equals(vertex))
+				return get(i+1).getFirst();	
+		return null;
 	}
 	
 	@Override

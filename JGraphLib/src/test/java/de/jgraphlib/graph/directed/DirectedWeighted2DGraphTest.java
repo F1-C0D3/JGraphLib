@@ -58,4 +58,28 @@ public class DirectedWeighted2DGraphTest {
 		System.out.println(graph.getOutgoingEdgesOf(v2));
 		System.out.println(graph.getIncomingEdgesOf(v2));
 	}	
+	
+	@Test
+	public void TestFunction_RemoveVertex() {
+		
+		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
+				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
+						new Weighted2DGraphSupplier().getVertexSupplier(), 
+						new Weighted2DGraphSupplier().getEdgeSupplier(),
+						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
+						new Weighted2DGraphSupplier().getPathSupplier());
+		
+		Vertex<Position2D> v1 = graph.addVertex(0d,0d);
+		Vertex<Position2D> v2 = graph.addVertex(0d,0d);
+		Vertex<Position2D> v3 = graph.addVertex(0d,0d);
+
+		WeightedEdge<EdgeDistance> a = graph.addEdge(v1,v2);
+		WeightedEdge<EdgeDistance> b = graph.addEdge(v2,v1);		
+		WeightedEdge<EdgeDistance> c = graph.addEdge(v1,v3);
+		WeightedEdge<EdgeDistance> d = graph.addEdge(v2,v3);
+	
+		System.out.println(graph);
+		graph.removeVertex(v1);
+		System.out.println(graph);	
+	}
 }

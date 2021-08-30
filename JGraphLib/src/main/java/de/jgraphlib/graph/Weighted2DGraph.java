@@ -2,6 +2,7 @@ package de.jgraphlib.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -39,51 +40,44 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 		return Math.sqrt(Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2));
 	}
 	
-	public List<V> getVerticesInRadius(Position2D position, double radius, List<V> blacklist) {
-		List<V> vertices = new ArrayList<V>();
-		for (V vertex : this.vertices)
-			if(!blacklist.contains(vertex))
-				if (getDistance(position, vertex.getPosition()) <= radius)
-					vertices.add(vertex);
-		return vertices;
-	}
-
 	public List<V> getVerticesInRadius(Position2D position, double radius) {
 		List<V> vertices = new ArrayList<V>();
-		for (V vertex : this.vertices)
-			if (getDistance(position, vertex.getPosition()) <= radius)
-				vertices.add(vertex);
-
+		for (Entry<Integer, V> entry : this.vertices.entrySet())
+			if (getDistance(position, entry.getValue().getPosition()) <= radius)
+				vertices.add(entry.getValue());
 		return vertices;
 	}
-	
+
 	public List<V> getVerticesInRadius(V source, double radius) {
-		List<V> vertices = new ArrayList<V>();
-		for (V vertex : this.vertices)
-			if (!vertex.equals(source) && getDistance(source.getPosition(), vertex.getPosition()) <= radius)
-				vertices.add(vertex);
-		return vertices;
+		return getVerticesInRadius(source.getPosition(), radius);
 	}
 
 	public Boolean vertexInRadius(Position2D position, double radius) {
-		for (V vertex : vertices)
-			if (getDistance(position, vertex.getPosition()) <= radius)
+		for (Entry<Integer, V> entry : this.vertices.entrySet()) {
+			if (getDistance(position, entry.getValue().getPosition()) <= radius)
 				return true;
+		}
 		return false;
 	}
 	
-	public Boolean vertexInRadius(Position2D position, double radius, List<V> blacklist) {
-		for (V vertex : vertices)
-			if(!blacklist.contains(vertex))
-				if (getDistance(position, vertex.getPosition()) <= radius)
+	public Boolean vertexInRadius(Position2D position, double radius, List<V> exceptions) {
+		for (Entry<Integer, V> entry : this.vertices.entrySet()) {
+			if(!exceptions.contains(entry.getValue()))
+				if (getDistance(position, entry.getValue().getPosition()) <= radius)
 					return true;
+		}
 		return false;
 	}
-
+	
+	public Boolean vertexInRadius(V source, double radius) {
+		return vertexInRadius(source.getPosition(), radius);
+	}
+	
 	/*
 	 * For Genetic Algorithm network representation Phenotype -> Genotype
 	 */
 	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
-		return this.sourceTargetAdjacencies;
+		//return this.sourceTargetAdjacencies;
+		return null;
 	}
 }

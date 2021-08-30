@@ -26,7 +26,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.vertices = graph.vertices;
-		this.edges = graph.copyEdges();
+		//this.edges = graph.copyEdges();
 		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
@@ -40,20 +40,20 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public E addEdge(V source, V target) {
 
 		if (containsEdge(source, target))
-			return null;
+			return getEdge(source, target);
 
 		E edge = edgeSupplier.get();
 		edge.setID(edgeCount++);
 		W weight = edgeWeightSupplier.get();
 		weight.setDistance(getDistance(source.getPosition(), target.getPosition()));
 		edge.setWeight(weight);
-		edges.add(edge);
+		edges.put(edge.getID(), edge);
 
 		super.sourceTargetAdjacencies.get(source.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
 		super.targetSourceAdjacencies.get(target.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
-		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
+		super.edgeAdjacencies.put(edge.getID(), new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
@@ -61,18 +61,18 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public E addEdge(V source, V target, W weight) {
 
 		if (containsEdge(source, target))
-			return null;
+			return getEdge(source, target);
 
 		E edge = edgeSupplier.get();
 		edge.setID(edgeCount++);
 		edge.setWeight(weight);
-		edges.add(edge);
+		edges.put(edge.getID(), edge);
 
 		super.sourceTargetAdjacencies.get(source.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
 		super.targetSourceAdjacencies.get(target.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
-		super.edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
+		super.edgeAdjacencies.put(edge.getID(), new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
