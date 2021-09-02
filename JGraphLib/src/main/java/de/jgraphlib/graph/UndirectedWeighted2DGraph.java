@@ -25,7 +25,7 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.edgeWeightSupplier = graph.edgeWeightSupplier;
 		this.vertices = graph.vertices;
-		this.edges = graph.copyEdges(); // deep copy edges
+		//this.edges = graph.copyEdges(); // deep copy edges
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
 		this.edgeAdjacencies = graph.edgeAdjacencies;
@@ -46,13 +46,13 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 		W weight = edgeWeightSupplier.get();
 		weight.setDistance(this.getDistance(source.getPosition(), target.getPosition()));
 		edge.setWeight(weight);
-		edges.add(edge);
+		edges.put(edge.getID(), edge);
 
 		super.sourceTargetAdjacencies.get(source.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
 		super.targetSourceAdjacencies.get(target.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
-		edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
+		edgeAdjacencies.put(edge.getID(),new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}
@@ -66,13 +66,13 @@ public class UndirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends W
 		edge.setID(edgeCount);
 		edgeCount++;
 		edge.setWeight(weight);
-		edges.add(edge);
+		edges.put(edge.getID(), edge);
 
 		super.sourceTargetAdjacencies.get(source.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), target.getID()));
 		super.targetSourceAdjacencies.get(target.getID())
 				.add(new Tuple<Integer, Integer>(edge.getID(), source.getID()));
-		edgeAdjacencies.add(new Tuple<Integer, Integer>(source.getID(), target.getID()));
+		edgeAdjacencies.put(edge.getID(), new Tuple<Integer, Integer>(source.getID(), target.getID()));
 
 		return edge;
 	}

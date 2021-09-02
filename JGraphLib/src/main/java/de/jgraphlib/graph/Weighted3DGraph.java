@@ -30,14 +30,14 @@ public abstract class Weighted3DGraph<V extends Vertex<Position3D>, E extends We
 
 	public List<Vertex<Position3D>> getVerticesInRadius(Vertex<Position3D> source, double radius) {
 		List<Vertex<Position3D>> vertices = new ArrayList<Vertex<Position3D>>();
-		for (Vertex<Position3D> vertex : this.vertices)
+		for (Vertex<Position3D> vertex : this.vertices.values())
 			if (!vertex.equals(source) && getDistance(source.getPosition(), vertex.getPosition()) <= radius)
 				vertices.add(vertex);
 		return vertices;
 	}
 
 	public Boolean vertexInRadius(Position3D position, double radius) {
-		for (Vertex<Position3D> vertex : this.vertices)
+		for (Vertex<Position3D> vertex : this.vertices.values())
 			if (getDistance(position, vertex.getPosition()) <= radius)
 				return true;
 		return false;

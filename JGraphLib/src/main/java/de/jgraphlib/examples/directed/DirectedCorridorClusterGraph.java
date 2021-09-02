@@ -33,14 +33,14 @@ public class DirectedCorridorClusterGraph {
 						new Weighted2DGraphSupplier().getPathSupplier());
 
 		CorridorClusterGraphProperties properties = new CorridorClusterGraphProperties(
-				/* playground width */ 			300,
-				/* playground height */ 		900, 
-				/* number of vertices */ 		new IntRange(120, 120),
-				/* distance between vertices */ new DoubleRange(50d, 100d),
+				/* playground width */ 			500,
+				/* playground height */ 		1000, 
+				/* number of vertices */ 		new IntRange(200, 200),
+				/* distance between vertices */ new DoubleRange(50d, 50d),
 				/* edge distance */ 			new DoubleRange(50d, 100d),
 				/* corridorQuantity*/ 			3,
-				/* corridorDistance*/ 			150,
-				/* corridorEdgeDistance*/ 		200,
+				/* corridorDistance*/ 			100,
+				/* corridorEdgeDistance*/ 		350,
 				/* corridorAlingment*/ 			CorridorClusterGraphProperties.CorridorDirection.HORIZONTAL);
 
 		CorridorClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
