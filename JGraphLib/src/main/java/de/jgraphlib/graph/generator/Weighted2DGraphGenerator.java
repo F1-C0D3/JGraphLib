@@ -28,7 +28,8 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,
+			RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.edgeWeightSupplier = edgeWeightSupplier;
@@ -44,33 +45,34 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		verticesInRadius.removeAll(blacklist);
 		connectVertexWithVertices(vertex, verticesInRadius);
 	}
-	
+
 	protected void connectVerticesInRadius(V vertex, double radius) {
 		List<V> verticesInRadius = graph.getVerticesInRadius(vertex, radius);
 		connectVertexWithVertices(vertex, verticesInRadius);
 	}
-	
+
 	private void connectVertexWithVertices(V vertex, List<V> vertices) {
-	
+
 		for (V targetVertex : vertices)
-			if (edgeWeightSupplier()) {
-				W edgeWeightEdgeAway = edgeWeightSupplier.get();
-				W edgeWeightEdgeWayBack = edgeWeightSupplier.get();
-				double distance = graph.getDistance(vertex.getPosition(), targetVertex.getPosition());
-				edgeWeightEdgeAway.setDistance(distance);
-				edgeWeightEdgeWayBack.setDistance(distance);
-				graph.addEdge(vertex, targetVertex, edgeWeightEdgeAway);
-				graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
-			} else {
-				graph.addEdge(vertex, targetVertex);
-				graph.addEdge(targetVertex, vertex);
-			}	
+			if (!targetVertex.equals(vertex))
+				if (edgeWeightSupplier()) {
+					W edgeWeightEdgeAway = edgeWeightSupplier.get();
+					W edgeWeightEdgeWayBack = edgeWeightSupplier.get();
+					double distance = graph.getDistance(vertex.getPosition(), targetVertex.getPosition());
+					edgeWeightEdgeAway.setDistance(distance);
+					edgeWeightEdgeWayBack.setDistance(distance);
+					graph.addEdge(vertex, targetVertex, edgeWeightEdgeAway);
+					graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
+				} else {
+					graph.addEdge(vertex, targetVertex);
+					graph.addEdge(targetVertex, vertex);
+				}
 	}
 
 	protected Position2D getRandomPosition(Position2D source, double vertexDistance) {
 		return getRandomPosition(source, new DoubleRange(vertexDistance, vertexDistance));
 	}
-	
+
 	protected Position2D getRandomPosition(Position2D source, DoubleRange vertexDistanceRange) {
 
 		Position2D position2D = null;
