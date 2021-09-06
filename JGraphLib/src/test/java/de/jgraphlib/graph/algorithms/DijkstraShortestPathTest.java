@@ -33,18 +33,20 @@ public class DijkstraShortestPathTest {
 						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
 						new Weighted2DGraphSupplier().getPathSupplier());
 
-		NetworkGraphProperties properties = new NetworkGraphProperties(/* playground width */ 1024,
-				/* playground height */ 768, /* number of vertices */ new IntRange(20, 20),
-				/* distance between vertices */ new DoubleRange(50d, 100d), /* edge distance */ new DoubleRange(100,100));
+		NetworkGraphProperties properties = new NetworkGraphProperties(
+				/* playground width */ 1024,
+				/* playground height */ 768, 
+				/* number of vertices */ new IntRange(20, 20),
+				/* distance between vertices */ new DoubleRange(50d, 100d), 
+				/* edge distance */ new DoubleRange(100,100));
 
-		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, new EdgeDistanceSupplier(), new RandomNumbers());
+		NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator 
+			= new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+					graph, new EdgeDistanceSupplier(), new RandomNumbers());
 
 		generator.generate(properties);
 
-		Function<EdgeDistance, Double> metric = (EdgeDistance w) -> {
-			return w.getDistance();
-		};
+		Function<WeightedEdge<EdgeDistance>, Double> metric = (WeightedEdge<EdgeDistance> w) -> {return w.getWeight().getDistance();};
 
 		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = 
 				new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);
