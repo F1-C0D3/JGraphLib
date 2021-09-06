@@ -2,6 +2,7 @@
 package de.jgraphlib.graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,7 @@ import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.util.Tuple;
 
-public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V,E,W>>
+public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance, P extends Path<V, E, W>>
 		extends Weighted2DGraph<V, E, W, P> {
 
 	public DirectedWeighted2DGraph(Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, Supplier<W> edgeWeightSupplier,
@@ -26,7 +27,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.vertices = graph.vertices;
-		//this.edges = graph.copyEdges();
+		// this.edges = graph.copyEdges();
 		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
@@ -65,7 +66,9 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 		E edge = edgeSupplier.get();
 		edge.setID(edgeCount++);
+		weight.setDistance(getDistance(source.getPosition(), target.getPosition()));
 		edge.setWeight(weight);
+
 		edges.put(edge.getID(), edge);
 
 		super.sourceTargetAdjacencies.get(source.getID())
@@ -143,5 +146,119 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 			neighboringEdges.add(e);
 
 		return neighboringEdges.stream().collect(Collectors.toList());
+	}
+
+	public List<V> getVertices(List<Integer> vertexIDs) {
+		
+		List<V> vertices = new ArrayList<V>();
+		
+		for(Integer vertexID : vertexIDs) 
+			vertices.add(getVertex(vertexID));
+		
+		return vertices;
+	}
+	
+	public P createPath(List<V> path) {
+
+		P p = pathSupplier.get();
+		p.set(path.get(0), path.get(path.size() - 1));
+
+		// Check if graph contains edge of vertex i ~> i+1 & add edge to path
+		for (int i = 0; i < path.size() - 1; i++)
+			if (containsEdge(path.get(i), path.get(i+1)))
+				p.add(new Tuple<E, V>(getEdge(path.get(i), path.get(i + 1)), path.get(i + 1)));
+			else
+				return null;
+
+		return p;
+	}
+
+	public void printAllPaths(V source, V target) {
+		List<P> paths = getAllPaths(source, target);
+		System.out.println(paths.size());
+		for (P path : paths)
+			System.out.println(path);
+	}
+
+	public void printAllPathsByVertexIDs(V source, V target) {
+		List<List<Integer>> paths = getAllPathsByVertexIDs(source, target);
+		System.out.println(paths.size());
+		for (List<Integer> path : paths)
+			System.out.println(path.toArray());
+	}
+
+	public List<List<Integer>> getAllPathsByVertexIDs(V source, V target) {
+
+		List<List<Integer>> paths = new ArrayList<List<Integer>>();
+
+		class DepthFirstTraversal {
+			void recursiveCall(Integer currentID, Integer targetID, Set<Integer> visitedVertices, List<Integer> path) {
+
+				if (currentID.equals(targetID)) {
+					paths.add(path);
+					return;
+				}
+
+				visitedVertices.add(currentID);
+
+				for (V nextHop : getNextHopsOf(getVertex(currentID))) {
+					if (!visitedVertices.contains(nextHop.getID())) {
+						path.add(getVertex(nextHop).getID());
+
+						List<Integer> newPath = new ArrayList<Integer>();
+						newPath.addAll(path);
+
+						recursiveCall(nextHop.getID(), target.getID(), visitedVertices, newPath);
+						path.remove(path.size() - 1);
+					}
+				}
+
+				visitedVertices.remove(currentID);
+			}
+		}
+
+		new DepthFirstTraversal().recursiveCall(source.getID(), target.getID(), new HashSet<Integer>(),
+				new ArrayList<Integer>(Arrays.asList(source.getID())));
+
+		return paths;
+	}
+
+	public List<P> getAllPaths(V source, V target) {
+
+		List<P> paths = new ArrayList<P>();
+		P path = pathSupplier.get();
+		path.set(source, target);
+
+		class DepthFirstTraversal {
+			void recursiveCall(V current, V target, Set<V> visitedVertices, P path) {
+
+				if (current.equals(target)) {
+					paths.add(path);
+					return;
+				}
+
+				visitedVertices.add(current);
+
+				for (V nextHop : getNextHopsOf(current)) {
+					if (!visitedVertices.contains(nextHop)) {
+						path.add(new Tuple<E, V>(getEdge(current, nextHop), nextHop));
+
+						P newPath = pathSupplier.get();
+						newPath.set(path.getSource(), path.getTarget());
+						newPath.update(path);
+
+						recursiveCall(nextHop, target, visitedVertices, newPath);
+
+						path.removeLast();
+					}
+				}
+
+				visitedVertices.remove(current);
+			}
+		}
+
+		new DepthFirstTraversal().recursiveCall(source, target, new HashSet<V>(), path);
+
+		return paths;
 	}
 }

@@ -39,8 +39,8 @@ public class DirectedRandomClusterGraph {
 				/* number of vertices */ 		new IntRange(50, 50),
 				/* distance between vertices */ new DoubleRange(50d, 50d),
 				null, /* edge distance */ 			new DoubleRange(50d, 100d),
-				/* corridorQuantity*/ 			5,
-				/* corridorEdgeDistance*/ 		new DoubleRange(150d, 200d));
+				/* corridorQuantity*/ 			10,
+				/* corridorEdgeDistance*/ 		new DoubleRange(250d, 300d));
 
 		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
 				new RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
@@ -52,6 +52,5 @@ public class DirectedRandomClusterGraph {
 				graph, new EdgeDistancePrinter<EdgeDistance>()));
 
 		// @formatter:on
-	}
-	
+	}	
 }

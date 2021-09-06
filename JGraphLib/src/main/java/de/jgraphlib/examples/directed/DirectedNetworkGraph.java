@@ -1,8 +1,6 @@
 package de.jgraphlib.examples.directed;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -39,7 +37,7 @@ public class DirectedNetworkGraph {
 		NetworkGraphProperties properties = new NetworkGraphProperties(
 				/* playground width */ 1024,
 				/* playground height */ 768, 
-				/* number of vertices */ new IntRange(100, 200),
+				/* number of vertices */ new IntRange(20, 20),
 				/* distance between vertices */ new DoubleRange(50d, 100d),
 				/* edge distance */ new DoubleRange(100, 100));
 
@@ -62,6 +60,8 @@ public class DirectedNetworkGraph {
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
 
+		graph.printAllPathsByVertexIDs(graph.getFirstVertex(), graph.getLastVertex());
+		
 		// @formatter:on
 	}
 }
