@@ -3,6 +3,7 @@ package de.jgraphlib.maths;
 import java.text.DecimalFormat;
 
 import de.jgraphlib.graph.elements.Position2D;
+import de.jgraphlib.util.Tuple;
 
 public class Line2D {
 
@@ -83,7 +84,15 @@ public class Line2D {
 	public Point2D getCenter() {
 		return new Point2D((p1.x() + p2.x())/2, (p1.y() + p2.y())/2);
 	}
-
+	
+	public double getY(double x) {
+		return ( m * x ) + b;
+	}
+	
+	public double getX(double y) {
+		return ( y - b ) / m;
+	}
+	
 	@Override
 	public String toString() {
 		DecimalFormat decimalFormat = new DecimalFormat("#.00");
