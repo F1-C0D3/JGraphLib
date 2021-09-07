@@ -46,7 +46,7 @@ public class DijkstraShortestPathTest {
 
 		generator.generate(properties);
 
-		Function<WeightedEdge<EdgeDistance>, Double> metric = (WeightedEdge<EdgeDistance> w) -> {return w.getWeight().getDistance();};
+		Function<EdgeDistance, Double> metric = (EdgeDistance w) -> {return w.getDistance();};
 
 		DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> dijkstraShortestPath = 
 				new DijkstraShortestPath<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph);

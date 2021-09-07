@@ -21,7 +21,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 
 	public DijkstraShortestPath() {}
 
-	public Path<V, E, W> compute(V source, V target, Function<E, Double> metric) {
+	public Path<V, E, W> compute(V source, V target, Function<W, Double> metric) {
 
 		/* Initializaton */
 		V current = source;
@@ -50,7 +50,7 @@ public class DijkstraShortestPath<V extends Vertex<?>, E extends WeightedEdge<W>
 
 			for (V neig : graph.getNextHopsOf(current)) {
 
-				double edgeDist = metric.apply(graph.getEdge(current, neig));
+				double edgeDist = metric.apply(graph.getEdge(current, neig).getWeight());
 
 				double oldPahtDist = predDist.get(neig.getID()).getSecond();
 				double altPathDist = edgeDist + predDist.get(current.getID()).getSecond();
