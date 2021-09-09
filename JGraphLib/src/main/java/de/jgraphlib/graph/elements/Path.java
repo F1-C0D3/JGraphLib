@@ -45,7 +45,6 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return removedItems;
 	}
 
-	
 	@Override
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
@@ -87,6 +86,20 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return edges;
 	}
 	
+	public List<Tuple<V,E /*->*/>> getOutgoingTransitions(){
+		List<Tuple<V,E>> outgoingTransitions = new ArrayList<Tuple<V,E>>();
+		
+		for(int i=0; i < size()-1; i++) 
+			outgoingTransitions.add(new Tuple<V,E>(get(i).getSecond(), get(i+1).getFirst()));
+		
+		return outgoingTransitions;
+	}
+	
+	public List<Tuple<E/*->*/,V>> getIngoingTransitions(){
+		return this;			
+	}
+	
+	
 	public E getIncomingEdge(V vertex) {
 		for(int i=0; i < size(); i++) 
 			if(get(i).getSecond().equals(vertex))
@@ -95,7 +108,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 	
 	public E getOutgoingEdgeOf(V vertex) {
-		for(int i=0; i < size(); i++) 
+		for(int i=0; i < size()-1; i++) 
 			if(get(i).getSecond().equals(vertex))
 				return get(i+1).getFirst();	
 		return null;
