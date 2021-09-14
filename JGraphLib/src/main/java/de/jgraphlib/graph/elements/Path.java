@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.function.Function;
 
 import de.jgraphlib.util.Tuple;
 
 public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends LinkedList<Tuple<E, V>> {
 
-	private static final long serialVersionUID = 1L;
 	protected V source;
 	protected V target;
 
@@ -21,7 +19,8 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		super.add(new Tuple<E, V>(null, source));
 	}
 
-	public Path() {}
+	public Path() {
+	}
 
 	public void set(V source, V target) {
 		this.source = source;
@@ -29,29 +28,30 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		this.add(new Tuple<E, V>(null, source));
 	}
 
-	public void update(Path<V,E,W> path) {	
+	public void update(Path<V, E, W> path) {
 		this.clear();
-		super.addAll(path.subList(1, path.size()));	
+		super.addAll(path.subList(1, path.size()));
 	}
-	
-	public List<Tuple<E,V>> cropUntil(V vertex) {
-		List<Tuple<E,V>> removedItems = new ArrayList<Tuple<E,V>>();	
-		while(size() > 0) {	
-			if(getLast().getSecond().equals(vertex))
+
+	public List<Tuple<E, V>> cropUntil(V vertex) {
+		List<Tuple<E, V>> removedItems = new ArrayList<Tuple<E, V>>();
+		while (size() > 0) {
+			if (getLast().getSecond().equals(vertex))
 				return removedItems;
 			else
 				removedItems.add(removeLast());
-		}	
+		}
 		return removedItems;
 	}
 
-	
-	@Override
+	public boolean add(E edge, V vertex) {
+		return super.add(new Tuple<E, V>(edge, vertex));
+	}
+
 	public boolean add(Tuple<E, V> tuple) {
 		return super.add(tuple);
 	}
 
-	@Override
 	public void clear() {
 		super.clear();
 		super.add(new Tuple<E, V>(null, source));
@@ -86,29 +86,27 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 			edges.add(get(i).getFirst());
 		return edges;
 	}
-	
+
 	public E getIncomingEdge(V vertex) {
-		for(int i=0; i < size(); i++) 
-			if(get(i).getSecond().equals(vertex))
-				return get(i).getFirst();	
+		for (int i = 0; i < size(); i++)
+			if (get(i).getSecond().equals(vertex))
+				return get(i).getFirst();
 		return null;
 	}
-	
+
 	public E getOutgoingEdgeOf(V vertex) {
-		for(int i=0; i < size(); i++) 
-			if(get(i).getSecond().equals(vertex))
-				return get(i+1).getFirst();	
+		for (int i = 0; i < size() - 1; i++)
+			if (get(i).getSecond().equals(vertex))
+				return get(i + 1).getFirst();
 		return null;
 	}
-	
-	@Override
+
 	public Tuple<E, V> getFirst() {
 		if (this.get(0) != null)
 			return this.get(0);
 		return null;
 	}
 
-	@Override
 	public Tuple<E, V> getLast() {
 		if (this.size() > 0)
 			return this.get(this.size() - 1);
@@ -120,7 +118,7 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 			return this.get(this.size() - 1).getSecond();
 		return null;
 	}
-	
+
 	public E getLastEdge() {
 		if (this.size() > 0)
 			return this.get(this.size() - 1).getFirst();
@@ -136,23 +134,19 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	}
 
 	public boolean contains(E edge) {
-		if (edge != null && this.size() > 0) {
-
-			for (E e : this.getEdges()) {
-
+		if (edge != null && this.size() > 0)
+			for (E e : this.getEdges())
 				if (edge.equals(e))
 					return true;
-			}
-		}
 		return false;
 	}
-	
+
 	public Boolean isComplete() {
 		if (this.getLast() != null)
 			return this.getLast().getSecond().equals(target);
 		return false;
 	}
-	
+
 	public List<V> getUnvisitedVerticesOf(List<V> vertices) {
 		List<V> unvisitedVertices = new ArrayList<V>();
 		for (V vertex : vertices)
@@ -172,34 +166,46 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return true;
 	}
 
-	public Double getCost(Function<W, Double> metric) {
-	
+	public Double getCost(Function<E, Double> metric) {
+
 		for (Tuple<E, V> tuple : this) {
 			double cost = 0;
 			if (tuple.getFirst() != null) {
-				cost += metric.apply(tuple.getFirst().getWeight());
+				cost += metric.apply(tuple.getFirst());
 			}
 			return cost;
 		}
-		
+
 		return Double.POSITIVE_INFINITY;
 	}
 
+	/*
+	 * @Override public String toString() { StringBuilder stringBuilder = new
+	 * StringBuilder(); Iterator<Tuple<E, V>> iterator = this.iterator(); while
+	 * (iterator.hasNext()) { Tuple<E, V> next = iterator.next(); if
+	 * (iterator.hasNext())
+	 * stringBuilder.append(next.getSecond().getID()).append(", "); else
+	 * stringBuilder.append(next.getSecond().getID()); } return
+	 * stringBuilder.toString(); }
+	 */
+
 	@Override
 	public String toString() {
+
 		StringBuilder stringBuilder = new StringBuilder();
-		Iterator<Tuple<E, V>> iterator = this.iterator();
-		while (iterator.hasNext()) {
-			Tuple<E, V> next = iterator.next();
-			if (iterator.hasNext())
-				stringBuilder.append(next.getSecond().getID()).append(", ");
+
+		for (int i = 0; i < getVertices().size(); i++) {
+			if (i > 0)
+				stringBuilder
+						.append(String.format("-%d-[%d]", getEdges().get(i - 1).getID(), getVertices().get(i).getID()));
 			else
-				stringBuilder.append(next.getSecond().getID());
+				stringBuilder.append(String.format("[%d]", getVertices().get(i).getID()));
 		}
+
 		return stringBuilder.toString();
 	}
-	
-	public Tuple<V,V> getSourceTargetTuple(){
-		return new Tuple<V,V>(getSource(), getTarget());	
+
+	public Tuple<V, V> getSourceTargetTuple() {
+		return new Tuple<V, V>(getSource(), getTarget());
 	}
 }
