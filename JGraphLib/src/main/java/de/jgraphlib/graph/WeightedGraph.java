@@ -245,6 +245,15 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 		return nextPaths;
 	}
 
+	
+
+	public TreeMap<Integer,ArrayList<Tuple<Integer, Integer>>> getSourceTargetAdjacencies() {
+		return this.sourceTargetAdjacencies;
+	}
+	
+	public TreeMap<Integer,ArrayList<Tuple<Integer, Integer>>> getTargetSourceAdjacencies() {
+		return this.sourceTargetAdjacencies;
+	}
 	public Iterator<V> vertexIterator() {
 		Iterator<V> iterator = new Iterator<V>() {
 			private int i = 0;

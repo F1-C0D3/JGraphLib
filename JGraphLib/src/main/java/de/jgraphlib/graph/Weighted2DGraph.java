@@ -3,6 +3,7 @@ package de.jgraphlib.graph;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.function.Supplier;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -72,12 +73,5 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 	public Boolean vertexInRadius(V source, double radius) {
 		return vertexInRadius(source.getPosition(), radius);
 	}
-	
-	/*
-	 * For Genetic Algorithm network representation Phenotype -> Genotype
-	 */
-	public List<ArrayList<Tuple<Integer, Integer>>> getVertexAdjacencies() {
-		//return this.sourceTargetAdjacencies;
-		return null;
-	}
+
 }
