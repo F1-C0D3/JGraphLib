@@ -16,6 +16,10 @@ public class RandomNumbers {
 		intRandom = new Random(seed);
 		doubleRandom = new Random(seed);
 	}
+	
+	public Random getDoubleRandom() {
+		return doubleRandom;
+	}
 
 	public RandomNumbers() {
 		intRandom = new Random();
