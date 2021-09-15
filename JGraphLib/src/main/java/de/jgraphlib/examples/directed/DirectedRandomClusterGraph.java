@@ -34,12 +34,12 @@ public class DirectedRandomClusterGraph {
 						new Weighted2DGraphSupplier().getPathSupplier());
 
 		ClusterGraphProperties properties = new ClusterGraphProperties(
-				/* playground width */ 			3000,
-				/* playground height */ 		3000, 
+				/* playground width */ 			1024,
+				/* playground height */ 		768, 
 				/* number of vertices */ 		new IntRange(50, 50),
 				/* distance between vertices */ new DoubleRange(50d, 50d),
 				null, /* edge distance */ 			new DoubleRange(50d, 100d),
-				/* corridorQuantity*/ 			10,
+				/* corridorQuantity*/ 			5,
 				/* corridorEdgeDistance*/ 		new DoubleRange(250d, 300d));
 
 		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 

@@ -98,7 +98,7 @@ public class RandomGraphGenerator<V extends Vertex<Position2D>, E extends Weight
 		if (verticesInRadius.size() > 0) {
 
 			// (3) Select n vertices randomly from vertex environment
-			List<V> randomVertices = random.selectNrandomOfM(verticesInRadius, edgeCount, new Random());
+			List<V> randomVertices = random.selectNrandomOfM(verticesInRadius, edgeCount);
 
 			// (4) Add edges
 			for (V target : randomVertices)

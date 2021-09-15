@@ -7,19 +7,25 @@ import java.util.Random;
 
 public class RandomNumbers {
 
+	long seed;
 	private static Random intRandom;
 	private static Random doubleRandom;
-
 	private static RandomNumbers randomNumbers;
 
-	public RandomNumbers(int seed) {
+	public RandomNumbers(long seed) {
+		this.seed = seed;
 		intRandom = new Random(seed);
 		doubleRandom = new Random(seed);
 	}
 
 	public RandomNumbers() {
-		intRandom = new Random();
-		doubleRandom = new Random();
+		this.seed = System.nanoTime();
+		intRandom = new Random(seed);
+		doubleRandom = new Random(seed);
+	}
+	
+	public long getSeed() {
+		return seed;
 	}
 
 	final static public RandomNumbers getInstance(int seed) {
@@ -49,7 +55,7 @@ public class RandomNumbers {
 		return min + (max - min) * doubleRandom.nextDouble();
 	}
 
-	public <E> List<E> selectNrandomOfM(List<E> list, int n, Random r) {
+	public <E> List<E> selectNrandomOfM(List<E> list, int n) {
 
 		int length = list.size();
 
