@@ -17,6 +17,10 @@ public class RandomNumbers {
 		intRandom = new Random(seed);
 		doubleRandom = new Random(seed);
 	}
+	
+	public Random getDoubleRandom() {
+		return doubleRandom;
+	}
 
 	public RandomNumbers() {
 		this.seed = System.nanoTime();
