@@ -22,6 +22,7 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	protected Supplier<E> edgeSupplier;
 	protected Supplier<W> edgeWeightSupplier;
 	protected Supplier<P> pathSupplier;
+	
 	protected TreeMap</*key=sourceVertexID*/Integer, 
 					  /*value=*/ArrayList<Tuple</*edgeID*/Integer,
 											    /*targetVertexID*/Integer>>> sourceTargetAdjacencies;
@@ -94,16 +95,16 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 		return this.paths.set(i, path);
 	}
 
-	protected List<E> copyEdges() {
-		List<E> edgeCopies = new ArrayList<E>();
-		for (E edge : getEdges()) {
-			E edgeCopy = edgeSupplier.get();
+	public TreeMap<Integer,E> copyEdges() {	
+		TreeMap<Integer, E> linkCopies = new TreeMap<Integer, E>();	
+		for (E edge : getEdges()) {			
+			E edgeCopy = edgeSupplier.get();		
 			edgeCopy.setID(edge.getID());
 			W edgeWeight = edgeWeightSupplier.get();
-			edgeCopy.setWeight(edgeWeight);
-			edgeCopies.add(edgeCopy);
+			edgeCopy.setWeight(edgeWeight);		
+			linkCopies.put(edgeCopy.getID(), edgeCopy);
 		}
-		return edgeCopies;
+		return linkCopies;
 	}
 
 	public V addVertex(L position) {

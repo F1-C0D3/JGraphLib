@@ -2,6 +2,7 @@ package de.jgraphlib.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.function.Supplier;
@@ -20,15 +21,15 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 		super(vertexSupplier, edgeSupplier, edgeWeightSupplier, pathSupplier);
 	}
 		
-	public List<E> copyEdges() {	
-		List<E> linkCopies = new ArrayList<E>();	
+	public TreeMap<Integer,E> copyEdges() {	
+		TreeMap<Integer, E> linkCopies = new TreeMap<Integer, E>();	
 		for (E edge : getEdges()) {			
 			E edgeCopy = edgeSupplier.get();		
 			edgeCopy.setID(edge.getID());
 			W edgeWeight = edgeWeightSupplier.get();
 			edgeWeight.setDistance(edge.getWeight().getDistance());
 			edgeCopy.setWeight(edgeWeight);		
-			linkCopies.add(edgeCopy);
+			linkCopies.put(edgeCopy.getID(), edgeCopy);
 		}
 		return linkCopies;
 	}

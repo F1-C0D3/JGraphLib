@@ -27,7 +27,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
 		this.vertices = graph.vertices;
-		// this.edges = graph.copyEdges();
+		this.edges = graph.copyEdges();
 		this.paths = graph.copyPaths();
 		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
 		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
