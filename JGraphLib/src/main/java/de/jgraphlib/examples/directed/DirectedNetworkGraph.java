@@ -27,6 +27,8 @@ public class DirectedNetworkGraph {
 
 		// @formatter:off
 
+		RandomNumbers randomNumbers = new RandomNumbers(-1696871074313720653L);
+		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
@@ -35,9 +37,9 @@ public class DirectedNetworkGraph {
 						new Weighted2DGraphSupplier().getPathSupplier());
 
 		NetworkGraphProperties properties = new NetworkGraphProperties(
-				/* playground width */ 1024,
-				/* playground height */ 768, 
-				/* number of vertices */ new IntRange(20, 20),
+				/* playground width */ 1025,
+				/* playground height */ 512, 
+				/* number of vertices */ new IntRange(25, 25),
 				/* distance between vertices */ new DoubleRange(50d, 100d),
 				/* edge distance */ new DoubleRange(100, 100));
 
@@ -45,7 +47,7 @@ public class DirectedNetworkGraph {
 				new NetworkGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 						graph, 
 						new EdgeDistanceSupplier(), 
-						new RandomNumbers());
+						randomNumbers);
 		
 		generator.generate(properties);
 		
@@ -59,8 +61,8 @@ public class DirectedNetworkGraph {
 		
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
-
-		graph.printAllPathsByVertexIDs(graph.getFirstVertex(), graph.getLastVertex());
+	
+		//graph.printAllPathsByVertexIDs(graph.getFirstVertex(), graph.getLastVertex());
 		
 		// @formatter:on
 	}

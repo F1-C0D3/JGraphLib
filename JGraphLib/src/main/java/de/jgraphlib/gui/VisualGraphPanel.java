@@ -410,8 +410,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		this.paintPlayground(g2);
 
-		//for (VisualEdge edge : graph.getEdges())
-		//	this.paintEdge(g2, edge);
+		for (VisualEdge edge : graph.getVisualEdges())
+			paintVisualEdge(g2, edge, ArrowLegStyle.twoLegged);
 
 		for (VisualEdgeTuple visualEdgeTuple : graph.getVisualEdgeTuples())
 			paintVisualEdgeTuple(g2, visualEdgeTuple);

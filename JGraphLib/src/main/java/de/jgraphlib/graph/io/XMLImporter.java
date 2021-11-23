@@ -142,6 +142,6 @@ public class XMLImporter<V extends Vertex<P>, P, E extends WeightedEdge<W>, W> {
 		importer.importGraph("graph.xml");
 
 		VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> app = new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph);
+				graph, null);
 	}
 }
