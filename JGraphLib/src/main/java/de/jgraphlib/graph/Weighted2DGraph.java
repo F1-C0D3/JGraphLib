@@ -34,6 +34,36 @@ public abstract class Weighted2DGraph<V extends Vertex<Position2D>, E extends We
 		return linkCopies;
 	}
 	
+	protected TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>> copySourceTargetAdjacencies(){
+
+		TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>> sourceTargetAdjacenciesCopy = new TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>>();
+		for(Integer vID : this.sourceTargetAdjacencies.keySet()) {
+			sourceTargetAdjacenciesCopy.put(vID,new ArrayList<Tuple<Integer,Integer>>(this.sourceTargetAdjacencies.get(vID)));
+		}
+		
+		return sourceTargetAdjacenciesCopy;
+	}
+	
+	protected TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>> copyTargetSourceAdjacencies(){
+
+		TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>> targetSourceAdjacenciesCopy = new TreeMap<Integer, ArrayList<Tuple<Integer,Integer>>>();
+		for(Integer vID : this.targetSourceAdjacencies.keySet()) {
+			targetSourceAdjacenciesCopy.put(vID,new ArrayList<Tuple<Integer,Integer>>(this.targetSourceAdjacencies.get(vID)));
+		}
+		
+		return targetSourceAdjacenciesCopy;
+	}
+	
+	protected TreeMap<Integer, Tuple<Integer,Integer>> copyEdgeAdjacencies(){
+
+		TreeMap<Integer, Tuple<Integer,Integer>> edgeAdjacenciesCopy = new TreeMap<Integer, Tuple<Integer,Integer>>();
+		for(Integer vID : this.edgeAdjacencies.keySet()) {
+			edgeAdjacenciesCopy.put(vID,new Tuple<Integer,Integer>(this.edgeAdjacencies.get(vID).getFirst(),this.edgeAdjacencies.get(vID).getSecond()));
+		}
+		
+		return edgeAdjacenciesCopy;
+	}
+	
 	public V addVertex(double x, double y) {
 		return super.addVertex(new Position2D(x, y));
 	}

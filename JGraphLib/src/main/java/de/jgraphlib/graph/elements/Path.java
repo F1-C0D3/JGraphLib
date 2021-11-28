@@ -16,10 +16,23 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 	public Path(V source, V target) {
 		this.source = source;
 		this.target = target;
-		super.add(new Tuple<E, V>(null, source));
+		super.add(new Tuple<E, V>(null, this.source));
 	}
 
 	public Path() {
+	}
+
+	public Path(Path<V, E, W> previousPath) {
+
+		for (Tuple<E, V> tuple : previousPath) {
+			this.add(tuple);
+		}
+
+		if (previousPath.source != null)
+			this.source = previousPath.source;
+
+		if (previousPath.target != null)
+			this.target = previousPath.target;
 	}
 
 	public void set(V source, V target) {
@@ -147,6 +160,16 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		return false;
 	}
 
+	public boolean isEmpty() {
+		if(this.size()<=1)
+			return true;
+		return false;
+	}
+	public void concat(Path<V,E,W> path) {
+		this.addAll(path.subList(1, path.size()));
+
+	}
+
 	public List<V> getUnvisitedVerticesOf(List<V> vertices) {
 		List<V> unvisitedVertices = new ArrayList<V>();
 		for (V vertex : vertices)
@@ -159,8 +182,6 @@ public class Path<V extends Vertex<?>, E extends WeightedEdge<W>, W> extends Lin
 		for (int i = 0; i < this.size(); i++) {
 			if (path.get(i) != null)
 				if (!path.get(i).getSecond().equals(this.get(i).getSecond()))
-					return false;
-				else
 					return false;
 		}
 		return true;
