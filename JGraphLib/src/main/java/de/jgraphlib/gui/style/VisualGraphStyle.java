@@ -105,8 +105,6 @@ public class VisualGraphStyle {
 		return this.visualPathLineDistance;
 	}
 
-	/* VisualPath mark up */
-
 	public void setVisualPathLineWidth(int visualPathLineWidth) {
 		this.visualPathLineWidth = visualPathLineWidth;
 	}
@@ -114,5 +112,4 @@ public class VisualGraphStyle {
 	public int getVisualPathLineWidth() {
 		return this.visualPathLineWidth;
 	}
-
 }

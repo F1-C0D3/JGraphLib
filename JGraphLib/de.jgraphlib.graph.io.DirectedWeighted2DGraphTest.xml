@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graph directed="yes">
+  <vertices>
+    <vertex ID="0">
+      <x>173.0</x>
+      <y>646.0</y>
+    </vertex>
+    <vertex ID="1">
+      <x>138.4590755233357</x>
+      <y>598.832049172826</y>
+    </vertex>
+    <vertex ID="2">
+      <x>70.62885370628084</x>
+      <y>630.9250447714362</y>
+    </vertex>
+  </vertices>
+  <edges>
+    <edge ID="0">
+      <source>1</source>
+      <target>0</target>
+    </edge>
+    <edge ID="1">
+      <source>0</source>
+      <target>1</target>
+    </edge>
+    <edge ID="2">
+      <source>2</source>
+      <target>1</target>
+    </edge>
+    <edge ID="3">
+      <source>1</source>
+      <target>2</target>
+    </edge>
+  </edges>
+</graph>

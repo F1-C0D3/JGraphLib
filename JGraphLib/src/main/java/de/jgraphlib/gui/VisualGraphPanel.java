@@ -113,7 +113,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 		// Paint x-/y-Axis steps
 		DecimalFormat decimalFormat = new DecimalFormat("#.00");
-		int steps = 20;
+		int steps = 50;
 		int xOffset = (int) xAxis.getLength() / steps;
 		int yOffset = (int) yAxis.getLength() / steps;
 		VectorLine2D xAxisVector = new VectorLine2D(xAxis.p1().x(), xAxis.p1().y(), xAxis.getSlope());
@@ -127,14 +127,20 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 			g2.setColor(Color.GRAY);
 
 			Point2D xAxisPoint = xAxisVector.getPointInDistance(i * xOffset);
+			Point2D yAxisPoint = yAxisVector.getPointInDistance(i * -yOffset);	
+			
 			g2.drawLine(
 					(int) xAxisPoint.x(), 
 					(int) xAxisPoint.y(), 
 					(int) xAxisPoint.x(),
 					(int) xAxisPoint.y() + grindLineWidth);
 
-			Point2D yAxisPoint = yAxisVector.getPointInDistance(i * -yOffset);
-			g2.drawLine((int) yAxisPoint.x(), (int) yAxisPoint.y(), (int) yAxisPoint.x() - grindLineWidth, (int) yAxisPoint.y());
+						
+			g2.drawLine(
+					(int) yAxisPoint.x(), 
+					(int) yAxisPoint.y(),
+					(int) yAxisPoint.x() - grindLineWidth, 
+					(int) yAxisPoint.y());
 
 			String xAxisPointText = decimalFormat.format(scope.x.min + (i * ((scope.x.max-scope.x.min)/steps)));
 			fontMetrics = g2.getFontMetrics();
@@ -152,8 +158,20 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 					(int) yAxisPoint.x() - (int) stringBounds.getWidth() - grindLineWidth,
 					(int) yAxisPoint.y() + (int) (stringBounds.getHeight() / 4));
 			g2.setColor(gridLineColor);
-			g2.drawLine((int) xAxisPoint.x(), (int) xAxisPoint.y(), (int) xAxisPoint.x(), (int) (xAxisPoint.y() - (scope.y.max * yScale)));
-			g2.drawLine((int) yAxisPoint.x(), (int) yAxisPoint.y(), (int) (yAxisPoint.x() + (scope.x.max * xScale)), (int) (yAxisPoint.y()));
+					
+			// Draw x grid lines (vertical lines)
+			g2.drawLine(
+					(int) xAxisPoint.x(), 
+					(int) xAxisPoint.y(), 
+					(int) xAxisPoint.x(), 
+					(int) (xAxisPoint.y() - getHeight() + (2 * padding)));
+						
+			// Draw y grid lines (horizontal lines)
+			g2.drawLine(
+					(int) yAxisPoint.x(), 
+					(int) yAxisPoint.y(), 
+					(int) (yAxisPoint.x() + getWidth() - (2 * padding)), 
+					(int) (yAxisPoint.y()));
 		}
 	}
 	
@@ -294,6 +312,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 	}
 
+	
 	public void paintArrow(Graphics2D g2, Line2D line, Point2D startPosition, Point2D targetPosition, ArrowStyle arrowStyle) {
 
 		double shortSide = Math.sqrt(Math.pow(arrowStyle.getLegLength(), 2)/2);
@@ -410,8 +429,8 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 		
 		this.paintPlayground(g2);
 
-		//for (VisualEdge edge : graph.getEdges())
-		//	this.paintEdge(g2, edge);
+		for (VisualEdge edge : graph.getVisualEdges())
+			paintVisualEdge(g2, edge, ArrowLegStyle.twoLegged);
 
 		for (VisualEdgeTuple visualEdgeTuple : graph.getVisualEdgeTuples())
 			paintVisualEdgeTuple(g2, visualEdgeTuple);
@@ -474,10 +493,6 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 	public void updateVisualGraph(VisualGraph<V, E, W> graph) {
 		this.graph = graph;
 		this.scope = this.getScope(graph);
-	}
-
-	public void addVisualPath(Path<V, E, ?> path) {
-		//this.graph.buildPath(path);
 		this.repaint();
 	}
 }

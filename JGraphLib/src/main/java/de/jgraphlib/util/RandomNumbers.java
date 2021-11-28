@@ -23,8 +23,9 @@ public class RandomNumbers {
 	}
 
 	public RandomNumbers() {
-		this.seed = System.nanoTime();
-		intRandom = new Random(seed);
+		//this.seed = System.nanoTime();
+		this.seed = new Random().nextLong();
+		intRandom = new Random(seed);		
 		doubleRandom = new Random(seed);
 	}
 	

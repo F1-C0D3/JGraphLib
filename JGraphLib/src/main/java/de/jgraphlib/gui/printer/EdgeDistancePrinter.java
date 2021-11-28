@@ -1,9 +1,12 @@
 package de.jgraphlib.gui.printer;
 
 import de.jgraphlib.graph.elements.EdgeDistance;
+import de.jgraphlib.graph.elements.WeightedEdge;
 
-public class EdgeDistancePrinter<W extends EdgeDistance> extends EdgeWeightPrinter<W>{
-	public String print(W edgeDistance) {
-		return String.format("%.2f", edgeDistance.getDistance());	
+public class EdgeDistancePrinter<E extends WeightedEdge<W>, W extends EdgeDistance> extends EdgePrinter<E,W>{
+
+	@Override
+	public String print(E edge) {
+		return String.format("%.2f", edge.getWeight().getDistance());	
 	}
 }
