@@ -52,7 +52,7 @@ public class YenTopKShortestPaths<V extends Vertex<?>, E extends WeightedEdge<W>
 	public List<Path<V, E, W>> compute(V source, V target, Function<W, Double> metric,
 			Function<Tuple<Path<V, E, W>, Path<V, E, W>>, Double> pathComperator) {
 		init();
-		ksp.add(new DijkstraShortestPath<V, E, W>(graph).compute(source, target, metric, null));
+		ksp.add(new DijkstraShortestPath<V, E, W>(graph.copy()).compute(source, target, metric, null));
 
 		while (round < (this.numTopK - 1)) {
 
@@ -127,7 +127,7 @@ public class YenTopKShortestPaths<V extends Vertex<?>, E extends WeightedEdge<W>
 
 			spurPos = 0;
 			if (candidates.isEmpty()) {
-				return ksp;
+				return toOriginalPaths();
 			}
 
 			double currentScore = Double.MAX_VALUE;
@@ -148,6 +148,24 @@ public class YenTopKShortestPaths<V extends Vertex<?>, E extends WeightedEdge<W>
 
 			ksp.add(++round, candidates.remove(candidateIndex));
 		}
-		return ksp;
+		return toOriginalPaths();
+	}
+
+	private List<Path<V, E, W>> toOriginalPaths() {
+		List<Path<V, E, W>> originalSPs = new ArrayList<Path<V,E,W>>();
+		for (Path<V, E, W> sp : ksp) {
+
+			Path<V, E, W> osp = new Path<V, E, W>(graph.getVertex(sp.getSource().getID()),
+					graph.getVertex(sp.getTarget().getID()));
+
+			for (Tuple<E, V> link : sp) {
+				if (link.getFirst() != null) 
+					osp.add(new Tuple<E, V>(graph.getEdge(link.getFirst().getID()),
+							graph.getVertex(link.getSecond().getID())));
+				
+			}
+			originalSPs.add(osp);
+		}
+		return originalSPs;
 	}
 }

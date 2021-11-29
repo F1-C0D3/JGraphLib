@@ -21,6 +21,7 @@ import de.jgraphlib.graph.generator.GridGraphProperties;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
+import de.jgraphlib.gui.printer.WeightedEdgeIDPrinter;
 import de.jgraphlib.util.RandomNumbers;
 import de.jgraphlib.util.Tuple;
 
@@ -45,7 +46,7 @@ public class YenTopKShortestPathTest {
 		generator.generate(properties);
 
 		SwingUtilities
-				.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph));
+				.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
 
 		Function<EdgeDistance, Double> edgeMetric = (EdgeDistance w) -> {
 			return w.getDistance();
