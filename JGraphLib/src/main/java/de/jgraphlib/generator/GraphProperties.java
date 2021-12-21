@@ -1,23 +1,35 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 import java.text.DecimalFormat;
 
 public class GraphProperties {
+	
 	private final IntRange width;
 	private final IntRange height;
 	private final IntRange vertexCount;
 	private final DoubleRange vertexDistance;
 	private final IntRange edgeCount;
 	private final DoubleRange edgeDistance;
-
-	public GraphProperties(int width, int height, IntRange vertexCount, DoubleRange vertexDistance, IntRange edgeCount,
-			DoubleRange edgeDistance) {
+	private final EdgeStyle edgeStyle;
+	
+	public GraphProperties(int width, int height, IntRange vertexCount, DoubleRange vertexDistance, IntRange edgeCount, DoubleRange edgeDistance) {
 		this.width = new IntRange(0, width);
 		this.height = new IntRange(0, height);
 		this.vertexCount = vertexCount;
 		this.vertexDistance = vertexDistance;
 		this.edgeCount = edgeCount;
 		this.edgeDistance = edgeDistance;
+		this.edgeStyle = EdgeStyle.UNIDIRECTIONAL;
+	}
+	
+	public GraphProperties(int width, int height, IntRange vertexCount, DoubleRange vertexDistance, IntRange edgeCount, DoubleRange edgeDistance, EdgeStyle edgeStyle) {
+		this.width = new IntRange(0, width);
+		this.height = new IntRange(0, height);
+		this.vertexCount = vertexCount;
+		this.vertexDistance = vertexDistance;
+		this.edgeCount = edgeCount;
+		this.edgeDistance = edgeDistance;
+		this.edgeStyle = EdgeStyle.BIDIRECTIONAL;
 	}
 	
 	public boolean isInside(double x, double y) {
@@ -83,6 +95,10 @@ public class GraphProperties {
 			stringBuilder.append(", max: ").append(decimalFormat.format(this.max)).append(")");
 			return stringBuilder.toString();
 		}
+	}
+	
+	public enum EdgeStyle {
+		UNIDIRECTIONAL, BIDIRECTIONAL;
 	}
 
 	@Override

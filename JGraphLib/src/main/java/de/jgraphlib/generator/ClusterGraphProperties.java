@@ -1,4 +1,4 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 public class ClusterGraphProperties extends GraphProperties {
 

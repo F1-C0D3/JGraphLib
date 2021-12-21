@@ -13,11 +13,16 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.WindowConstants;
 
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.gui.printer.EdgePrinter;
 import de.jgraphlib.gui.style.VisualGraphStyle;
+import de.jgraphlib.generator.GridGraphGenerator;
+import de.jgraphlib.generator.GridGraphProperties;
+import de.jgraphlib.generator.NetworkGraphGenerator;
+import de.jgraphlib.generator.NetworkGraphProperties;
+import de.jgraphlib.generator.RandomGraphGenerator;
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
@@ -26,11 +31,6 @@ import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.GridGraphGenerator;
-import de.jgraphlib.graph.generator.GridGraphProperties;
-import de.jgraphlib.graph.generator.NetworkGraphGenerator;
-import de.jgraphlib.graph.generator.NetworkGraphProperties;
-import de.jgraphlib.graph.generator.RandomGraphGenerator;
 import de.jgraphlib.util.RandomNumbers;
 import de.jgraphlib.util.treeparser.Function;
 import de.jgraphlib.util.treeparser.Info;
@@ -306,8 +306,9 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 
 	private void addVertex(Input input) {
 		graph.addVertex(input.DOUBLE.get(0), input.DOUBLE.get(1));
-		//frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
+		frame.getVisualGraphPanel().updateVisualGraph(new VisualGraph<V, E, W>(graph, new VisualGraphStyle()));
 		frame.getVisualGraphPanel().repaint();
+		System.out.println("test");
 	}
 
 	private void addEdge(Input input) {

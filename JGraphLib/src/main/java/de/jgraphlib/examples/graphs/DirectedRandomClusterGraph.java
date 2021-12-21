@@ -1,19 +1,19 @@
-package de.jgraphlib.examples.directed;
+package de.jgraphlib.examples.graphs;
 
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import de.jgraphlib.generator.ClusterGraphProperties;
+import de.jgraphlib.generator.RandomClusterGraphGenerator;
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.ClusterGraphProperties;
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.generator.GraphProperties.IntRange;
-import de.jgraphlib.graph.generator.RandomClusterGraphGenerator;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
 import de.jgraphlib.gui.printer.EdgeDistancePrinter;
@@ -24,7 +24,8 @@ public class DirectedRandomClusterGraph {
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
 		// @formatter:off
-		RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
+		//RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
+		RandomNumbers randomNumbers = new RandomNumbers();
 		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
@@ -51,9 +52,6 @@ public class DirectedRandomClusterGraph {
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistancePrinter<WeightedEdge<EdgeDistance>,EdgeDistance>()));
 
-		System.out.println(randomNumbers.getSeed());
-		System.out.println(graph.toString());
-	
 		// @formatter:on
 	}	
 }

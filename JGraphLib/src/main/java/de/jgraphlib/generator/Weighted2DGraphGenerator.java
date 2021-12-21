@@ -1,8 +1,9 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 import java.util.List;
 import java.util.function.Supplier;
 
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
@@ -11,7 +12,6 @@ import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.util.Log;
 import de.jgraphlib.util.RandomNumbers;
 
@@ -28,8 +28,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,
-			RandomNumbers random) {
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.edgeWeightSupplier = edgeWeightSupplier;
@@ -56,16 +55,25 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		for (V targetVertex : vertices)
 			if (!targetVertex.equals(vertex))
 				if (edgeWeightSupplier()) {
+					
 					W edgeWeightEdgeAway = edgeWeightSupplier.get();
 					W edgeWeightEdgeWayBack = edgeWeightSupplier.get();
+					
 					double distance = graph.getDistance(vertex.getPosition(), targetVertex.getPosition());
+					
 					edgeWeightEdgeAway.setDistance(distance);
 					edgeWeightEdgeWayBack.setDistance(distance);
+					
 					graph.addEdge(vertex, targetVertex, edgeWeightEdgeAway);
-					graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
+					
+					//if(true)
+					//	graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
+					
 				} else {
 					graph.addEdge(vertex, targetVertex);
-					graph.addEdge(targetVertex, vertex);
+					
+					//if(true)
+					//	graph.addEdge(targetVertex, vertex);
 				}
 	}
 

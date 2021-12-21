@@ -1,13 +1,13 @@
-package de.jgraphlib.examples.undirected;
+package de.jgraphlib.examples.graphs;
 
+import de.jgraphlib.generator.GridGraphGenerator;
+import de.jgraphlib.generator.GridGraphProperties;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.GridGraphGenerator;
-import de.jgraphlib.graph.generator.GridGraphProperties;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;

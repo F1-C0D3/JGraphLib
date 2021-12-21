@@ -2,10 +2,12 @@ package de.jgraphlib.graph.algorithms;
 
 import org.junit.Test;
 
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
+import de.jgraphlib.generator.NetworkGraphGenerator;
+import de.jgraphlib.generator.NetworkGraphProperties;
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -13,8 +15,6 @@ import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.NetworkGraphGenerator;
-import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.util.RandomNumbers;
 
 public class RandomPathTest {
