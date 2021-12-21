@@ -66,14 +66,14 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 					
 					graph.addEdge(vertex, targetVertex, edgeWeightEdgeAway);
 					
-					//if(true)
-					//	graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
+					if(true)
+						graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
 					
 				} else {
 					graph.addEdge(vertex, targetVertex);
 					
-					//if(true)
-					//	graph.addEdge(targetVertex, vertex);
+					if(true)
+						graph.addEdge(targetVertex, vertex);
 				}
 	}
 
