@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -26,12 +27,13 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 	public DirectedWeighted2DGraph(DirectedWeighted2DGraph<V, E, W, P> graph) {
 		super(graph.vertexSupplier, graph.edgeSupplier, graph.edgeWeightSupplier, graph.pathSupplier);
-		this.vertices = graph.vertices;
+		this.vertices = graph.copyVertices();
 		this.edges = graph.copyEdges();
 		this.paths = graph.copyPaths();
-		this.sourceTargetAdjacencies = graph.sourceTargetAdjacencies;
-		this.targetSourceAdjacencies = graph.targetSourceAdjacencies;
-		this.edgeAdjacencies = graph.edgeAdjacencies;
+
+		this.sourceTargetAdjacencies = graph.copySourceTargetAdjacencies();
+		this.targetSourceAdjacencies = graph.copyTargetSourceAdjacencies();
+		this.edgeAdjacencies = graph.copyEdgeAdjacencies();
 	}
 
 	public DirectedWeighted2DGraph<V, E, W, P> copy() {
@@ -87,11 +89,14 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 		// Gather all targets that are connected via an outgoing link with vertex
 		// (vertex -> ?)
+		
+		if(sourceTargetAdjacencies.containsKey(vertex.getID()))
 		for (Tuple<Integer, Integer> adjacency : sourceTargetAdjacencies.get(vertex.getID()))
 			vertices.add(getVertex(adjacency.getSecond()));
 
 		// Gather all vertices that are connected via an incoming link with vertex (? ->
 		// vertex)
+		if(targetSourceAdjacencies.containsKey(vertex.getID()));
 		for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
 			vertices.add(getVertex(adjacency.getSecond()));
 
@@ -108,24 +113,30 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 	public List<E> getOutgoingEdgesOf(V vertex) {
 		List<E> edges = new ArrayList<E>();
-		for (Tuple<Integer, Integer> edgeVertexTuple : sourceTargetAdjacencies.get(vertex.getID()))
-			edges.add(super.edges.get(edgeVertexTuple.getFirst()));
+		if (sourceTargetAdjacencies.containsKey(vertex.getID()))
+			for (Tuple<Integer, Integer> edgeVertexTuple : sourceTargetAdjacencies.get(vertex.getID()))
+				edges.add(super.edges.get(edgeVertexTuple.getFirst()));
 		return edges;
 	}
 
 	public List<E> getIncomingEdgesOf(V vertex) {
 		List<E> edges = new ArrayList<E>();
-		for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
-			edges.add(super.edges.get(adjacency.getFirst()));
+		if (targetSourceAdjacencies.containsKey(vertex.getID()))
+			for (Tuple<Integer, Integer> adjacency : targetSourceAdjacencies.get(vertex.getID()))
+				edges.add(super.edges.get(adjacency.getFirst()));
 		return edges;
 	}
 
 	public V getSourceOf(E edge) {
-		return this.vertices.get(edgeAdjacencies.get(edge.getID()).getFirst());
+		if (edgeAdjacencies.containsKey(edge.getID()))
+			return this.vertices.get(edgeAdjacencies.get(edge.getID()).getFirst());
+		return null;
 	}
 
 	public V getTargetOf(E edge) {
-		return this.vertices.get(edgeAdjacencies.get(edge.getID()).getSecond());
+		if (edgeAdjacencies.containsKey(edge.getID()))
+			return this.vertices.get(edgeAdjacencies.get(edge.getID()).getSecond());
+		return null;
 	}
 
 	public Boolean isDirected() {
@@ -139,25 +150,27 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 		Tuple<V, V> vertices = this.getVerticesOf(edge);
 
-		for (E e : this.getEdgesOf(vertices.getFirst()))
-			neighboringEdges.add(e);
+		if (vertices != null) {
+			
+			for (E e : this.getEdgesOf(vertices.getFirst()))
+				neighboringEdges.add(e);
 
-		for (E e : this.getEdgesOf(vertices.getSecond()))
-			neighboringEdges.add(e);
-
+			for (E e : this.getEdgesOf(vertices.getSecond()))
+				neighboringEdges.add(e);
+		}
 		return neighboringEdges.stream().collect(Collectors.toList());
 	}
 
 	public List<V> getVertices(List<Integer> vertexIDs) {
-		
+
 		List<V> vertices = new ArrayList<V>();
-		
-		for(Integer vertexID : vertexIDs) 
+
+		for (Integer vertexID : vertexIDs)
 			vertices.add(getVertex(vertexID));
-		
+
 		return vertices;
 	}
-	
+
 	public P createPath(List<V> path) {
 
 		P p = pathSupplier.get();
@@ -165,7 +178,7 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 
 		// Check if graph contains edge of vertex i ~> i+1 & add edge to path
 		for (int i = 0; i < path.size() - 1; i++)
-			if (containsEdge(path.get(i), path.get(i+1)))
+			if (containsEdge(path.get(i), path.get(i + 1)))
 				p.add(new Tuple<E, V>(getEdge(path.get(i), path.get(i + 1)), path.get(i + 1)));
 			else
 				return null;
@@ -260,5 +273,27 @@ public class DirectedWeighted2DGraph<V extends Vertex<Position2D>, E extends Wei
 		new DepthFirstTraversal().recursiveCall(source, target, new HashSet<V>(), path);
 
 		return paths;
+	}
+
+	@Override
+	public boolean removeEdge(E edge) {
+
+		Tuple<V, V> sourceAndSink = this.getVerticesOf(edge);
+		int sourceID = sourceAndSink.getFirst().getID();
+		int sinkID = sourceAndSink.getSecond().getID();
+
+		this.sourceTargetAdjacencies.get(sourceID).removeIf(tuple -> tuple.getSecond() == sinkID);
+		this.targetSourceAdjacencies.get(sinkID).removeIf(tuple -> tuple.getSecond() == sourceID);
+
+		if (this.sourceTargetAdjacencies.get(sourceID).isEmpty())
+			this.removeVertex(sourceAndSink.getFirst());
+
+		if (targetSourceAdjacencies.get(sinkID).isEmpty())
+			this.removeVertex(sourceAndSink.getSecond());
+
+		this.edgeAdjacencies.remove(edge.getID());
+		this.edges.remove(edge.getID());
+
+		return true;
 	}
 }
