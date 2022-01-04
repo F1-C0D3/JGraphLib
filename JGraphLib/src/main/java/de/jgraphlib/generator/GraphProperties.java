@@ -11,17 +11,7 @@ public class GraphProperties {
 	private final IntRange edgeCount;
 	private final DoubleRange edgeDistance;
 	private final EdgeStyle edgeStyle;
-	
-	public GraphProperties(int width, int height, IntRange vertexCount, DoubleRange vertexDistance, IntRange edgeCount, DoubleRange edgeDistance) {
-		this.width = new IntRange(0, width);
-		this.height = new IntRange(0, height);
-		this.vertexCount = vertexCount;
-		this.vertexDistance = vertexDistance;
-		this.edgeCount = edgeCount;
-		this.edgeDistance = edgeDistance;
-		this.edgeStyle = EdgeStyle.UNIDIRECTIONAL;
-	}
-	
+		
 	public GraphProperties(int width, int height, IntRange vertexCount, DoubleRange vertexDistance, IntRange edgeCount, DoubleRange edgeDistance, EdgeStyle edgeStyle) {
 		this.width = new IntRange(0, width);
 		this.height = new IntRange(0, height);
@@ -29,11 +19,15 @@ public class GraphProperties {
 		this.vertexDistance = vertexDistance;
 		this.edgeCount = edgeCount;
 		this.edgeDistance = edgeDistance;
-		this.edgeStyle = EdgeStyle.BIDIRECTIONAL;
+		this.edgeStyle = edgeStyle;
 	}
-	
+		
 	public boolean isInside(double x, double y) {
 		return (x >= width.min && x <= width.max) && (y >= height.min && y <= height.max);
+	}
+	
+	public EdgeStyle getEdgeStyle() {
+		return edgeStyle;
 	}
 
 	public IntRange getWidth() {

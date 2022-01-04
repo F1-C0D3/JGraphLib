@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import org.junit.Test;
 
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GridGraphGenerator;
 import de.jgraphlib.generator.GridGraphProperties;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
@@ -39,7 +40,8 @@ public class YenTopKShortestPathTest {
 		GridGraphProperties properties = new GridGraphProperties(/* playground width */ 200,
 				/* playground height */ 200, /* distance between vertices */
 				100, /* length of edges */
-				100);
+				100,
+				EdgeStyle.BIDIRECTIONAL);
 
 		GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier(), new RandomNumbers());

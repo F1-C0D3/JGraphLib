@@ -88,12 +88,17 @@ public class RandomClusterGraphGenerator<V extends Vertex<Position2D>, E extends
 							
 			if(clusterPositionRequirement) {
 				
-				V newVertex = graph.addVertex(position);		
+				V newVertex = graph.addVertex(position);	
+				
 				cluster.add(newVertex);		
 			
-				connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);	
-				
-				connectVerticesInRadius(newVertex, properties.getClusterEdgeDistance().max, cluster);
+				connectVerticesInRadius(newVertex, properties.getEdgeDistance().max, properties.getEdgeStyle());	
+								
+				connectVerticesInRadius(
+						newVertex, 
+						properties.getClusterEdgeDistance().max, 
+						properties.getEdgeStyle(), 
+						cluster);
 			}
 			else { 
 				position = cluster.get(random.getRandom(0, cluster.size()-1)).getPosition();		

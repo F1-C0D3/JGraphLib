@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import de.jgraphlib.generator.ClusterGraphProperties;
 import de.jgraphlib.generator.RandomClusterGraphGenerator;
 import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -24,8 +25,9 @@ public class DirectedRandomClusterGraph {
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
 		// @formatter:off
-		//RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
-		RandomNumbers randomNumbers = new RandomNumbers();
+		
+		RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
+		//RandomNumbers randomNumbers = new RandomNumbers();
 		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
@@ -35,13 +37,15 @@ public class DirectedRandomClusterGraph {
 						new Weighted2DGraphSupplier().getPathSupplier());
 
 		ClusterGraphProperties properties = new ClusterGraphProperties(
-				/* playground width */ 			2048,
-				/* playground height */ 		1024, 
-				/* number of vertices */ 		new IntRange(100, 100),
-				/* distance between vertices */ new DoubleRange(50d, 50d),
-				null, /* edge distance */ 			new DoubleRange(50d, 75d),
-				/* corridorQuantity*/ 			5,
-				/* corridorEdgeDistance*/ 		new DoubleRange(250d, 300d));
+				/* playground width */ 		2048,
+				/* playground height */ 	1024, 
+				/* vertexCount */ 			new IntRange(150, 150),
+				/* vertexDistance */ 		new DoubleRange(25d, 25d),
+				/* edgeCount*/ 				new IntRange(1, 1), 
+				/* edgeDistance*/ 			new DoubleRange(50d, 50d),
+				/* edgeStyle */ 			EdgeStyle.UNIDIRECTIONAL,				
+				/* clusterQuantity*/ 		5,
+				/* clusterEdgeDistance*/ 	new DoubleRange(250d, 300d));
 
 		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
 				new RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(

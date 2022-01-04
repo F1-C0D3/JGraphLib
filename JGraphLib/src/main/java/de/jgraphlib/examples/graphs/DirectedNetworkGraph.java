@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import de.jgraphlib.generator.NetworkGraphGenerator;
 import de.jgraphlib.generator.NetworkGraphProperties;
 import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.algorithms.RandomPath;
@@ -27,7 +28,7 @@ public class DirectedNetworkGraph {
 
 		// @formatter:off
 
-		RandomNumbers randomNumbers = new RandomNumbers(-1696871074313720653L);
+		RandomNumbers randomNumbers = new RandomNumbers();
 		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(

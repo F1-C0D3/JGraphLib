@@ -22,6 +22,7 @@ import de.jgraphlib.generator.NetworkGraphGenerator;
 import de.jgraphlib.generator.NetworkGraphProperties;
 import de.jgraphlib.generator.RandomGraphGenerator;
 import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
@@ -293,7 +294,7 @@ public class VisualGraphApp<V extends Vertex<Position2D>, E extends WeightedEdge
 	private void createGridGraph(Input input) {
 		graph.clear();
 
-		GridGraphProperties properties = new GridGraphProperties(1000, 1000, 100, 200);
+		GridGraphProperties properties = new GridGraphProperties(1000, 1000, 100, 200, EdgeStyle.BIDIRECTIONAL);
 
 		GridGraphGenerator<V, E, W> generator = new GridGraphGenerator<V, E, W>(graph, edgeWeightSupplier,
 				new RandomNumbers());

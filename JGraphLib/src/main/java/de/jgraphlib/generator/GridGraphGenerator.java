@@ -34,7 +34,7 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 				V newVertex = graph.addVertex(currentVertex.getPosition().x() + xOffset, 0);
 				currentVertex = newVertex;
 				vertexCount++;
-				 connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);
+				 connectVerticesInRadius(newVertex, properties.getEdgeDistance().max, properties.getEdgeStyle());
 			}
 
 			while (currentVertex.getPosition()
@@ -45,7 +45,7 @@ public class GridGraphGenerator<V extends Vertex<Position2D>, E extends Weighted
 						currentVertex.getPosition().y() + yOffset);
 				currentVertex = newVertex;
 				vertexCount++;
-				connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);
+				connectVerticesInRadius(newVertex, properties.getEdgeDistance().max, properties.getEdgeStyle());
 			}
 		}
 	}

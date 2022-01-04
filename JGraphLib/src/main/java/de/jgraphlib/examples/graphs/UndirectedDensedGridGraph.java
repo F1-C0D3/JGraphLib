@@ -2,6 +2,7 @@ package de.jgraphlib.examples.graphs;
 
 import de.jgraphlib.generator.GridGraphGenerator;
 import de.jgraphlib.generator.GridGraphProperties;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
@@ -29,9 +30,10 @@ UndirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDi
     GridGraphProperties properties =
         new GridGraphProperties(
             /* playground width */ 1024,
-            /* playground height */ 768, /* distance between vertices */
-            100, /* length of edges */
-            300);
+            /* playground height */ 768, 
+            /* distance between vertices */ 100, 
+            /* length of edges */ 300,
+            EdgeStyle.UNIDIRECTIONAL);
 
     GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator =
         new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(

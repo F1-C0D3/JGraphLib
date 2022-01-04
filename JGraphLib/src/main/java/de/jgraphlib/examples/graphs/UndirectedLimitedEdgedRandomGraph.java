@@ -3,6 +3,7 @@ package de.jgraphlib.examples.graphs;
 import de.jgraphlib.generator.GraphProperties;
 import de.jgraphlib.generator.RandomGraphGenerator;
 import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -28,10 +29,14 @@ public class UndirectedLimitedEdgedRandomGraph {
 						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
 						new Weighted2DGraphSupplier().getPathSupplier());
 
-		GraphProperties properties = new GraphProperties(/* playground width */ 1024, /* playground height */ 768,
+		GraphProperties properties = new GraphProperties(
+				/* playground width */ 1024, 
+				/* playground height */ 768,
 				/* number of vertices */ new IntRange(100, 200),
-				/* distance between vertices */ new DoubleRange(50d, 100d), /* connectivity */ new IntRange(1, 2),
-				/* edge distance */ new DoubleRange(50d, 100d));
+				/* distance between vertices */ new DoubleRange(50d, 100d), 
+				/* connectivity */ new IntRange(1, 2),
+				/* edge distance */ new DoubleRange(50d, 100d),
+				EdgeStyle.UNIDIRECTIONAL);
 
 		RandomGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new RandomGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 				graph, new EdgeDistanceSupplier(), new RandomNumbers());

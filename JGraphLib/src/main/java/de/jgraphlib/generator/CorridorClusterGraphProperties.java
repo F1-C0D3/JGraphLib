@@ -13,12 +13,14 @@ public class CorridorClusterGraphProperties extends GraphProperties {
 			IntRange vertexCount, 
 			DoubleRange vertexDistance,
 			DoubleRange edgeDistance,
+			EdgeStyle edgeStyle,
 			int corridorQuantity,
 			int corridorDistance,
 			int corridorEdgeDistance,
 			CorridorDirection corridorDirection) {
 		
-		super(width, height, vertexCount, vertexDistance, null, edgeDistance);
+		super(width, height, vertexCount, vertexDistance, null, edgeDistance, edgeStyle);
+		
 		this.corridorQuantity = corridorQuantity;
 		this.corridorDistance = corridorDistance;
 		this.corridorEdgeDistance = corridorEdgeDistance;

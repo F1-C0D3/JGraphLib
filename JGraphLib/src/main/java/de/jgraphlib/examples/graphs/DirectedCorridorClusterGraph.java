@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import de.jgraphlib.generator.CorridorClusterGraphGenerator;
 import de.jgraphlib.generator.CorridorClusterGraphProperties;
 import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -38,6 +39,7 @@ public class DirectedCorridorClusterGraph {
 				/* number of vertices */ 		new IntRange(250, 250),
 				/* distance between vertices */ new DoubleRange(50d, 50d),
 				/* edge distance */ 			new DoubleRange(50d, 100d),
+												EdgeStyle.BIDIRECTIONAL,
 				/* corridorQuantity*/ 			3,
 				/* corridorDistance*/ 			75,
 				/* corridorEdgeDistance*/ 		150,
