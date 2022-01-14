@@ -83,6 +83,18 @@ public class VisualGraph<V extends Vertex<Position2D>, E extends WeightedEdge<W>
 		createVisualEdges(graph);
 		createVisualPaths(graph.getPaths());		
 	}
+	
+	public VisualGraph(Weighted2DGraph<V, E, W, ?> graph, VisualGraphStyle style) {
+		this.visualVertices = new TreeMap<Integer, VisualVertex>();
+		this.visualEdges = new TreeMap<Integer, VisualEdge>();
+		this.visualEdgeTuples = new ArrayList<VisualEdgeTuple>();
+		this.paths = new ArrayList<VisualPath>();
+		this.style = style;		
+		this.edgePrinter = new WeightedEdgeIDPrinter<E, W>();
+		createVisualVertices(graph);	
+		//createVisualEdges(graph);
+		createVisualPaths(graph.getPaths());		
+	}
 
 	public Boolean hasEdgePrinter() {
 		return !Objects.isNull(edgePrinter);

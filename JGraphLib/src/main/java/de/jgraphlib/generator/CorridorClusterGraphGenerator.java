@@ -1,4 +1,4 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,10 +98,14 @@ extends Weighted2DGraphGenerator<V, E, W> {
 					vertexCount++;	
 					
 					// Connect new vertex with all vertices that are in edgeDistance of the same corridor
-					connectVerticesInRadius(newVertex, properties.getEdgeDistance().max);	
+					connectVerticesInRadius(newVertex, properties.getEdgeDistance().max, properties.getEdgeStyle());	
 					
 					// Connect newVertex with all vertices that are in edgeCorridorDistance of foreign corridors
-					connectVerticesInRadius(newVertex, properties.getCorridorEdgeDistance(), corridor.vertices);
+					connectVerticesInRadius(
+							newVertex, 
+							properties.getCorridorEdgeDistance(), 
+							properties.getEdgeStyle(), 
+							/*blacklist */corridor.vertices);
 					
 					currentVertex = newVertex;
 					

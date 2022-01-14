@@ -1,4 +1,4 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 public class ClusterGraphProperties extends GraphProperties {
 
@@ -10,12 +10,14 @@ public class ClusterGraphProperties extends GraphProperties {
 			int height, 
 			IntRange vertexCount, 
 			DoubleRange vertexDistance,
-			IntRange edgeCount, 
+			IntRange edgeCount,  
 			DoubleRange edgeDistance, 
+			EdgeStyle edgeStyle,
 			int clusterQuantity,
 			DoubleRange clusterEdgeDistance) {
 		
-		super(width, height, vertexCount, vertexDistance, null, edgeDistance);	
+		super(width, height, vertexCount, vertexDistance, edgeCount, edgeDistance, edgeStyle);	
+		
 		this.clusterQuantity = clusterQuantity;
 		this.clusterEdgeDistance = clusterEdgeDistance;
 	}

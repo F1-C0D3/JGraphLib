@@ -1,4 +1,4 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,5 @@ public class PathProblemGenerator<V extends Vertex<?>, E extends WeightedEdge<W>
 		}
 		
 		return problems;
-	}
-	
+	}	
 }

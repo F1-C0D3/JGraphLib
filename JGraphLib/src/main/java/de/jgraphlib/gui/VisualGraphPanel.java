@@ -22,6 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import de.jgraphlib.generator.NetworkGraphGenerator;
+import de.jgraphlib.generator.NetworkGraphProperties;
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.algorithms.RandomPath;
 import de.jgraphlib.graph.elements.EdgeDistance;
@@ -30,14 +34,10 @@ import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.EdgeDistanceSupplier;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.style.ArrowLegStyle;
 import de.jgraphlib.gui.style.ArrowStyle;
-import de.jgraphlib.graph.generator.NetworkGraphGenerator;
-import de.jgraphlib.graph.generator.NetworkGraphProperties;
 import de.jgraphlib.maths.Line2D;
 import de.jgraphlib.maths.Point2D;
 import de.jgraphlib.maths.VectorLine2D;
@@ -113,7 +113,7 @@ public class VisualGraphPanel<V extends Vertex<Position2D>, E extends WeightedEd
 
 		// Paint x-/y-Axis steps
 		DecimalFormat decimalFormat = new DecimalFormat("#.00");
-		int steps = 50;
+		int steps = 10;
 		int xOffset = (int) xAxis.getLength() / steps;
 		int yOffset = (int) yAxis.getLength() / steps;
 		VectorLine2D xAxisVector = new VectorLine2D(xAxis.p1().x(), xAxis.p1().y(), xAxis.getSlope());

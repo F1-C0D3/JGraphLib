@@ -1,30 +1,34 @@
-package de.jgraphlib.examples.directed;
+package de.jgraphlib.examples.graphs;
 
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import de.jgraphlib.generator.ClusterGraphProperties;
+import de.jgraphlib.generator.RandomClusterGraphGenerator;
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
+import de.jgraphlib.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Path;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.CorridorClusterGraphGenerator;
-import de.jgraphlib.graph.generator.CorridorClusterGraphProperties;
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
-import de.jgraphlib.graph.generator.GraphProperties.IntRange;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
-import de.jgraphlib.gui.printer.WeightedEdgeIDPrinter;
+import de.jgraphlib.gui.printer.EdgeDistancePrinter;
 import de.jgraphlib.util.RandomNumbers;
 
-public class DirectedCorridorClusterGraph {
+public class DirectedRandomClusterGraph {
 
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
 		// @formatter:off
-
+		
+		RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
+		//RandomNumbers randomNumbers = new RandomNumbers();
+		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
 						new Weighted2DGraphSupplier().getVertexSupplier(),
@@ -32,26 +36,26 @@ public class DirectedCorridorClusterGraph {
 						new Weighted2DGraphSupplier().getEdgeWeightSupplier(),
 						new Weighted2DGraphSupplier().getPathSupplier());
 
-		CorridorClusterGraphProperties properties = new CorridorClusterGraphProperties(
-				/* playground width */ 			250,
-				/* playground height */ 		500, 
-				/* number of vertices */ 		new IntRange(250, 250),
-				/* distance between vertices */ new DoubleRange(50d, 50d),
-				/* edge distance */ 			new DoubleRange(50d, 100d),
-				/* corridorQuantity*/ 			3,
-				/* corridorDistance*/ 			75,
-				/* corridorEdgeDistance*/ 		150,
-				/* corridorAlingment*/ 			CorridorClusterGraphProperties.CorridorDirection.HORIZONTAL);
+		ClusterGraphProperties properties = new ClusterGraphProperties(
+				/* playground width */ 		2048,
+				/* playground height */ 	1024, 
+				/* vertexCount */ 			new IntRange(150, 150),
+				/* vertexDistance */ 		new DoubleRange(25d, 25d),
+				/* edgeCount*/ 				new IntRange(1, 1), 
+				/* edgeDistance*/ 			new DoubleRange(50d, 50d),
+				/* edgeStyle */ 			EdgeStyle.UNIDIRECTIONAL,				
+				/* clusterQuantity*/ 		5,
+				/* clusterEdgeDistance*/ 	new DoubleRange(250d, 300d));
 
-		CorridorClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
-				new CorridorClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, new RandomNumbers());
+		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
+				new RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
+						graph, randomNumbers);
 		
 		generator.generate(properties);
-		
+				
 		SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-				graph, new WeightedEdgeIDPrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
+				graph, new EdgeDistancePrinter<WeightedEdge<EdgeDistance>,EdgeDistance>()));
 
 		// @formatter:on
-	}
+	}	
 }

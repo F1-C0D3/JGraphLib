@@ -1,8 +1,11 @@
-package de.jgraphlib.graph.generator;
+package de.jgraphlib.generator;
 
 import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
+import de.jgraphlib.generator.GraphProperties.DoubleRange;
+import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.graph.DirectedWeighted2DGraph;
 import de.jgraphlib.graph.UndirectedWeighted2DGraph;
 import de.jgraphlib.graph.Weighted2DGraph;
@@ -11,7 +14,6 @@ import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
-import de.jgraphlib.graph.generator.GraphProperties.DoubleRange;
 import de.jgraphlib.util.Log;
 import de.jgraphlib.util.RandomNumbers;
 
@@ -28,8 +30,7 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		this.random = random;
 	}
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,
-			RandomNumbers random) {
+	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;
 		this.edgeWeightSupplier = edgeWeightSupplier;
@@ -40,33 +41,69 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 		return edgeWeightSupplier != null;
 	}
 
-	protected void connectVerticesInRadius(V vertex, double radius, List<V> blacklist) {
+	protected void connectVerticesInRadius(V vertex, double radius, EdgeStyle edgeStyle, List<V> blacklist) {
 		List<V> verticesInRadius = graph.getVerticesInRadius(vertex, radius);
 		verticesInRadius.removeAll(blacklist);
-		connectVertexWithVertices(vertex, verticesInRadius);
+		connectVertexWithVertices(vertex, verticesInRadius, edgeStyle);
 	}
 
-	protected void connectVerticesInRadius(V vertex, double radius) {
+	protected void connectVerticesInRadius(V vertex, double radius, EdgeStyle edgeStyle) {
 		List<V> verticesInRadius = graph.getVerticesInRadius(vertex, radius);
-		connectVertexWithVertices(vertex, verticesInRadius);
+		connectVertexWithVertices(vertex, verticesInRadius, edgeStyle);
 	}
 
-	private void connectVertexWithVertices(V vertex, List<V> vertices) {
-
-		for (V targetVertex : vertices)
-			if (!targetVertex.equals(vertex))
-				if (edgeWeightSupplier()) {
-					W edgeWeightEdgeAway = edgeWeightSupplier.get();
-					W edgeWeightEdgeWayBack = edgeWeightSupplier.get();
-					double distance = graph.getDistance(vertex.getPosition(), targetVertex.getPosition());
-					edgeWeightEdgeAway.setDistance(distance);
-					edgeWeightEdgeWayBack.setDistance(distance);
-					graph.addEdge(vertex, targetVertex, edgeWeightEdgeAway);
-					graph.addEdge(targetVertex, vertex, edgeWeightEdgeWayBack);
+	private void connectVertexWithVertices(V vertex, List<V> vertices, EdgeStyle edgeStyle) {
+		
+		double distance = graph.getDistance(vertex.getPosition(), vertices.get(0).getPosition());				
+		W edgeWeight = edgeWeightSupplier.get();					
+		edgeWeight.setDistance(distance);						
+		graph.addEdge(vertices.get(0), vertex, edgeWeight);	
+		
+		switch(edgeStyle) {
+			case BIDIRECTIONAL:				
+				edgeWeight = edgeWeightSupplier.get();
+				edgeWeight.setDistance(distance);
+				graph.addEdge(vertex, vertices.get(0), edgeWeight);
+				break;
+			default: 
+				break;
+		}
+		
+		for (V targetVertex : vertices.subList(1, vertices.size())) {						
+			if (!targetVertex.equals(vertex))				
+				if (edgeWeightSupplier()) {																
+					switch(edgeStyle) {
+						case UNIDIRECTIONAL:					
+							edgeWeight = edgeWeightSupplier.get();
+							edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));							
+							if (new Random().nextBoolean()) 
+								graph.addEdge(vertex, targetVertex, edgeWeight);						
+							else 
+								graph.addEdge(targetVertex, vertex, edgeWeight);						
+							break;
+						case BIDIRECTIONAL:				
+							edgeWeight = edgeWeightSupplier.get();
+							edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
+							graph.addEdge(targetVertex, vertex, edgeWeight);							
+							edgeWeight = edgeWeightSupplier.get();
+							edgeWeight.setDistance(graph.getDistance(vertex.getPosition(), targetVertex.getPosition()));
+							graph.addEdge(vertex, targetVertex, edgeWeight);							
+							break;
+					default:
+						break;
+					}		
 				} else {
 					graph.addEdge(vertex, targetVertex);
-					graph.addEdge(targetVertex, vertex);
+					
+					switch(edgeStyle) {
+						case BIDIRECTIONAL:
+							graph.addEdge(targetVertex, vertex);
+							break;
+					default:
+						break;
+					}
 				}
+		}
 	}
 
 	protected Position2D getRandomPosition(Position2D source, double vertexDistance) {

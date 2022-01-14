@@ -255,6 +255,15 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 				nextPaths.add(new Tuple<E, V>(edges.get(adjacency.getSecond()), vertices.get(adjacency.getFirst())));
 		return nextPaths;
 	}
+	
+	public V getTargetOf(V vertex, E edge) {
+		Tuple<Integer, Integer> vertexIDs = this.edgeAdjacencies.get(edge.getID());
+		if (vertex.getID() == vertexIDs.getFirst())
+			return this.vertices.get(vertexIDs.getSecond());
+		else if (vertex.getID() == vertexIDs.getSecond())
+			return this.vertices.get(vertexIDs.getFirst());
+		return null;
+	}
 
 	public TreeMap<Integer, ArrayList<Tuple<Integer, Integer>>> getSourceTargetAdjacencies() {
 		return this.sourceTargetAdjacencies;
