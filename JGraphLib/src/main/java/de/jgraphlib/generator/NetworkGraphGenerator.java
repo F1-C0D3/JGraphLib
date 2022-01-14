@@ -2,7 +2,6 @@ package de.jgraphlib.generator;
 
 import java.util.function.Supplier;
 
-import de.jgraphlib.generator.GraphProperties.EdgeStyle;
 import de.jgraphlib.graph.Weighted2DGraph;
 import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Position2D;
@@ -12,10 +11,6 @@ import de.jgraphlib.util.RandomNumbers;
 
 public class NetworkGraphGenerator<V extends Vertex<Position2D>, E extends WeightedEdge<W>, W extends EdgeDistance>
 		extends Weighted2DGraphGenerator<V, E, W> {
-
-	public NetworkGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
-		super(graph, random);
-	}
 
 	public NetworkGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
 		super(graph, edgeWeightSupplier, random);

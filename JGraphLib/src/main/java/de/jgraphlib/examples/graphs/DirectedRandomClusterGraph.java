@@ -16,6 +16,7 @@ import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
 import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier;
+import de.jgraphlib.graph.suppliers.Weighted2DGraphSupplier.EdgeWeightSupplier;
 import de.jgraphlib.gui.VisualGraphApp;
 import de.jgraphlib.gui.printer.EdgeDistancePrinter;
 import de.jgraphlib.util.RandomNumbers;
@@ -28,6 +29,8 @@ public class DirectedRandomClusterGraph {
 		
 		RandomNumbers randomNumbers = new RandomNumbers(7277246775525279348L);
 		//RandomNumbers randomNumbers = new RandomNumbers();
+
+		EdgeWeightSupplier edgeWeightSupplier = new Weighted2DGraphSupplier().getEdgeWeightSupplier();
 		
 		DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>> graph = 
 				new DirectedWeighted2DGraph<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance, Path<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>>(
@@ -49,7 +52,7 @@ public class DirectedRandomClusterGraph {
 
 		RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = 
 				new RandomClusterGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
-						graph, randomNumbers);
+						graph, edgeWeightSupplier, randomNumbers);
 		
 		generator.generate(properties);
 				

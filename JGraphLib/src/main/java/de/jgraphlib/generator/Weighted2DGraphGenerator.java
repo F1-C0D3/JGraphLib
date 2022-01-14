@@ -24,12 +24,6 @@ public abstract class Weighted2DGraphGenerator<V extends Vertex<Position2D>, E e
 	protected Supplier<W> edgeWeightSupplier;
 	protected RandomNumbers random;
 
-	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
-		this.log = new Log();
-		this.graph = graph;
-		this.random = random;
-	}
-
 	public Weighted2DGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier, RandomNumbers random) {
 		this.log = new Log();
 		this.graph = graph;

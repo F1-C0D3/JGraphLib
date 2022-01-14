@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,6 +13,7 @@ import de.jgraphlib.graph.elements.EdgeDistance;
 import de.jgraphlib.graph.elements.Position2D;
 import de.jgraphlib.graph.elements.Vertex;
 import de.jgraphlib.graph.elements.WeightedEdge;
+import de.jgraphlib.graph.suppliers.EdgeWeightSupplier;
 import de.jgraphlib.util.RandomNumbers;
 
 // @formatter:off
@@ -21,8 +23,8 @@ public class RandomClusterGraphGenerator<V extends Vertex<Position2D>, E extends
 
 	List<Cluster> clusters;
 	
-	public RandomClusterGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, RandomNumbers random) {
-		super(graph, random);
+	public RandomClusterGraphGenerator(Weighted2DGraph<V, E, W, ?> graph, Supplier<W> edgeWeightSupplier,RandomNumbers random) {
+		super(graph,edgeWeightSupplier, random);
 	}
 
 	public void generate(ClusterGraphProperties properties) {
