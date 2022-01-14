@@ -44,7 +44,9 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 		this.targetSourceAdjacencies = new TreeMap<Integer, ArrayList<Tuple<Integer, Integer>>>();
 		this.edgeAdjacencies = new TreeMap<Integer, Tuple<Integer, Integer>>();
 	}
-
+	protected Supplier<W> getEdgeWeightSupplier() {
+		return edgeWeightSupplier;
+	}
 	public abstract WeightedGraph<V, L, E, W, P> copy();
 
 	protected List<P> copyPaths() {
@@ -174,8 +176,6 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public abstract E addEdge(V source, V target);
 
 	public abstract boolean removeEdge(E edge);
-	
-	public abstract V getTargetOf(V position, E edge);
 
 	public List<E> getEdges() {
 		return new ArrayList<E>(edges.values());
