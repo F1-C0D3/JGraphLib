@@ -130,17 +130,17 @@ public class YenTopKShortestPaths<V extends Vertex<?>, E extends WeightedEdge<W>
 				return toOriginalPaths();
 			}
 
-			double currentScore = Double.MAX_VALUE;
+			double score = 1d;
 			int candidateIndex = 0;
 
 			for (Path<V, E, W> candidate : candidates) {
 
 				for (Path<V, E, W> sp : ksp) {
 
-					double score = pathComperator.apply(new Tuple<Path<V, E, W>, Path<V, E, W>>(sp, candidate));
-					if (currentScore > score) {
+					double currentScore = pathComperator.apply(new Tuple<Path<V, E, W>, Path<V, E, W>>(sp, candidate));
+					if (score > currentScore) {
 
-						currentScore = score;
+						score = currentScore;
 						candidateIndex = candidates.indexOf(candidate);
 					}
 				}
