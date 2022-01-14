@@ -42,13 +42,8 @@ public class LinksCountTest {
 			GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 					graph, edgeWeightSupplier, new RandomNumbers(0));
 			generator.generate(properties);
-			
-
-			SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph,
-				new EdgeDistancePrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
-
-			System.in.read();
-			Assert.assertEquals(12, graph.getEdges().size());
+		
+			Assert.assertEquals(24, graph.getEdges().size());
 			
 	}
 	
@@ -73,12 +68,7 @@ public class LinksCountTest {
 			GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance> generator = new GridGraphGenerator<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(
 					graph, edgeWeightSupplier, new RandomNumbers(0));
 			generator.generate(properties);
-			
 
-			SwingUtilities.invokeAndWait(new VisualGraphApp<Vertex<Position2D>, WeightedEdge<EdgeDistance>, EdgeDistance>(graph,
-				new EdgeDistancePrinter<WeightedEdge<EdgeDistance>, EdgeDistance>()));
-
-			System.in.read();
 			Assert.assertEquals(12, graph.getEdges().size());
 			
 	}
