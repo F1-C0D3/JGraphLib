@@ -174,6 +174,8 @@ public abstract class WeightedGraph<V extends Vertex<L>, L, E extends WeightedEd
 	public abstract E addEdge(V source, V target);
 
 	public abstract boolean removeEdge(E edge);
+	
+	public abstract V getTargetOf(V position, E edge);
 
 	public List<E> getEdges() {
 		return new ArrayList<E>(edges.values());
